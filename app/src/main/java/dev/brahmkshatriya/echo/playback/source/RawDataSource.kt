@@ -1,16 +1,13 @@
 package dev.brahmkshatriya.echo.playback.source
 
 import android.net.Uri
-import androidx.annotation.OptIn
-import androidx.media3.common.util.UnstableApi
-import androidx.media3.datasource.BaseDataSource
-import androidx.media3.datasource.DataSource
-import androidx.media3.datasource.DataSpec
+import com.google.android.exoplayer2.upstream.BaseDataSource
+import com.google.android.exoplayer2.upstream.DataSource
+import com.google.android.exoplayer2.upstream.DataSpec
 import dev.brahmkshatriya.echo.common.models.Streamable
 import kotlinx.coroutines.runBlocking
 import java.io.InputStream
 
-@OptIn(UnstableApi::class)
 class RawDataSource : BaseDataSource(true) {
 
     class Factory : DataSource.Factory {

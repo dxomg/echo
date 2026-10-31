@@ -2,10 +2,8 @@ package dev.brahmkshatriya.echo.playback.source
 
 import android.content.Context
 import android.net.Uri
-import androidx.annotation.OptIn
-import androidx.media3.common.util.UnstableApi
-import androidx.media3.datasource.DataSpec
-import androidx.media3.datasource.ResolvingDataSource.Resolver
+import com.google.android.exoplayer2.upstream.DataSpec
+import com.google.android.exoplayer2.upstream.ResolvingDataSource.Resolver
 import dev.brahmkshatriya.echo.common.models.Streamable
 import dev.brahmkshatriya.echo.playback.MediaItemUtils.toKey
 import dev.brahmkshatriya.echo.playback.source.StreamableDataSource.Companion.uri
@@ -17,7 +15,6 @@ class StreamableResolver(
     private val current: WeakHashMap<String, Result<Streamable.Media.Server>>,
 ) : Resolver {
 
-    @OptIn(UnstableApi::class)
     override fun resolveDataSpec(dataSpec: DataSpec): DataSpec {
         val (id, index) = dataSpec.uri.toString().toKey().getOrNull() ?: return dataSpec
         val streamable = runCatching { current[id]!!.getOrThrow().sources[index] }
@@ -31,7 +28,6 @@ class StreamableResolver(
 
     companion object {
 
-        @OptIn(UnstableApi::class)
         fun DataSpec.copy(
             uri: Uri? = null,
             uriPositionOffset: Long? = null,

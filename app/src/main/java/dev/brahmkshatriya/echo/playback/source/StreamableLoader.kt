@@ -1,7 +1,7 @@
 package dev.brahmkshatriya.echo.playback.source
 
 import android.net.Uri
-import androidx.media3.common.MediaItem
+import com.google.android.exoplayer2.MediaItem
 import dev.brahmkshatriya.echo.common.Extension
 import dev.brahmkshatriya.echo.common.MusicExtension
 import dev.brahmkshatriya.echo.common.models.Streamable
