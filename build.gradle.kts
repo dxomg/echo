@@ -4,5 +4,5 @@ plugins {
     alias(libs.plugins.android.kmp.library) apply false
     alias(libs.plugins.kotlin.android) apply false
     alias(libs.plugins.kotlin.multiplatform) apply false
-    alias(libs.plugins.gms) apply false
+    alias(libs.plugins.kotlin.kapt) apply false
 }

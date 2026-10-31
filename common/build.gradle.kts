@@ -20,7 +20,7 @@ kotlin {
     androidLibrary {
         namespace = "echo.common"
         compileSdk = 36
-        minSdk = 24
+        minSdk = 18
     }
     jvm()
 
