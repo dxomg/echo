@@ -11,9 +11,9 @@ import androidx.core.view.isVisible
 import com.google.android.exoplayer2.C
 import com.google.android.exoplayer2.Format
 import com.google.android.exoplayer2.Tracks
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.google.android.material.chip.Chip
-import com.google.android.material.chip.ChipGroup
+import dev.brahmkshatriya.echo.utils.ui.legacy.EchoBottomSheetDialogFragment as BottomSheetDialogFragment
+import dev.brahmkshatriya.echo.utils.ui.legacy.EchoChip as Chip
+import dev.brahmkshatriya.echo.utils.ui.legacy.EchoChipGroup as ChipGroup
 import dev.brahmkshatriya.echo.R
 import dev.brahmkshatriya.echo.common.models.Streamable
 import dev.brahmkshatriya.echo.databinding.DialogPlayerQualitySelectionBinding

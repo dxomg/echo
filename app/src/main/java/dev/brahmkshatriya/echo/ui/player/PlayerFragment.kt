@@ -38,10 +38,10 @@ import com.google.android.exoplayer2.ui.AspectRatioFrameLayout.RESIZE_MODE_FIT
 import com.google.android.exoplayer2.ui.AspectRatioFrameLayout.RESIZE_MODE_ZOOM
 import com.google.android.exoplayer2.text.CaptionStyleCompat
 import com.google.android.exoplayer2.text.CaptionStyleCompat.EDGE_TYPE_OUTLINE
-import com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_COLLAPSED
-import com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_EXPANDED
-import com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_HIDDEN
-import com.google.android.material.slider.Slider
+import dev.brahmkshatriya.echo.utils.ui.legacy.EchoBottomSheetBehavior.STATE_COLLAPSED
+import dev.brahmkshatriya.echo.utils.ui.legacy.EchoBottomSheetBehavior.STATE_EXPANDED
+import dev.brahmkshatriya.echo.utils.ui.legacy.EchoBottomSheetBehavior.STATE_HIDDEN
+import dev.brahmkshatriya.echo.utils.ui.legacy.EchoSlider
 import dev.brahmkshatriya.echo.R
 import dev.brahmkshatriya.echo.common.models.EchoMediaItem
 import dev.brahmkshatriya.echo.common.models.Streamable
@@ -335,7 +335,7 @@ class PlayerFragment : Fragment() {
         }
 
         val binding = binding!!
-        binding.playerControls.trackHeart.addOnCheckedStateChangedListener(likeListener)
+        binding.playerControls.trackHeart.setOnCheckedChangeListener(likeListener)
         observe(viewModel.playerState.current) {
             uiViewModel.run {
                 if (it == null) return@run changePlayerState(STATE_HIDDEN)
@@ -354,9 +354,9 @@ class PlayerFragment : Fragment() {
 
         val playPauseListener = CheckBoxListener { viewModel.setPlaying(it) }
         binding.playerControls.trackPlayPause
-            .addOnCheckedStateChangedListener(playPauseListener)
+            .setOnCheckedChangeListener(playPauseListener)
         binding.playerCollapsedContainer.collapsedTrackPlayPause
-            .addOnCheckedStateChangedListener(playPauseListener)
+            .setOnCheckedChangeListener(playPauseListener)
         observe(viewModel.isPlaying) {
             binding.run {
                 playPauseListener.enabled = false
@@ -434,9 +434,9 @@ class PlayerFragment : Fragment() {
                 addOnChangeListener { _, value, fromUser ->
                     if (fromUser) trackCurrentTime.text = value.toLong().toTimeString()
                 }
-                addOnSliderTouchListener(object : Slider.OnSliderTouchListener {
-                    override fun onStartTrackingTouch(slider: Slider) = Unit
-                    override fun onStopTrackingTouch(slider: Slider) =
+                addOnSliderTouchListener(object : EchoSlider.OnSliderTouchListener {
+                    override fun onStartTrackingTouch(slider: EchoSlider) = Unit
+                    override fun onStopTrackingTouch(slider: EchoSlider) =
                         viewModel.seekTo(slider.value.toLong())
                 })
             }
@@ -454,7 +454,7 @@ class PlayerFragment : Fragment() {
             observe(viewModel.previousEnabled) { trackPrevious.isEnabled = it }
 
             val shuffleListener = CheckBoxListener { viewModel.setShuffle(it) }
-            trackShuffle.addOnCheckedStateChangedListener(shuffleListener)
+            trackShuffle.setOnCheckedChangeListener(shuffleListener)
             observe(viewModel.shuffleMode) {
                 shuffleListener.enabled = false
                 trackShuffle.isChecked = it

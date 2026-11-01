@@ -5,9 +5,7 @@ import com.google.android.exoplayer2.audio.SonicAudioProcessor
 import com.google.android.exoplayer2.DefaultRenderersFactory
 import com.google.android.exoplayer2.audio.DefaultAudioSink
 import com.google.android.exoplayer2.audio.SilenceSkippingAudioProcessor
-import com.google.android.exoplayer2.util.UnstableApi
 
-@androidx.annotation.OptIn(UnstableApi::class)
 class RenderersFactory(
     context: Context
 ) : DefaultRenderersFactory(context) {
@@ -15,19 +13,22 @@ class RenderersFactory(
     override fun buildAudioSink(
         context: Context,
         enableFloatOutput: Boolean,
-        enableAudioTrackPlaybackParams: Boolean
+        enableAudioTrackPlaybackParams: Boolean,
+        enableOffload: Boolean
     ) = run {
         val silenceSkippingAudioProcessor = SilenceSkippingAudioProcessor(
-            2_000_000,
-            (20_000 / 2_000_000).toFloat(),
-            2_000_000,
-            0,
-            256,
+            2_000_000L,
+            20_000L,
+            256.toShort(),
         )
 
         DefaultAudioSink.Builder(context)
             .setEnableFloatOutput(enableFloatOutput)
             .setEnableAudioTrackPlaybackParams(enableAudioTrackPlaybackParams)
+            .setOffloadMode(
+                if (enableOffload) DefaultAudioSink.OFFLOAD_MODE_ENABLED_GAPLESS_REQUIRED
+                else DefaultAudioSink.OFFLOAD_MODE_DISABLED
+            )
             .setAudioProcessorChain(
                 DefaultAudioSink.DefaultAudioProcessorChain(
                     emptyArray(), silenceSkippingAudioProcessor, SonicAudioProcessor()

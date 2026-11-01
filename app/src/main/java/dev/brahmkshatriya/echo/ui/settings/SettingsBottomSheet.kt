@@ -13,8 +13,8 @@ import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.core.view.updateLayoutParams
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import dev.brahmkshatriya.echo.utils.ui.legacy.EchoBottomSheetDialogFragment as BottomSheetDialogFragment
+import androidx.appcompat.app.AlertDialog.Builder as MaterialAlertDialogBuilder
 import dev.brahmkshatriya.echo.MainApplication.Companion.getCurrentLanguage
 import dev.brahmkshatriya.echo.MainApplication.Companion.languages
 import dev.brahmkshatriya.echo.MainApplication.Companion.setCurrentLanguage

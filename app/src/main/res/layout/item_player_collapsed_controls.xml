@@ -20,41 +20,43 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center">
 
-            <com.google.android.material.progressindicator.CircularProgressIndicator
+            <dev.brahmkshatriya.echo.utils.ui.legacy.EchoCircularProgressBar
                 android:id="@+id/collapsedPlayingIndicator"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:clickable="false"
-                android:indeterminate="true"
-                app:indicatorSize="36dp" />
+                android:indeterminate="true" />
 
-            <com.google.android.material.checkbox.MaterialCheckBox
+            <androidx.appcompat.widget.AppCompatCheckBox
                 android:id="@+id/collapsedTrackPlayPause"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:background="@drawable/ripple_44dp"
-                android:button="@drawable/anim_play_pause"
+                android:button="@null"
+                app:buttonCompat="@drawable/anim_play_pause"
+                android:paddingLeft="12dp"
+                android:paddingRight="12dp"
                 android:contentDescription="@string/play"
                 app:buttonTint="@color/button_player" />
 
         </FrameLayout>
 
-        <com.google.android.material.button.MaterialButton
+        <dev.brahmkshatriya.echo.utils.ui.legacy.EchoButton
             android:id="@+id/player_close"
-            style="?attr/materialIconButtonStyle"
+            style="@style/EchoButtonText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:contentDescription="@string/close"
             android:padding="8dp"
-            android:background="@drawable/ripple_44dp"
+            android:background="@drawable/legacy_button_text_background"
             app:icon="@drawable/ic_close"
             app:iconSize="24dp"
             app:iconTint="@color/button_player"
             tools:ignore="DuplicateClickableBoundsCheck" />
     </LinearLayout>
 
-    <com.google.android.material.progressindicator.LinearProgressIndicator
+    <dev.brahmkshatriya.echo.utils.ui.legacy.EchoProgressBar
         android:id="@+id/collapsed_buffer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -62,11 +64,10 @@
         android:alpha="0.5"
         android:progress="40"
         app:indicatorColor="?attr/colorTertiary"
-        app:indicatorTrackGapSize="0dp"
         app:trackColor="?attr/colorOnSurface"
         app:trackThickness="2dp" />
 
-    <com.google.android.material.progressindicator.LinearProgressIndicator
+    <dev.brahmkshatriya.echo.utils.ui.legacy.EchoProgressBar
         android:id="@+id/collapsed_seekbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

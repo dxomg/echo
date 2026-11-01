@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="EchoSlider">
+        <attr name="valueFrom" format="float" />
+        <attr name="valueTo" format="float" />
+        <attr name="value" format="float" />
+        <attr name="stepSize" format="float" />
+    </declare-styleable>
+    <declare-styleable name="EchoProgressBar">
+        <attr name="indicatorColor" format="color|reference" />
+        <attr name="trackColor" format="color|reference" />
+        <attr name="trackThickness" format="dimension" />
+    </declare-styleable>
+    <attr name="colorOnSurface" format="color|reference" />
+    <attr name="colorOnSurfaceVariant" format="color|reference" />
+    <attr name="colorSurface" format="color|reference" />
+    <attr name="colorSurfaceContainer" format="color|reference" />
+    <attr name="colorSurfaceContainerHighest" format="color|reference" />
+    <attr name="colorSurfaceContainerHigh" format="color|reference" />
+    <attr name="colorSurfaceContainerLow" format="color|reference" />
+    <attr name="colorSurfaceContainerLowest" format="color|reference" />
+    <attr name="colorTertiary" format="color|reference" />
+    <attr name="colorOutlineVariant" format="color|reference" />
+    <attr name="colorPrimaryContainer" format="color|reference" />
+    <attr name="colorSecondaryContainer" format="color|reference" />
+    <attr name="colorOnPrimaryContainer" format="color|reference" />
+    <attr name="colorOnSecondaryContainer" format="color|reference" />
+</resources>

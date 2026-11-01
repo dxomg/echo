@@ -15,7 +15,7 @@ import androidx.activity.result.contract.ActivityResultContract
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import androidx.appcompat.app.AlertDialog.Builder as MaterialAlertDialogBuilder
 import dev.brahmkshatriya.echo.R
 import kotlinx.coroutines.launch
 import java.util.UUID

@@ -11,18 +11,18 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="12dp"
-        android:spacing="0dp">
+        android:orientation="horizontal">
 
-        <com.google.android.material.button.MaterialButton
+        <dev.brahmkshatriya.echo.utils.ui.legacy.EchoButton
             android:id="@+id/shuffleButton"
             style="@style/IconButtonTertiary"
             android:background="@drawable/art_twelve_sided_cookie"
             android:contentDescription="@string/shuffle"
             app:icon="@drawable/ic_shuffle" />
 
-        <com.google.android.material.button.MaterialButton
+        <dev.brahmkshatriya.echo.utils.ui.legacy.EchoButton
             android:id="@+id/playButton"
-            style="@style/Widget.Material3Expressive.Button"
+            style="@style/EchoButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ellipsize="end"
@@ -32,7 +32,7 @@
             android:paddingStart="16dp"
             android:paddingEnd="24dp"
             android:text="@string/play"
-            android:textAppearance="@style/TextAppearance.Material3.BodyMedium.Emphasized"
+            android:textAppearance="@style/EchoTextBodyMediumEmphasized"
             app:icon="@drawable/ic_play"
             app:iconSize="24dp" />
 
@@ -43,16 +43,15 @@
             android:layout_weight="1"
             android:visibility="invisible" />
 
-        <com.google.android.material.button.MaterialButton
+        <dev.brahmkshatriya.echo.utils.ui.legacy.EchoButton
             android:id="@+id/searchToggleButton"
             style="@style/IconButton"
             android:checkable="true"
             android:checked="true"
             android:contentDescription="@string/search"
-            app:icon="@drawable/ic_search_outline"
-            app:materialThemeOverlay="@style/TabButtonOverlay" />
+            app:icon="@drawable/ic_search_outline" />
 
-        <com.google.android.material.button.MaterialButton
+        <dev.brahmkshatriya.echo.utils.ui.legacy.EchoButton
             android:id="@+id/sortToggleButton"
             style="@style/IconButtonOutlined"
             android:contentDescription="@string/sort"
@@ -108,7 +107,7 @@
             </com.google.android.material.textfield.TextInputLayout>
         </FrameLayout>
 
-        <com.google.android.material.button.MaterialButton
+        <dev.brahmkshatriya.echo.utils.ui.legacy.EchoButton
             android:id="@+id/searchClose"
             style="@style/IconButtonTransparent"
             android:layout_gravity="bottom"

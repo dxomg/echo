@@ -17,7 +17,7 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.core.graphics.ColorUtils
 import androidx.core.graphics.drawable.toBitmap
 import androidx.core.graphics.drawable.toDrawable
-import com.google.android.material.color.MaterialColors
+import dev.brahmkshatriya.echo.utils.ui.legacy.EchoColors as MaterialColors
 import dev.brahmkshatriya.echo.R
 import dev.brahmkshatriya.echo.utils.image.BlurTransformation.Companion.blurred
 import dev.brahmkshatriya.echo.utils.ui.UiUtils.isRTL

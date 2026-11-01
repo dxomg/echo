@@ -6,7 +6,7 @@ import androidx.core.view.updateLayoutParams
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.lifecycleScope
-import com.google.android.material.snackbar.Snackbar
+import dev.brahmkshatriya.echo.utils.ui.legacy.EchoSnackbar as Snackbar
 import dev.brahmkshatriya.echo.MainActivity
 import dev.brahmkshatriya.echo.common.models.Message
 import dev.brahmkshatriya.echo.di.App

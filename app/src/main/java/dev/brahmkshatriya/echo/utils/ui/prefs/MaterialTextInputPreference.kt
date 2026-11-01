@@ -4,7 +4,7 @@ import android.content.Context
 import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
 import androidx.preference.EditTextPreference
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import androidx.appcompat.app.AlertDialog.Builder as MaterialAlertDialogBuilder
 import dev.brahmkshatriya.echo.R
 
 class MaterialTextInputPreference(context: Context) : EditTextPreference(context) {

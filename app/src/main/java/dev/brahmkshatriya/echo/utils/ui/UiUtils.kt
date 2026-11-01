@@ -12,10 +12,10 @@ import android.widget.TextView
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
-import com.google.android.material.appbar.AppBarLayout
-import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import dev.brahmkshatriya.echo.utils.ui.legacy.EchoAppBarLayout as AppBarLayout
+import dev.brahmkshatriya.echo.utils.ui.legacy.EchoBottomSheetBehavior as BottomSheetBehavior
+import dev.brahmkshatriya.echo.utils.ui.legacy.EchoBottomSheetDialog as BottomSheetDialog
+import dev.brahmkshatriya.echo.utils.ui.legacy.EchoBottomSheetDialogFragment as BottomSheetDialogFragment
 import dev.brahmkshatriya.echo.ui.common.UiViewModel.Companion.BACKGROUND_GRADIENT
 import dev.brahmkshatriya.echo.utils.ContextUtils.getSettings
 import java.util.Locale

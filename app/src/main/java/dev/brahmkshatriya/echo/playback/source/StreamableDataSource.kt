@@ -5,6 +5,7 @@ import androidx.core.net.toUri
 import com.google.android.exoplayer2.upstream.BaseDataSource
 import com.google.android.exoplayer2.upstream.DataSource
 import com.google.android.exoplayer2.upstream.DataSpec
+import com.google.android.exoplayer2.upstream.TransferListener
 import com.google.android.exoplayer2.upstream.DefaultDataSource
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSource
 import dev.brahmkshatriya.echo.common.models.Streamable
@@ -14,7 +15,7 @@ class StreamableDataSource(
     private val defaultDataSourceFactory: Lazy<DefaultDataSource.Factory>,
     private val defaultHttpDataSourceFactory: Lazy<DefaultHttpDataSource.Factory>,
     private val rawDataSourceFactory: Lazy<RawDataSource.Factory>,
-) : BaseDataSource(true) {
+) : DataSource {
 
     class Factory(
         context: Context,
@@ -23,7 +24,7 @@ class StreamableDataSource(
             DefaultDataSource.Factory(context, defaultHttpDataSourceFactory.value)
         }
         private val defaultHttpDataSourceFactory = lazy {
-            DefaultHttpDataSource.Factory().setAllowCrossProtocolRedirects(true)
+            DefaultHttpDataSource.Factory()
         }
         private val rawDataSourceFactory = lazy { RawDataSource.Factory() }
         override fun createDataSource() = StreamableDataSource(
@@ -32,6 +33,17 @@ class StreamableDataSource(
     }
 
     private var source: DataSource? = null
+    private val listeners = mutableListOf<TransferListener>()
+
+    override fun addTransferListener(transferListener: TransferListener) {
+        if (transferListener !in listeners) {
+            listeners.add(transferListener)
+            source?.addTransferListener(transferListener)
+        }
+    }
+
+    override fun getResponseHeaders(): Map<String, List<String>> =
+        source?.responseHeaders ?: emptyMap()
 
     override fun getUri() = source?.uri
 
@@ -39,8 +51,11 @@ class StreamableDataSource(
         source?.read(buffer, offset, length) ?: throw Exception("Source not opened")
 
     override fun close() {
-        source?.close()
-        source = null
+        try {
+            source?.close()
+        } finally {
+            source = null
+        }
     }
 
     override fun open(dataSpec: DataSpec): Long {
@@ -53,7 +68,6 @@ class StreamableDataSource(
 
                 is Streamable.Source.Http -> {
                     val spec = streamable.request.run {
-                        defaultHttpDataSourceFactory.value.setDefaultRequestProperties(headers)
                         dataSpec.copy(uri = url.toUri(), httpRequestHeaders = headers)
                     }
                     defaultDataSourceFactory to spec
@@ -61,8 +75,14 @@ class StreamableDataSource(
             }
         }
         val source = factory.value.createDataSource()
+        listeners.forEach(source::addTransferListener)
         this.source = source
-        return source.open(spec)
+        try {
+            return source.open(spec)
+        } catch (failure: Throwable) {
+            try { close() } catch (closeFailure: Throwable) { failure.addSuppressed(closeFailure) }
+            throw failure
+        }
     }
 
     companion object {

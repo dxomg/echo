@@ -10,7 +10,7 @@
         android:id="@android:id/icon_frame"
         layout="@layout/preference_common" />
 
-    <com.google.android.material.materialswitch.MaterialSwitch
+    <androidx.appcompat.widget.SwitchCompat
         android:id="@+id/switchWidget"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

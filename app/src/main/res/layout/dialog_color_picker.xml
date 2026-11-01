@@ -19,7 +19,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp">
 
-        <com.google.android.material.card.MaterialCardView
+        <dev.brahmkshatriya.echo.utils.ui.legacy.EchoCardView
             android:id="@+id/colorCard"
             android:layout_width="64dp"
             android:layout_height="64dp"
@@ -45,9 +45,9 @@
         android:layout_marginBottom="24dp"
         android:orientation="horizontal">
 
-        <Button
+        <dev.brahmkshatriya.echo.utils.ui.legacy.EchoButton
             android:id="@+id/randomColorButton"
-            style="@style/Widget.Material3.Button.TextButton"
+            style="@style/EchoButtonText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/random"
@@ -58,9 +58,9 @@
             android:layout_weight="1"
             android:layout_height="match_parent"/>
 
-        <Button
+        <dev.brahmkshatriya.echo.utils.ui.legacy.EchoButton
             android:id="@+id/addColorButton"
-            style="@style/Widget.Material3.Button.TextButton"
+            style="@style/EchoButtonText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"

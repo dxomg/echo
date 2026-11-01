@@ -67,64 +67,64 @@
 
         </com.bosphere.fadingedgelayout.FadingEdgeLayout>
 
-        <com.google.android.material.button.MaterialButtonGroup
-            style="@style/Widget.Material3.MaterialButtonGroup.Connected"
+        <dev.brahmkshatriya.echo.utils.ui.legacy.EchoButtonGroup
+            style="@style/EchoButtonGroup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="-4dp"
-            android:spacing="4dp">
+            app:spacing="4dp">
 
-            <Button
+            <dev.brahmkshatriya.echo.utils.ui.legacy.EchoButton
                 android:id="@+id/min15"
                 style="@style/TertiaryButton"
                 android:text="@string/_15min" />
 
-            <Button
+            <dev.brahmkshatriya.echo.utils.ui.legacy.EchoButton
                 android:id="@+id/min30"
                 style="@style/TertiaryButton"
                 android:text="@string/_30min" />
 
-            <Button
+            <dev.brahmkshatriya.echo.utils.ui.legacy.EchoButton
                 android:id="@+id/min45"
                 style="@style/TertiaryButton"
                 android:text="@string/_45min" />
 
-            <Button
+            <dev.brahmkshatriya.echo.utils.ui.legacy.EchoButton
                 android:id="@+id/hr1"
                 style="@style/TertiaryButton"
                 android:text="@string/_1hr" />
 
-            <Button
+            <dev.brahmkshatriya.echo.utils.ui.legacy.EchoButton
                 android:id="@+id/hr2"
                 style="@style/TertiaryButton"
                 android:text="@string/_2hr" />
 
-        </com.google.android.material.button.MaterialButtonGroup>
+        </dev.brahmkshatriya.echo.utils.ui.legacy.EchoButtonGroup>
 
-        <com.google.android.material.button.MaterialButtonGroup
-            style="@style/Widget.Material3.MaterialButtonGroup.Connected"
+        <dev.brahmkshatriya.echo.utils.ui.legacy.EchoButtonGroup
+            style="@style/EchoButtonGroup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:spacing="4dp">
+            app:spacing="4dp">
 
-            <com.google.android.material.button.MaterialButton
+            <dev.brahmkshatriya.echo.utils.ui.legacy.EchoButton
                 android:id="@+id/endOfTrack"
-                style="@style/Widget.Material3.Button.TonalButton"
+                style="@style/EchoButtonTonal"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:minHeight="64dp"
                 android:text="@string/end_of_track" />
 
-            <com.google.android.material.button.MaterialButton
+            <dev.brahmkshatriya.echo.utils.ui.legacy.EchoButton
                 android:id="@+id/okay"
-                style="@style/Widget.Material3.Button.UnelevatedButton"
+                style="@style/EchoButton"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:minHeight="64dp"
                 android:text="@string/okay" />
-        </com.google.android.material.button.MaterialButtonGroup>
+        </dev.brahmkshatriya.echo.utils.ui.legacy.EchoButtonGroup>
 
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>

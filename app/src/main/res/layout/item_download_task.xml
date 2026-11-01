@@ -35,10 +35,10 @@
             tools:text="Summary" />
     </LinearLayout>
 
-    <com.google.android.material.progressindicator.CircularProgressIndicator
+    <dev.brahmkshatriya.echo.utils.ui.legacy.EchoCircularProgressBar
         android:id="@+id/progressBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        app:showAnimationBehavior="none" />
+        android:indeterminate="true" />
 </LinearLayout>

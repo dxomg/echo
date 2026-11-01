@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- AppCompat typography keeps these appearances available on API 18. -->
+    <style name="EchoTextBodyLarge" parent="TextAppearance.AppCompat.Body1">
+        <item name="android:textSize">16sp</item>
+    </style>
+    <style name="EchoTextBodyMedium" parent="TextAppearance.AppCompat.Body1">
+        <item name="android:textSize">14sp</item>
+    </style>
+    <style name="EchoTextBodyMediumEmphasized" parent="EchoTextBodyMedium">
+        <item name="android:textStyle">bold</item>
+    </style>
+    <style name="EchoTextBodySmall" parent="TextAppearance.AppCompat.Caption">
+        <item name="android:textSize">12sp</item>
+    </style>
+    <style name="EchoTextTitleMedium" parent="TextAppearance.AppCompat.Title">
+        <item name="android:textSize">16sp</item>
+    </style>
+    <style name="EchoTextTitleLarge" parent="TextAppearance.AppCompat.Title">
+        <item name="android:textSize">22sp</item>
+    </style>
+    <style name="EchoTextActionBarTitle" parent="TextAppearance.AppCompat.Widget.ActionBar.Title" />
+    <style name="EchoTextHeadlineSmall" parent="TextAppearance.AppCompat.Headline">
+        <item name="android:textSize">24sp</item>
+    </style>
+    <style name="EchoTextHeadlineMedium" parent="TextAppearance.AppCompat.Headline">
+        <item name="android:textSize">28sp</item>
+    </style>
+    <style name="EchoTextDisplaySmall" parent="TextAppearance.AppCompat.Display1">
+        <item name="android:textSize">36sp</item>
+    </style>
+    <style name="EchoTextDisplayMedium" parent="TextAppearance.AppCompat.Display2">
+        <item name="android:textSize">45sp</item>
+    </style>
+</resources>

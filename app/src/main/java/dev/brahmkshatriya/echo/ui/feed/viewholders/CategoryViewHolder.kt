@@ -8,7 +8,7 @@ import androidx.cardview.widget.CardView
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.graphics.toColorInt
 import androidx.core.view.isVisible
-import com.google.android.material.color.MaterialColors
+import dev.brahmkshatriya.echo.utils.ui.legacy.EchoColors as MaterialColors
 import dev.brahmkshatriya.echo.R
 import dev.brahmkshatriya.echo.common.models.Shelf
 import dev.brahmkshatriya.echo.databinding.ItemShelfCategoryBinding

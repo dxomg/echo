@@ -19,13 +19,13 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_COLLAPSED
-import com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_EXPANDED
-import com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_HIDDEN
-import com.google.android.material.color.MaterialColors
-import com.google.android.material.navigation.NavigationBarView
-import com.google.android.material.navigationrail.NavigationRailView
+import dev.brahmkshatriya.echo.utils.ui.legacy.EchoBottomSheetBehavior as BottomSheetBehavior
+import dev.brahmkshatriya.echo.utils.ui.legacy.EchoBottomSheetBehavior.STATE_COLLAPSED
+import dev.brahmkshatriya.echo.utils.ui.legacy.EchoBottomSheetBehavior.STATE_EXPANDED
+import dev.brahmkshatriya.echo.utils.ui.legacy.EchoBottomSheetBehavior.STATE_HIDDEN
+import dev.brahmkshatriya.echo.utils.ui.legacy.EchoColors as MaterialColors
+import dev.brahmkshatriya.echo.utils.ui.legacy.EchoNavigationBarView as NavigationBarView
+import dev.brahmkshatriya.echo.utils.ui.legacy.EchoNavigationRailView as NavigationRailView
 import dev.brahmkshatriya.echo.MainActivity
 import dev.brahmkshatriya.echo.R
 import dev.brahmkshatriya.echo.extensions.ExtensionLoader

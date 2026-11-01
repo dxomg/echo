@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.fragment.app.Fragment
-import com.google.android.material.color.MaterialColors
+import dev.brahmkshatriya.echo.utils.ui.legacy.EchoColors as MaterialColors
 import dev.brahmkshatriya.echo.R
 import dev.brahmkshatriya.echo.common.Extension
 import dev.brahmkshatriya.echo.common.MusicExtension

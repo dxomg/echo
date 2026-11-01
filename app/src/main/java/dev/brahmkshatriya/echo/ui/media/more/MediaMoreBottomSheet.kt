@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.paging.LoadState
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import dev.brahmkshatriya.echo.utils.ui.legacy.EchoBottomSheetDialogFragment as BottomSheetDialogFragment
 import dev.brahmkshatriya.echo.R
 import dev.brahmkshatriya.echo.common.clients.ExtensionClient
 import dev.brahmkshatriya.echo.common.clients.PlaylistEditClient

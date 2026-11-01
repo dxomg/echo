@@ -5,8 +5,8 @@ import android.view.View
 import androidx.activity.OnBackPressedCallback
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
-import com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_EXPANDED
-import com.google.android.material.transition.MaterialSharedAxis
+import dev.brahmkshatriya.echo.utils.ui.legacy.EchoBottomSheetBehavior.STATE_EXPANDED
+import dev.brahmkshatriya.echo.utils.ui.legacy.EchoSharedAxis as MaterialSharedAxis
 import dev.brahmkshatriya.echo.R
 import dev.brahmkshatriya.echo.common.clients.SearchFeedClient
 import dev.brahmkshatriya.echo.common.models.Feed

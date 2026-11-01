@@ -7,12 +7,13 @@ import android.media.AudioManager
 import android.os.Build
 import android.os.Handler
 import com.google.android.exoplayer2.Player
+import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.Player.PlaybackSuppressionReason
 
 @Suppress("DEPRECATION")
 class AudioFocusListener(
     val context: Context,
-    val player: Player
+    val player: ExoPlayer
 ) : Player.Listener {
     private val handler = Handler(context.mainLooper)
     private val audioManager = context.getSystemService(Context.AUDIO_SERVICE) as AudioManager

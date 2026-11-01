@@ -44,13 +44,13 @@
     </LinearLayout>
 
 
-    <com.google.android.material.button.MaterialButton
+    <dev.brahmkshatriya.echo.utils.ui.legacy.EchoButton
         android:id="@+id/shuffle"
         style="@style/IconButtonSecondary"
         android:contentDescription="@string/shuffle"
         app:icon="@drawable/ic_shuffle" />
 
-    <com.google.android.material.button.MaterialButton
+    <dev.brahmkshatriya.echo.utils.ui.legacy.EchoButton
         android:id="@+id/more"
         android:layout_marginEnd="-8dp"
         style="@style/IconButtonTransparent"

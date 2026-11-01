@@ -38,7 +38,7 @@
 
         <TextView
             android:id="@+id/extensionTitle"
-            style="@style/TextAppearance.Material3.TitleLarge"
+            style="@style/EchoTextTitleLarge"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
@@ -50,7 +50,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
+            android:textAppearance="@style/EchoTextBodyLarge"
             tools:text="Tracker Extension [APK]\nid • version • author" />
 
         <TextView
@@ -94,16 +94,15 @@
             android:text="@string/installation_type_warning"
             android:textColor="?colorError" />
 
-        <com.google.android.material.button.MaterialButtonToggleGroup
+        <dev.brahmkshatriya.echo.utils.ui.legacy.EchoButtonToggleGroup
             android:id="@+id/installationTypeGroup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             app:checkedButton="@+id/appInstall"
-            app:selectionRequired="true"
-            app:singleSelection="true">
+            app:selectionRequired="true">
 
-            <Button
+            <dev.brahmkshatriya.echo.utils.ui.legacy.EchoButton
                 android:id="@+id/appInstall"
                 style="?attr/materialButtonOutlinedStyle"
                 android:layout_width="0dp"
@@ -112,7 +111,7 @@
                 android:minHeight="64dp"
                 android:text="@string/app" />
 
-            <Button
+            <dev.brahmkshatriya.echo.utils.ui.legacy.EchoButton
                 android:id="@+id/fileInstall"
                 style="?attr/materialButtonOutlinedStyle"
                 android:layout_width="0dp"
@@ -120,11 +119,11 @@
                 android:layout_weight="1"
                 android:minHeight="64dp"
                 android:text="@string/file" />
-        </com.google.android.material.button.MaterialButtonToggleGroup>
+        </dev.brahmkshatriya.echo.utils.ui.legacy.EchoButtonToggleGroup>
 
-        <com.google.android.material.button.MaterialButton
+        <dev.brahmkshatriya.echo.utils.ui.legacy.EchoButton
             android:id="@+id/installButton"
-            style="@style/Widget.Material3.Button.UnelevatedButton"
+            style="@style/EchoButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"

@@ -32,16 +32,15 @@
                 app:title="@string/add_extensions"
                 app:titleCentered="true" />
 
-            <com.google.android.material.button.MaterialButtonToggleGroup
+            <dev.brahmkshatriya.echo.utils.ui.legacy.EchoButtonToggleGroup
                 android:id="@+id/installationTypeGroup"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="16dp"
                 app:checkedButton="@+id/linkAdd"
-                app:selectionRequired="true"
-                app:singleSelection="true">
+                app:selectionRequired="true">
 
-                <Button
+                <dev.brahmkshatriya.echo.utils.ui.legacy.EchoButton
                     android:id="@+id/linkAdd"
                     style="?attr/materialButtonOutlinedStyle"
                     android:layout_width="0dp"
@@ -50,7 +49,7 @@
                     android:minHeight="64dp"
                     android:text="@string/link" />
 
-                <Button
+                <dev.brahmkshatriya.echo.utils.ui.legacy.EchoButton
                     android:id="@+id/fileAdd"
                     style="?attr/materialButtonOutlinedStyle"
                     android:layout_width="0dp"
@@ -58,7 +57,7 @@
                     android:layout_weight="1"
                     android:minHeight="64dp"
                     android:text="@string/file" />
-            </com.google.android.material.button.MaterialButtonToggleGroup>
+            </dev.brahmkshatriya.echo.utils.ui.legacy.EchoButtonToggleGroup>
 
 
             <com.google.android.material.textfield.TextInputLayout
@@ -75,9 +74,9 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.button.MaterialButton
+            <dev.brahmkshatriya.echo.utils.ui.legacy.EchoButton
                 android:id="@+id/installButton"
-                style="@style/Widget.Material3.Button.UnelevatedButton"
+                style="@style/EchoButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:minHeight="64dp"

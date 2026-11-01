@@ -88,7 +88,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
 
-                <com.google.android.material.progressindicator.CircularProgressIndicator
+                <dev.brahmkshatriya.echo.utils.ui.legacy.EchoCircularProgressBar
                     android:id="@+id/playlistProgressBar"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -97,9 +97,9 @@
                     android:visibility="gone"
                     app:indicatorColor="?attr/colorTertiary" />
 
-                <com.google.android.material.button.MaterialButton
+                <dev.brahmkshatriya.echo.utils.ui.legacy.EchoButton
                     android:id="@+id/playlistItemClose"
-                    style="?attr/materialIconButtonStyle"
+                    style="@style/EchoButtonText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/remove"
@@ -109,9 +109,9 @@
                     app:iconTint="?colorOnSurface" />
             </FrameLayout>
 
-            <com.google.android.material.button.MaterialButton
+            <dev.brahmkshatriya.echo.utils.ui.legacy.EchoButton
                 android:id="@+id/playlistItemDrag"
-                style="?attr/materialIconButtonStyle"
+                style="@style/EchoButtonText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="8dp"

@@ -10,9 +10,9 @@ import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.commit
-import com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_COLLAPSED
-import com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_EXPANDED
-import com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_HIDDEN
+import dev.brahmkshatriya.echo.utils.ui.legacy.EchoBottomSheetBehavior.STATE_COLLAPSED
+import dev.brahmkshatriya.echo.utils.ui.legacy.EchoBottomSheetBehavior.STATE_EXPANDED
+import dev.brahmkshatriya.echo.utils.ui.legacy.EchoBottomSheetBehavior.STATE_HIDDEN
 import dev.brahmkshatriya.echo.MainActivity
 import dev.brahmkshatriya.echo.R
 import dev.brahmkshatriya.echo.common.models.Album
@@ -153,4 +153,3 @@ object FragmentUtils {
         }
     }
 }
-

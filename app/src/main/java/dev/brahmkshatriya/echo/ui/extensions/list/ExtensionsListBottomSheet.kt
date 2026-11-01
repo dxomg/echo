@@ -4,9 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.google.android.material.button.MaterialButtonToggleGroup
-import com.google.android.material.button.MaterialButtonToggleGroup.OnButtonCheckedListener
+import dev.brahmkshatriya.echo.utils.ui.legacy.EchoBottomSheetDialogFragment as BottomSheetDialogFragment
+import dev.brahmkshatriya.echo.utils.ui.legacy.EchoButtonToggleGroup
+import dev.brahmkshatriya.echo.utils.ui.legacy.EchoButtonToggleGroup.OnButtonCheckedListener
 import dev.brahmkshatriya.echo.R
 import dev.brahmkshatriya.echo.common.models.ExtensionType
 import dev.brahmkshatriya.echo.databinding.DialogExtensionsListBinding
@@ -75,7 +75,7 @@ class ExtensionsListBottomSheet : BottomSheetDialogFragment() {
         val listener = object : OnButtonCheckedListener {
             var enabled = false
             override fun onButtonChecked(
-                group: MaterialButtonToggleGroup?, checkedId: Int, isChecked: Boolean
+                group: EchoButtonToggleGroup?, checkedId: Int, isChecked: Boolean
             ) {
                 if (isChecked && enabled) {
                     viewModel.selectExtension(checkedId)
@@ -86,8 +86,8 @@ class ExtensionsListBottomSheet : BottomSheetDialogFragment() {
         binding.buttonToggleGroup.addOnButtonCheckedListener(listener)
         val extensionFlow = viewModel.extensionsFlow
         observe(extensionFlow) { list ->
-            binding.buttonToggleGroup.removeAllViews()
             listener.enabled = false
+            binding.buttonToggleGroup.removeAllViews()
             val selected = viewModel.currentSelectionFlow.value
             list.forEachIndexed { index, extension ->
                 if (!extension.isEnabled) return@forEachIndexed
@@ -97,6 +97,7 @@ class ExtensionsListBottomSheet : BottomSheetDialogFragment() {
                     false
                 ).root
                 button.text = extension.name
+                button.id = index
                 binding.buttonToggleGroup.addView(button)
                 button.isChecked = extension == selected
                 extension.metadata.icon.loadAsCircle(button) {
@@ -105,7 +106,6 @@ class ExtensionsListBottomSheet : BottomSheetDialogFragment() {
                         button.iconTint = null
                     } else button.setIconResource(R.drawable.ic_extension_32dp)
                 }
-                button.id = index
             }
 
             val checked = list.indexOf(selected).takeIf { it != -1 }

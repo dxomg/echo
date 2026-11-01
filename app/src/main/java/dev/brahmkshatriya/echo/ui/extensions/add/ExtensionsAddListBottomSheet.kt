@@ -6,7 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ConcatAdapter
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import dev.brahmkshatriya.echo.utils.ui.legacy.EchoBottomSheetDialogFragment as BottomSheetDialogFragment
 import dev.brahmkshatriya.echo.databinding.DialogExtensionsAddListBinding
 import dev.brahmkshatriya.echo.ui.extensions.ExtensionsViewModel
 import dev.brahmkshatriya.echo.utils.ContextUtils.observe

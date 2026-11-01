@@ -60,13 +60,13 @@
                 tools:text="@tools:sample/cities" />
         </LinearLayout>
 
-        <com.google.android.material.button.MaterialButton
+        <dev.brahmkshatriya.echo.utils.ui.legacy.EchoButton
             android:id="@+id/extensionUse"
             style="@style/IconButtonTonal"
             android:contentDescription="@string/extension"
             app:icon="@drawable/ic_chevron_forward" />
 
-        <com.google.android.material.button.MaterialButton
+        <dev.brahmkshatriya.echo.utils.ui.legacy.EchoButton
             android:id="@+id/extensionDrag"
             style="@style/IconButtonTransparent"
             app:icon="@drawable/ic_drag_20dp" />

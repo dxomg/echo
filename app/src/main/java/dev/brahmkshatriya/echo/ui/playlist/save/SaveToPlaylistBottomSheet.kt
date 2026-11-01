@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import dev.brahmkshatriya.echo.utils.ui.legacy.EchoBottomSheetDialogFragment as BottomSheetDialogFragment
 import dev.brahmkshatriya.echo.R
 import dev.brahmkshatriya.echo.common.models.EchoMediaItem
 import dev.brahmkshatriya.echo.common.models.Playlist

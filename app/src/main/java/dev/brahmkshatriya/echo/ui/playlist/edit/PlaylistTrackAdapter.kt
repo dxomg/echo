@@ -9,7 +9,7 @@ import androidx.core.view.updatePaddingRelative
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.color.MaterialColors
+import dev.brahmkshatriya.echo.utils.ui.legacy.EchoColors as MaterialColors
 import dev.brahmkshatriya.echo.R
 import dev.brahmkshatriya.echo.common.models.Track
 import dev.brahmkshatriya.echo.databinding.ItemPlaylistTrackBinding

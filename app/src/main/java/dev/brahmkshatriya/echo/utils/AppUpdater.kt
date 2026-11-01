@@ -88,7 +88,7 @@ object AppUpdater {
         }
         if (res.tagName != currentVersion) {
             res.assets.sortedByDescending {
-                it.name.contains(Build.SUPPORTED_ABIS.first())
+                it.name.contains(ContextUtils.getArch())
             }.firstOrNull {
                 it.name.endsWith("apk")
             }?.browserDownloadUrl ?: throw Exception("No EApk assets found")

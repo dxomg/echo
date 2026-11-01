@@ -8,11 +8,11 @@
     android:clipToPadding="false"
     android:scrollbars="none">
 
-    <com.google.android.material.button.MaterialButtonGroup
+    <dev.brahmkshatriya.echo.utils.ui.legacy.EchoButtonGroup
         android:id="@+id/buttonGroup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginVertical="4dp"
-        android:spacing="4dp"/>
+        xmlns:app="http://schemas.android.com/apk/res-auto" app:spacing="4dp"/>
 
 </HorizontalScrollView>

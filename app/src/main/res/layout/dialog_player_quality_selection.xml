@@ -27,7 +27,7 @@
             app:title="@string/quality_selection"
             app:titleCentered="true" />
 
-        <com.google.android.material.progressindicator.LinearProgressIndicator
+        <dev.brahmkshatriya.echo.utils.ui.legacy.EchoProgressBar
             android:id="@+id/progressIndicator"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

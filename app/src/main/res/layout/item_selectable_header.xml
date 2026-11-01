@@ -18,7 +18,7 @@
         android:textSize="18sp"
         tools:text="@string/selected_n" />
 
-    <com.google.android.material.checkbox.MaterialCheckBox
+    <androidx.appcompat.widget.AppCompatCheckBox
         android:id="@+id/selectAll"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

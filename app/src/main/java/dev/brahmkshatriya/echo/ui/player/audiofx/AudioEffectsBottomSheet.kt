@@ -14,7 +14,7 @@ import androidx.core.content.edit
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.viewModelScope
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import dev.brahmkshatriya.echo.utils.ui.legacy.EchoBottomSheetDialogFragment as BottomSheetDialogFragment
 import dev.brahmkshatriya.echo.R
 import dev.brahmkshatriya.echo.databinding.DialogPlayerAudioFxBinding
 import dev.brahmkshatriya.echo.databinding.FragmentAudioFxBinding
@@ -106,6 +106,7 @@ class AudioEffectsBottomSheet : BottomSheetDialogFragment() {
             pitchSwitch.setOnCheckedChangeListener { _, isChecked ->
                 settings.edit { putBoolean(CHANGE_PITCH, isChecked) }
             }
+            bassBoostSlider.clearOnChangeListeners()
             bassBoostSlider.value = settings.getInt(BASS_BOOST, 0).toFloat()
             bassBoostSlider.addOnChangeListener { _, value, _ ->
                 settings.edit { putInt(BASS_BOOST, value.toInt()) }

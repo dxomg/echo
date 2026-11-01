@@ -2,7 +2,7 @@ package dev.brahmkshatriya.echo.utils.ui.prefs
 
 import android.content.Context
 import androidx.preference.ListPreference
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import androidx.appcompat.app.AlertDialog.Builder as MaterialAlertDialogBuilder
 import dev.brahmkshatriya.echo.R
 
 class MaterialListPreference(context: Context) : ListPreference(context) {

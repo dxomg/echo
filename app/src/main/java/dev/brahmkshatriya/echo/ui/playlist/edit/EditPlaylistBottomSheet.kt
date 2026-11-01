@@ -4,7 +4,7 @@ import android.content.Context
 import android.os.Bundle
 import android.view.View
 import androidx.core.os.bundleOf
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import dev.brahmkshatriya.echo.utils.ui.legacy.EchoBottomSheetDialogFragment as BottomSheetDialogFragment
 import dev.brahmkshatriya.echo.R
 import dev.brahmkshatriya.echo.common.models.Playlist
 import dev.brahmkshatriya.echo.databinding.ItemLoadingBinding

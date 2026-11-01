@@ -16,7 +16,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
 import androidx.lifecycle.lifecycleScope
-import com.google.android.material.transition.MaterialSharedAxis
+import dev.brahmkshatriya.echo.utils.ui.legacy.EchoSharedAxis as MaterialSharedAxis
 import dev.brahmkshatriya.echo.R
 import dev.brahmkshatriya.echo.common.clients.LoginClient
 import dev.brahmkshatriya.echo.common.clients.LoginClient.InputField.Type

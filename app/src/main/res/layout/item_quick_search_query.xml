@@ -31,9 +31,9 @@
         android:layout_weight="1"
         tools:text="@tools:sample/full_names" />
 
-    <com.google.android.material.button.MaterialButton
+    <dev.brahmkshatriya.echo.utils.ui.legacy.EchoButton
         android:id="@+id/insert"
-        style="?attr/materialIconButtonStyle"
+        style="@style/EchoButtonText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:contentDescription="@string/more"
@@ -43,9 +43,9 @@
         app:iconSize="24dp"
         app:iconTint="?colorOnSurface" />
 
-    <com.google.android.material.button.MaterialButton
+    <dev.brahmkshatriya.echo.utils.ui.legacy.EchoButton
         android:id="@+id/delete"
-        style="?attr/materialIconButtonStyle"
+        style="@style/EchoButtonText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="4dp"

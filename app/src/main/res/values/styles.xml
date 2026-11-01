@@ -6,16 +6,15 @@
         <item name="android:paddingEnd">4dp</item>
     </style>
 
-    <style name="EchoDialog" parent="ThemeOverlay.Material3.Dialog.Alert">
+    <style name="EchoDialog" parent="Theme.AppCompat.DayNight.Dialog.Alert">
         <item name="android:windowBackground">@drawable/dialog_bg</item>
     </style>
 
-    <style name="EchoAlertDialog" parent="ThemeOverlay.Material3.MaterialAlertDialog">
+    <style name="EchoAlertDialog" parent="Theme.AppCompat.DayNight.Dialog.Alert">
         <item name="alertDialogStyle">@style/EchoDialogStyle</item>
     </style>
 
-    <style name="EchoDialogStyle" parent="MaterialAlertDialog.Material3">
-        <item name="backgroundTint">?navBackground</item>
+    <style name="EchoDialogStyle" parent="Widget.AppCompat.Light.AlertDialog">
     </style>
 
     <style name="EchoBottomSheetDialog" parent="ThemeOverlay.Material3.BottomSheetDialog">
@@ -75,8 +74,8 @@
         <item name="backgroundTint">?attr/navBackground</item>
         <item name="itemActiveIndicatorStyle">@style/BottomNavbarActiveIndicator</item>
         <item name="itemTextAppearanceActiveBoldEnabled">false</item>
-        <item name="itemTextAppearanceActive">@style/TextAppearance.Material3.BodySmall</item>
-        <item name="itemTextAppearanceInactive">@style/TextAppearance.Material3.BodySmall</item>
+        <item name="itemTextAppearanceActive">@style/EchoTextBodySmall</item>
+        <item name="itemTextAppearanceInactive">@style/EchoTextBodySmall</item>
         <item name="itemIconTint">@color/nav_bar_icon</item>
         <item name="labelVisibilityMode">labeled</item>
         <item name="itemPaddingBottom">6dp</item>
@@ -112,12 +111,15 @@
         <item name="tabUnboundedRipple">true</item>
     </style>
 
-    <style name="EchoCircularProgressIndicator" parent="Widget.Material3.CircularProgressIndicator">
-        <item name="showAnimationBehavior">outward</item>
+    <style name="EchoCircularProgressIndicator" parent="">
+        <item name="android:indeterminate">true</item>
+        <item name="indicatorColor">?colorAccent</item>
     </style>
 
-    <style name="EchoLinearProgressIndicator" parent="Widget.Material3.LinearProgressIndicator">
-        <item name="showAnimationBehavior">outward</item>
+    <style name="EchoLinearProgressIndicator" parent="">
+        <item name="indicatorColor">?colorAccent</item>
+        <item name="trackColor">?colorOutlineVariant</item>
+        <item name="trackThickness">4dp</item>
     </style>
 
     <style name="TextInput" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
@@ -130,7 +132,7 @@
         <item name="boxCornerRadiusTopStart">8dp</item>
     </style>
 
-    <style name="OutlinedButton" parent="Widget.Material3.Button.OutlinedButton">
+    <style name="OutlinedButton" parent="EchoButtonOutlined">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:gravity">start|center_vertical</item>
@@ -148,7 +150,7 @@
         <item name="android:foreground">@drawable/ripple_item_container</item>
     </style>
 
-    <style name="DialogHorizontalButton" parent="Widget.Material3.Button.TonalButton">
+    <style name="DialogHorizontalButton" parent="EchoButtonTonal">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginStart">4dp</item>
@@ -158,37 +160,19 @@
         <item name="iconSize">20dp</item>
     </style>
 
-    <style name="PlayerMoreTopShape" parent="ShapeAppearance.Material3.Corner.None">
-        <item name="cornerFamily">rounded</item>
-        <item name="cornerSizeTopRight">8dp</item>
-        <item name="cornerSizeTopLeft">8dp</item>
-        <item name="cornerSizeBottomRight">8dp</item>
-        <item name="cornerSizeBottomLeft">8dp</item>
-    </style>
-
-    <style name="PlayerMoreBottomShape" parent="ShapeAppearance.Material3.Corner.None">
-        <item name="cornerFamily">rounded</item>
-        <item name="cornerSizeTopRight">8dp</item>
-        <item name="cornerSizeTopLeft">8dp</item>
-        <item name="cornerSizeBottomRight">8dp</item>
-        <item name="cornerSizeBottomLeft">8dp</item>
-    </style>
-
-    <style name="PlayerMoreSelected" parent="Widget.Material3.Button.OutlinedButton">
+    <style name="PlayerMoreSelected" parent="EchoTabButton">
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_weight">1</item>
         <item name="android:insetTop">0dp</item>
         <item name="android:insetBottom">0dp</item>
         <item name="android:minHeight">48dp</item>
-        <item name="strokeWidth">0dp</item>
         <item name="backgroundTint">@color/button_player_more</item>
     </style>
 
     <style name="PlayerMoreBackgroundButton" parent="PlayerMoreSelected">
         <item name="android:clickable">false</item>
         <item name="android:enabled">false</item>
-        <item name="strokeWidth">0dp</item>
         <item name="backgroundTint">?echoBackground</item>
     </style>
 
@@ -196,9 +180,7 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:clickable">false</item>
-        <item name="android:spacing">6dp</item>
-        <item name="innerCornerSize">8dp</item>
-        <item name="shapeAppearance">@style/PlayerMoreTopShape</item>
+        <item name="android:orientation">horizontal</item>
     </style>
 
     <style name="PlayerTheme" parent="Default">
@@ -219,7 +201,7 @@
         <item name="navigationContentDescription">@string/close</item>
         <item name="subtitle">@string/extensions</item>
         <item name="subtitleCentered">true</item>
-        <item name="subtitleTextAppearance">@style/TextAppearance.Material3.TitleMedium</item>
+        <item name="subtitleTextAppearance">@style/EchoTextTitleMedium</item>
         <item name="subtitleTextColor">@color/button_player</item>
         <item name="title">@string/playing_from</item>
         <item name="titleCentered">true</item>
@@ -256,7 +238,7 @@
         <item name="layout_constraintVertical_chainStyle">spread</item>
     </style>
 
-    <style name="TertiaryButton" parent="Widget.Material3.Button.TonalButton">
+    <style name="TertiaryButton" parent="EchoButtonTonal">
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_weight">1</item>
         <item name="android:minHeight">64dp</item>
@@ -264,39 +246,17 @@
         <item name="android:layout_height">wrap_content</item>
     </style>
 
-    <style name="IconButton" parent="Widget.Material3Expressive.Button.IconButton">
+    <style name="IconButton" parent="EchoButton">
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:textSize">14sp</item>
     </style>
 
-    <style name="IconButtonTertiary" parent="IconButton">
-        <item name="materialThemeOverlay">@style/ButtonTertiaryOverlay</item>
-    </style>
+    <style name="IconButtonTertiary" parent="IconButton" />
 
-    <style name="IconButtonSecondary" parent="IconButton">
-        <item name="materialThemeOverlay">@style/ButtonSecondaryOverlay</item>
-    </style>
+    <style name="IconButtonSecondary" parent="IconButton" />
 
-    <style name="ButtonTertiaryOverlay">
-        <item name="colorContainer">?colorTertiary</item>
-        <item name="colorContainerChecked">?colorTertiary</item>
-        <item name="colorContainerUnchecked">?colorTertiaryContainer</item>
-        <item name="colorOnContainer">?colorOnTertiary</item>
-        <item name="colorOnContainerChecked">?colorOnTertiary</item>
-        <item name="colorOnContainerUnchecked">?colorOnTertiaryContainer</item>
-    </style>
-
-    <style name="ButtonSecondaryOverlay">
-        <item name="colorContainer">?colorSecondary</item>
-        <item name="colorContainerChecked">?colorSecondary</item>
-        <item name="colorContainerUnchecked">?colorSecondaryContainer</item>
-        <item name="colorOnContainer">?colorOnSecondary</item>
-        <item name="colorOnContainerChecked">?colorOnSecondary</item>
-        <item name="colorOnContainerUnchecked">?colorOnSecondaryContainer</item>
-    </style>
-
-    <style name="IconButtonTonal" parent="Widget.Material3Expressive.Button.IconButton.Tonal">
+    <style name="IconButtonTonal" parent="EchoButtonTonal">
         <item name="android:maxLines">1</item>
         <item name="android:ellipsize">end</item>
         <item name="android:layout_height">wrap_content</item>
@@ -312,19 +272,16 @@
         <item name="iconSize">32dp</item>
     </style>
 
-    <style name="IconButtonOutlined" parent="Widget.Material3Expressive.Button.IconButton.Outlined">
+    <style name="IconButtonOutlined" parent="EchoButtonOutlined">
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:textSize">14sp</item>
-        <item name="materialThemeOverlay">@style/ButtonOutlinedOverlay</item>
     </style>
 
-    <style name="IconButtonTransparent" parent="Widget.Material3Expressive.Button.IconButton.Outlined">
+    <style name="IconButtonTransparent" parent="EchoButtonText">
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:textSize">14sp</item>
-        <item name="strokeWidth">0dp</item>
-        <item name="backgroundTint">@android:color/transparent</item>
     </style>
 
     <style name="IconButtonOutlinedBig" parent="IconButtonOutlined">
@@ -335,24 +292,7 @@
         <item name="iconSize">32dp</item>
     </style>
 
-    <style name="ButtonOutlinedOverlay" parent="ThemeOverlay.Material3Expressive.Button.Outlined">
-        <item name="colorContainerUnchecked">?navBackground</item>
-        <item name="colorContainer">?navBackground</item>
-    </style>
-
-    <style name="TabButtonOverlay" parent="ThemeOverlay.Material3Expressive.Button.Filled">
-        <item name="colorContainerChecked">
-            @macro/m3_comp_button_outlined_selected_container_color
-        </item>
-        <item name="colorOnContainerChecked">
-            @macro/m3_comp_button_outlined_selected_icon_color
-        </item>
-        <item name="colorContainerUnchecked">
-            @color/amoled_fg_semi
-        </item>
-    </style>
-
-    <style name="SideBarButton" parent="Widget.Material3Expressive.Button.OutlinedButton">
+    <style name="SideBarButton" parent="EchoButtonTonal">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:gravity">start|center_vertical</item>
@@ -365,16 +305,14 @@
         <item name="android:maxLines">1</item>
         <item name="android:ellipsize">end</item>
         <item name="android:layout_marginBottom">12dp</item>
-        <item name="strokeWidth">0dp</item>
-        <item name="android:backgroundTint">?colorSurfaceContainerHigh</item>
     </style>
 
 
-    <style name="NowPlayingButton" parent="Widget.Material3.Button.IconButton">
+    <style name="NowPlayingButton" parent="IconButtonTransparent">
         <item name="android:tooltipText" tools:ignore="NewApi">@string/currently_playing</item>
         <item name="android:contentDescription">@string/currently_playing</item>
         <item name="icon">@drawable/anim_now_playing</item>
-        <item name="iconTint">?colorOnSurface</item>
+        <item name="iconTint">@color/amoled_fg</item>
         <item name="iconSize">24dp</item>
     </style>
 

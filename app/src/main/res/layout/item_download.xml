@@ -56,9 +56,9 @@
                 tools:text="Summary" />
         </LinearLayout>
 
-        <com.google.android.material.button.MaterialButton
+        <dev.brahmkshatriya.echo.utils.ui.legacy.EchoButton
             android:id="@+id/retry"
-            style="?attr/materialIconButtonStyle"
+            style="@style/EchoButtonText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:contentDescription="@string/remove"
@@ -67,9 +67,9 @@
             app:iconSize="24dp"
             app:iconTint="?colorOnSurface" />
 
-        <com.google.android.material.button.MaterialButton
+        <dev.brahmkshatriya.echo.utils.ui.legacy.EchoButton
             android:id="@+id/remove"
-            style="?attr/materialIconButtonStyle"
+            style="@style/EchoButtonText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:contentDescription="@string/remove"

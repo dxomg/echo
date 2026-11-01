@@ -8,7 +8,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.tabs.TabLayout
+import dev.brahmkshatriya.echo.utils.ui.legacy.EchoTabLayout as TabLayout
 import dev.brahmkshatriya.echo.common.Extension
 import dev.brahmkshatriya.echo.common.MusicExtension
 import dev.brahmkshatriya.echo.common.models.ExtensionType

@@ -51,7 +51,7 @@
         android:src="@drawable/ic_queue_music"
         app:tint="?attr/colorOnSurface" />
 
-    <com.google.android.material.button.MaterialButton
+    <dev.brahmkshatriya.echo.utils.ui.legacy.EchoButton
         android:id="@+id/isPlaying"
         android:visibility="gone"
         style="@style/SmallNowPlayingButton" />

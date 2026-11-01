@@ -5,13 +5,13 @@ import android.content.SharedPreferences
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.cardview.widget.CardView
 import androidx.core.content.edit
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.preference.Preference
 import androidx.preference.PreferenceViewHolder
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.card.MaterialCardView
 import dev.brahmkshatriya.echo.R
 import dev.brahmkshatriya.echo.databinding.ItemColorCardBinding
 
@@ -41,7 +41,7 @@ class ColorListPreference(val fragment: Fragment, var listener: Listener? = null
         view.alpha = if (isEnabled) 1f else 0.66f
 
         sharedPreferences = preferenceManager.sharedPreferences!!
-        val addColorCard: MaterialCardView = view.findViewById(R.id.addColor)
+        val addColorCard: CardView = view.findViewById(R.id.addColor)
         val recentColorsRecyclerView: RecyclerView = view.findViewById(R.id.recentColors)
 
         colorCardAdapter = ColorCardAdapter(getSavedColors(), adapterListener)

@@ -76,26 +76,25 @@
         android:layout_gravity="center|bottom"
         android:clipToPadding="false">
 
-        <com.google.android.material.card.MaterialCardView
+        <dev.brahmkshatriya.echo.utils.ui.legacy.EchoCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="20dp"
             android:layout_marginBottom="12dp"
             android:translationZ="8dp"
             app:cardBackgroundColor="?navBackground"
-            app:cardCornerRadius="40dp"
-            app:strokeWidth="0dp">
+            app:cardCornerRadius="40dp">
 
-            <com.google.android.material.button.MaterialButtonGroup
-                style="@style/Widget.Material3.MaterialButtonGroup.Connected"
+            <dev.brahmkshatriya.echo.utils.ui.legacy.EchoButtonGroup
+                style="@style/EchoButtonGroup"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="4dp"
-                android:spacing="4dp">
+                app:spacing="4dp">
 
-                <com.google.android.material.button.MaterialButton
+                <dev.brahmkshatriya.echo.utils.ui.legacy.EchoButton
                     android:id="@+id/add"
-                    style="@style/Widget.Material3.Button.TonalButton"
+                    style="@style/EchoButtonTonal"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -105,9 +104,9 @@
                     android:text="@string/add_song"
                     app:icon="@drawable/ic_add_circle" />
 
-                <com.google.android.material.button.MaterialButton
+                <dev.brahmkshatriya.echo.utils.ui.legacy.EchoButton
                     android:id="@+id/save"
-                    style="@style/Widget.Material3.Button.UnelevatedButton"
+                    style="@style/EchoButton"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -117,8 +116,8 @@
                     android:text="@string/save"
                     app:icon="@drawable/ic_save" />
 
-            </com.google.android.material.button.MaterialButtonGroup>
+            </dev.brahmkshatriya.echo.utils.ui.legacy.EchoButtonGroup>
 
-        </com.google.android.material.card.MaterialCardView>
+        </dev.brahmkshatriya.echo.utils.ui.legacy.EchoCardView>
     </FrameLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

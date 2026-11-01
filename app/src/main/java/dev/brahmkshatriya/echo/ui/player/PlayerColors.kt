@@ -3,7 +3,7 @@ package dev.brahmkshatriya.echo.ui.player
 import android.content.Context
 import android.graphics.Bitmap
 import androidx.palette.graphics.Palette
-import com.google.android.material.color.MaterialColors
+import dev.brahmkshatriya.echo.utils.ui.legacy.EchoColors as MaterialColors
 import dev.brahmkshatriya.echo.MainActivity.Companion.isAmoled
 import dev.brahmkshatriya.echo.R
 import dev.brahmkshatriya.echo.utils.ui.UiUtils.isNightMode
@@ -46,7 +46,7 @@ data class PlayerColors(
                 this, androidx.appcompat.R.attr.colorPrimary, 0
             )
             val onSurface = MaterialColors.getColor(
-                this, com.google.android.material.R.attr.colorOnSurface, 0
+                this, R.attr.colorOnSurface, 0
             )
             return PlayerColors(background, primary, onSurface)
         }

@@ -10,9 +10,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.edit
 import com.google.android.exoplayer2.C
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.google.android.material.timepicker.MaterialTimePicker
-import com.google.android.material.timepicker.TimeFormat
+import dev.brahmkshatriya.echo.utils.ui.legacy.EchoBottomSheetDialogFragment as BottomSheetDialogFragment
+import android.app.TimePickerDialog
 import dev.brahmkshatriya.echo.R
 import dev.brahmkshatriya.echo.databinding.DialogPlayerSleepTimerBinding
 import dev.brahmkshatriya.echo.ui.common.SnackBarHandler.Companion.createSnack
@@ -62,20 +61,17 @@ class SleepTimerBottomSheet : BottomSheetDialogFragment() {
             when (it.itemId) {
                 R.id.menu_schedule -> {
                     val is24Hour = DateFormat.is24HourFormat(context)
-                    val picker = MaterialTimePicker.Builder()
-                        .setTimeFormat(if (is24Hour) TimeFormat.CLOCK_24H else TimeFormat.CLOCK_12H)
-                        .setTitleText(getString(R.string.sleep_on_specific_time))
-                        .build()
-                    picker.addOnCancelListener { picker.dismiss() }
-                    picker.addOnPositiveButtonClickListener {
+                    val initial = Calendar.getInstance()
+                    val picker = TimePickerDialog(requireContext(), { _, hour, minute ->
                         val now = Calendar.getInstance()
                         val nowMin = now.get(Calendar.HOUR_OF_DAY) * 60 + now.get(Calendar.MINUTE)
-                        val pickerMin = picker.hour * 60 + picker.minute
+                        val pickerMin = hour * 60 + minute
                         val time = if (pickerMin > nowMin) pickerMin - nowMin
                         else 1440 - nowMin + pickerMin
                         setTimerAndDismiss(time * 60L * 1000)
-                    }
-                    picker.show(childFragmentManager, null)
+                    }, initial.get(Calendar.HOUR_OF_DAY), initial.get(Calendar.MINUTE), is24Hour)
+                    picker.setTitle(R.string.sleep_on_specific_time)
+                    picker.show()
                     true
                 }
 

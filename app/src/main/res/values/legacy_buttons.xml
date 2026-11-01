@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="EchoButton">
+        <attr name="android:checkable" />
+        <attr name="android:checked" />
+        <attr name="icon" format="reference" />
+        <attr name="iconTint" format="reference|color" />
+        <attr name="iconSize" format="dimension" />
+        <attr name="iconPadding" format="dimension" />
+        <attr name="toggleCheckedStateOnClick" format="boolean" />
+        <attr name="iconGravity">
+            <enum name="start" value="1" />
+            <enum name="textStart" value="2" />
+            <enum name="end" value="3" />
+            <enum name="textEnd" value="4" />
+            <enum name="top" value="16" />
+            <enum name="textTop" value="32" />
+        </attr>
+    </declare-styleable>
+    <declare-styleable name="EchoButtonToggleGroup">
+        <attr name="selectionRequired" format="boolean" />
+        <attr name="checkedButton" format="reference" />
+    </declare-styleable>
+    <declare-styleable name="EchoButtonGroup">
+        <attr name="spacing" format="dimension" />
+    </declare-styleable>
+
+    <style name="EchoButton" parent="Widget.AppCompat.Button">
+        <item name="android:minWidth">48dp</item>
+        <item name="android:minHeight">48dp</item>
+        <item name="android:padding">12dp</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:background">@drawable/legacy_button_background</item>
+        <item name="android:textColor">@color/amoled_fg</item>
+        <item name="iconTint">@color/amoled_fg</item>
+        <item name="iconSize">24dp</item>
+        <item name="iconPadding">8dp</item>
+    </style>
+    <style name="EchoButtonTonal" parent="EchoButton" />
+    <style name="EchoButtonOutlined" parent="EchoButton">
+        <item name="android:background">@drawable/legacy_button_outlined</item>
+    </style>
+    <style name="EchoButtonText" parent="EchoButton">
+        <item name="android:background">@drawable/legacy_button_text_background</item>
+    </style>
+    <style name="EchoTabButton" parent="EchoButton">
+        <item name="android:checkable">true</item>
+    </style>
+    <style name="EchoButtonGroup" parent="">
+        <item name="android:orientation">horizontal</item>
+    </style>
+</resources>

@@ -6,6 +6,6 @@
     android:layout_height="wrap_content"
     android:paddingHorizontal="24dp"
     android:paddingVertical="8dp"
-    android:textAppearance="@style/TextAppearance.Material3.HeadlineMedium"
+    android:textAppearance="@style/EchoTextHeadlineMedium"
     android:textColor="@color/amoled_fg"
     tools:text="@tools:sample/cities" />

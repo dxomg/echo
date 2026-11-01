@@ -7,12 +7,11 @@
     android:orientation="vertical"
     android:paddingVertical="48dp">
 
-    <com.google.android.material.loadingindicator.LoadingIndicator
+    <dev.brahmkshatriya.echo.utils.ui.legacy.EchoCircularProgressBar
         android:id="@+id/progress"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:indeterminate="true"
-        app:indicatorSize="64dp" />
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:indeterminate="true" />
 
     <TextView
         android:id="@+id/textView"
@@ -22,7 +21,7 @@
         android:maxWidth="240dp"
         android:text="@string/loading"
         android:textAlignment="center"
-        android:textAppearance="@style/TextAppearance.Material3.DisplaySmall"
+        android:textAppearance="@style/EchoTextDisplaySmall"
         android:textSize="22sp" />
 
 </LinearLayout>

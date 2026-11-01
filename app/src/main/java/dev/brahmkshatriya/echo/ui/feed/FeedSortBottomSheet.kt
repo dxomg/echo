@@ -8,8 +8,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.google.android.material.chip.Chip
+import dev.brahmkshatriya.echo.utils.ui.legacy.EchoBottomSheetDialogFragment as BottomSheetDialogFragment
+import dev.brahmkshatriya.echo.utils.ui.legacy.EchoChip as Chip
 import dev.brahmkshatriya.echo.databinding.DialogSortBinding
 import dev.brahmkshatriya.echo.utils.ContextUtils.observe
 import dev.brahmkshatriya.echo.utils.ui.AutoClearedValue.Companion.autoCleared

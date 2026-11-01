@@ -26,7 +26,7 @@
                 android:importantForAccessibility="no"
                 tools:ignore="ImageContrastCheck" />
 
-            <com.google.android.material.button.MaterialButton
+            <dev.brahmkshatriya.echo.utils.ui.legacy.EchoButton
                 android:id="@+id/removeCover"
                 style="@style/IconButtonOutlined"
                 android:layout_gravity="bottom|end"

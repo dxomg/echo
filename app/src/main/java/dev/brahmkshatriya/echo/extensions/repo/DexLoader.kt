@@ -36,7 +36,7 @@ class DexLoader(
         private fun unloadLibraries(
             metadata: Metadata, libFolder: File
         ): File {
-            val targetAbi = Build.SUPPORTED_ABIS.first()
+            val targetAbi = dev.brahmkshatriya.echo.utils.ContextUtils.getArch()
             if (!libFolder.exists()) libFolder.mkdirs()
             val libs = File(libFolder, metadata.id)
             val version = File(libs, "version.txt")

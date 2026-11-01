@@ -2,7 +2,7 @@ package dev.brahmkshatriya.echo.ui.main.search
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import com.google.android.material.search.SearchView
+import dev.brahmkshatriya.echo.utils.ui.legacy.EchoSearchView as SearchView
 import dev.brahmkshatriya.echo.databinding.ItemSearchBarBinding
 import dev.brahmkshatriya.echo.ui.common.GridAdapter
 import dev.brahmkshatriya.echo.utils.ui.scrolling.ScrollAnimRecyclerAdapter

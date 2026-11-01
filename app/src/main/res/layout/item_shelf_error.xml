@@ -22,18 +22,18 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
-        <com.google.android.material.button.MaterialButton
+        <dev.brahmkshatriya.echo.utils.ui.legacy.EchoButton
             android:id="@+id/errorView"
-            style="@style/Widget.Material3.Button.IconButton"
+            style="@style/EchoButtonText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/view"
             app:icon="@drawable/art_problem"
             app:iconPadding="8dp" />
 
-        <com.google.android.material.button.MaterialButton
+        <dev.brahmkshatriya.echo.utils.ui.legacy.EchoButton
             android:id="@+id/retry"
-            style="@style/Widget.Material3.Button.IconButton"
+            style="@style/EchoButtonText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/refresh"

@@ -13,14 +13,16 @@ import android.webkit.WebResourceResponse
 import android.webkit.WebSettings
 import android.webkit.WebStorage
 import android.webkit.WebView
+import android.webkit.WebViewClient
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.add
 import androidx.fragment.app.commit
 import androidx.lifecycle.lifecycleScope
-import com.acsbendi.requestinspectorwebview.RequestInspectorWebViewClient
-import com.google.android.material.progressindicator.LinearProgressIndicator
+import org.json.JSONObject
+import java.util.Collections
+import dev.brahmkshatriya.echo.utils.ui.legacy.EchoProgressBar
 import dev.brahmkshatriya.echo.R
 import dev.brahmkshatriya.echo.common.helpers.WebViewRequest
 import dev.brahmkshatriya.echo.common.models.Message
@@ -55,7 +57,7 @@ object WebViewUtils {
     @SuppressLint("SetJavaScriptEnabled")
     fun <T> FragmentActivity.configure(
         webView: WebView,
-        progress: LinearProgressIndicator,
+        progress: EchoProgressBar,
         target: WebViewRequest<T>,
         skipTimeout: Boolean,
         onComplete: suspend (Result<T>?) -> Unit,
@@ -67,8 +69,14 @@ object WebViewUtils {
         }
         WebStorage.getInstance().deleteAllData()
         CookieManager.getInstance().run {
-            removeAllCookies(null)
-            flush()
+            if (Build.VERSION.SDK_INT >= 21) {
+                removeAllCookies(null)
+                flush()
+            } else {
+                android.webkit.CookieSyncManager.createInstance(this@configure)
+                removeAllCookie()
+                android.webkit.CookieSyncManager.getInstance().sync()
+            }
         }
         webView.settings.apply {
             javaScriptEnabled = true
@@ -91,7 +99,7 @@ object WebViewUtils {
 
     private fun <T> WebView.load(
         scope: CoroutineScope,
-        progress: LinearProgressIndicator,
+        progress: EchoProgressBar,
         callback: OnBackPressedCallback,
         target: WebViewRequest<T>,
         skipTimeout: Boolean,
@@ -102,7 +110,7 @@ object WebViewUtils {
             if (target is WebViewRequest.Headers) target.interceptUrlRegex else null
         val timeout = target.maxTimeout
         val bridge = Bridge()
-        val requests = mutableListOf<NetworkRequest>()
+        val requests = Collections.synchronizedList(mutableListOf<NetworkRequest>())
         val timeoutJob = if (!skipTimeout) scope.launch {
             delay(timeout)
             onComplete(
@@ -114,7 +122,7 @@ object WebViewUtils {
                 )
             )
         } else null
-        webViewClient = object : RequestInspectorWebViewClient(this@load) {
+        webViewClient = object : WebViewClient() {
             override fun doUpdateVisitedHistory(view: WebView?, url: String?, isReload: Boolean) {
                 callback.isEnabled = canGoBack()
             }
@@ -122,6 +130,7 @@ object WebViewUtils {
             var done = false
             override fun onPageStarted(view: WebView, url: String, favicon: Bitmap?) {
                 super.onPageStarted(view, url, favicon)
+                view.executeJS(REQUEST_INSPECTOR)
                 progress.show()
                 if (done) return
                 if (target !is WebViewRequest.Evaluate) return
@@ -136,6 +145,7 @@ object WebViewUtils {
             }
 
             override fun onPageFinished(view: WebView?, url: String?) {
+                view?.executeJS(REQUEST_INSPECTOR)
                 progress.hide()
             }
 
@@ -155,7 +165,7 @@ object WebViewUtils {
                         onComplete(null)
                         val result = runCatching {
                             val headerRes = if (target is WebViewRequest.Headers)
-                                target.onStop(requests)
+                                target.onStop(synchronized(requests) { requests.toList() })
                             else null
                             val cookieRes = if (target is WebViewRequest.Cookie) {
                                 val cookie =
@@ -177,19 +187,38 @@ object WebViewUtils {
             }
 
             override fun shouldInterceptRequest(
-                view: WebView, webViewRequest: com.acsbendi.requestinspectorwebview.WebViewRequest,
+                view: WebView?, url: String?,
             ): WebResourceResponse? {
-                intercept(
-                    webViewRequest.run {
-                        NetworkRequest(
-                            NetworkRequest.Method.valueOf(method),
-                            url,
-                            headers,
-                            body.encodeToByteArray()
-                        )
-                    }
-                )
+                if (url != null) intercept(withCookies(NetworkRequest(url)))
                 return null
+            }
+
+            override fun shouldInterceptRequest(
+                view: WebView?, request: WebResourceRequest?,
+            ): WebResourceResponse? {
+                request?.let {
+                    intercept(withCookies(NetworkRequest(
+                        runCatching { NetworkRequest.Method.valueOf(it.method.uppercase()) }
+                            .getOrDefault(NetworkRequest.Method.GET),
+                        it.url.toString(), it.requestHeaders ?: emptyMap()
+                    )))
+                }
+                return null
+            }
+
+            fun withCookies(request: NetworkRequest): NetworkRequest {
+                val headers = request.headers.toMutableMap()
+                CookieManager.getInstance().getCookie(request.url)?.let { headers["Cookie"] = it }
+                return request.copy(headers = headers)
+            }
+
+            init {
+                addJavascriptInterface(RequestBridge { request -> intercept(withCookies(request)) }, "echoRequests")
+            }
+
+            override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
+                if (url != null) intercept(withCookies(NetworkRequest(url)))
+                return false
             }
 
             override fun shouldOverrideUrlLoading(
@@ -216,36 +245,105 @@ object WebViewUtils {
     }
 
     suspend fun WebView.evalJS(bridge: Bridge?, js: String) = withContext(Dispatchers.Main) {
-        suspendCancellableCoroutine {
-            bridge?.onResult = it::resume
-            bridge?.onError = it::resumeWithException
-            val asyncFunction = if (js.startsWith("async function")) js
-            else if (js.startsWith("function")) "async $js"
-            else {
-                it.resumeWithException(Exception("Invalid JS function, must start with async or function"))
-                return@suspendCancellableCoroutine
-            }
-            val newJs = """
+        require(js.startsWith("async function") || js.startsWith("function")) {
+            "Invalid JS function, must start with async or function"
+        }
+        // API18's system WebView has no async/await parser or Promise. Do not
+        // silently rewrite extension code: fail unsupported syntax explicitly.
+        if (Build.VERSION.SDK_INT < 19 && js.startsWith("async function")) {
+            error("Async JavaScript requires a newer WebView; synchronous functions work on Android 4.3")
+        }
+        val newJs = """
             (function() {
                 try {
-                    const fun = $asyncFunction;
-                    fun().then((result) => {
-                        bridge.putJsResult(result);
-                    }).catch((error) => {
-                        bridge.putJsError(error.message || error.toString());
-                    });
-                } catch (error) {
-                    bridge.putJsError(error.message || error.toString());
-                }
+                    var fun = $js;
+                    var result = fun();
+                    if (result && typeof result.then === 'function') {
+                        result.then(function(value) { bridge.putJsResult(value); },
+                            function(error) { bridge.putJsError(String(error)); });
+                    } else { bridge.putJsResult(result == null ? null : String(result)); }
+                } catch (error) { bridge.putJsError(String(error)); }
             })()
-            """.trimIndent()
-            evaluateJavascript(newJs, null)
-
-            it.invokeOnCancellation {
-                evaluateJavascript("javascript:window.stop();", null)
+        """.trimIndent()
+        if (bridge == null) {
+            executeJS("(function() { ($js)(); })()")
+            return@withContext null
+        }
+        suspendCancellableCoroutine<String?> { continuation ->
+            bridge.onResult = { if (continuation.isActive) continuation.resume(it) }
+            bridge.onError = { if (continuation.isActive) continuation.resumeWithException(it) }
+            executeJS(newJs)
+            continuation.invokeOnCancellation {
+                post { executeJS("window.stop();") }
             }
         }
     }
+
+    private fun WebView.executeJS(js: String) {
+        if (Build.VERSION.SDK_INT >= 19) evaluateJavascript(js, null)
+        else loadUrl("javascript:$js")
+    }
+
+    class RequestBridge(private val onRequest: (NetworkRequest) -> Unit) {
+        @JavascriptInterface
+        fun capture(json: String) {
+            runCatching {
+                val data = JSONObject(json)
+                val headers = data.optJSONObject("headers") ?: JSONObject()
+                val request = NetworkRequest(
+                    runCatching { NetworkRequest.Method.valueOf(data.optString("method", "GET").uppercase()) }
+                        .getOrDefault(NetworkRequest.Method.GET),
+                    data.getString("url"),
+                    headers.keys().asSequence().associateWith { headers.getString(it) },
+                    data.optString("body", "").encodeToByteArray()
+                )
+                onRequest(request)
+            }
+        }
+    }
+
+    // ES5 syntax is intentional: the API18 WebView cannot parse arrows, const,
+    // or async functions. Hooks preserve XHR headers and textual request bodies.
+    private val REQUEST_INSPECTOR = """
+        (function() {
+            if (window.echoRequestInspector) return;
+            window.echoRequestInspector = true;
+            function report(method, url, headers, body) {
+                try {
+                    var link = document.createElement('a'); link.href = url;
+                    echoRequests.capture(JSON.stringify({method: method, url: link.href,
+                        headers: headers || {}, body: typeof body === 'string' ? body : ''}));
+                } catch (ignored) {}
+            }
+            var open = XMLHttpRequest.prototype.open;
+            var header = XMLHttpRequest.prototype.setRequestHeader;
+            var send = XMLHttpRequest.prototype.send;
+            XMLHttpRequest.prototype.open = function(method, url) {
+                this.echoRequest = {method: method, url: url, headers: {}};
+                return open.apply(this, arguments);
+            };
+            XMLHttpRequest.prototype.setRequestHeader = function(key, value) {
+                if (this.echoRequest) this.echoRequest.headers[key] = value;
+                return header.apply(this, arguments);
+            };
+            XMLHttpRequest.prototype.send = function(body) {
+                var r = this.echoRequest;
+                if (r) report(r.method, r.url, r.headers, body);
+                return send.apply(this, arguments);
+            };
+            if (window.fetch) {
+                var fetch = window.fetch;
+                window.fetch = function(input, options) {
+                    options = options || {};
+                    var headers = {}, source = options.headers || input.headers || {};
+                    if (source.forEach) source.forEach(function(value, key) { headers[key] = value; });
+                    else for (var key in source) if (Object.prototype.hasOwnProperty.call(source, key)) headers[key] = source[key];
+                    report(options.method || input.method || 'GET', input.url || String(input), headers, options.body);
+                    return fetch.apply(this, arguments);
+                };
+            }
+        })();
+    """.trimIndent()
 
     suspend fun WebView.stop(
         callback: OnBackPressedCallback,
@@ -350,4 +448,3 @@ object WebViewUtils {
         }
     }
 }
-

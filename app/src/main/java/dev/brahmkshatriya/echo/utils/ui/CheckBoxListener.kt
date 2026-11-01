@@ -1,9 +1,9 @@
 package dev.brahmkshatriya.echo.utils.ui
 
-import com.google.android.material.checkbox.MaterialCheckBox
+import android.widget.CompoundButton
 
 class CheckBoxListener(private val block: (Boolean) -> Unit) :
-    MaterialCheckBox.OnCheckedStateChangedListener {
+    CompoundButton.OnCheckedChangeListener {
     var enabled = true
     private var checked = false
     private fun check(isChecked: Boolean) {
@@ -11,8 +11,7 @@ class CheckBoxListener(private val block: (Boolean) -> Unit) :
         block(isChecked)
     }
 
-    override fun onCheckedStateChangedListener(checkBox: MaterialCheckBox, state: Int) {
-        val isChecked = checkBox.isChecked
+    override fun onCheckedChanged(button: CompoundButton, isChecked: Boolean) {
         if (enabled) check(isChecked)
         checked = isChecked
     }

@@ -24,7 +24,7 @@
         tools:clipToOutline="true"
         tools:src="@tools:sample/backgrounds/scenic" />
 
-    <com.google.android.material.button.MaterialButton
+    <dev.brahmkshatriya.echo.utils.ui.legacy.EchoButton
         android:id="@+id/isPlaying"
         style="@style/SmallNowPlayingButton"
         android:layout_marginHorizontal="24dp"
@@ -81,7 +81,7 @@
 
         </LinearLayout>
 
-        <com.google.android.material.button.MaterialButton
+        <dev.brahmkshatriya.echo.utils.ui.legacy.EchoButton
             android:id="@+id/more"
             style="@style/IconButtonTransparent"
             android:layout_marginEnd="-12dp"

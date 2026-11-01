@@ -19,11 +19,17 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.workmanager.koin.workManagerFactory
 import org.koin.core.context.startKoin
 import org.koin.dsl.KoinAppDeclaration
+import org.conscrypt.Conscrypt
+import java.security.Security
 
 class MainApplication : MultiDexApplication() {
 
     override fun onCreate() {
         super.onCreate()
+        // Must precede Koin, extension loading and the first OkHttp Platform
+        // access. This also gives extension-created OkHttpClient instances TLS
+        // 1.2/1.3 without changing their shared okhttp3/common ABI.
+        Security.insertProviderAt(Conscrypt.newProvider(), 1)
         startKoin {
             androidContext(this@MainApplication)
             workManagerFactory()

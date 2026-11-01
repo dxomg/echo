@@ -4,7 +4,7 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.HapticFeedbackConstantsCompat
+import android.view.HapticFeedbackConstants
 import androidx.core.view.doOnLayout
 import androidx.core.view.marginLeft
 import androidx.core.view.marginRight
@@ -12,8 +12,8 @@ import androidx.core.view.updateLayoutParams
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.R
-import com.google.android.material.color.MaterialColors
+import dev.brahmkshatriya.echo.R
+import dev.brahmkshatriya.echo.utils.ui.legacy.EchoColors as MaterialColors
 import dev.brahmkshatriya.echo.databinding.ItemRulerBinding
 import dev.brahmkshatriya.echo.databinding.ItemRulerEmptyBinding
 import dev.brahmkshatriya.echo.utils.ui.UiUtils.dpToPx
@@ -123,7 +123,7 @@ class RulerAdapter<T>(
         selectedVH = vh
         vh.itemView.run {
             isHapticFeedbackEnabled = true
-            performHapticFeedback(HapticFeedbackConstantsCompat.CLOCK_TICK)
+            performHapticFeedback(HapticFeedbackConstants.CLOCK_TICK)
         }
         listener.onSelectItem(getItem(newIndex)!!.first)
     }

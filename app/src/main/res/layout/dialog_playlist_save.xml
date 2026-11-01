@@ -41,9 +41,9 @@
         android:gravity="end"
         tools:layout_gravity="bottom|end">
 
-        <com.google.android.material.button.MaterialButton
+        <dev.brahmkshatriya.echo.utils.ui.legacy.EchoButton
             android:id="@+id/save"
-            style="@style/Widget.Material3.Button.UnelevatedButton"
+            style="@style/EchoButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="4dp"

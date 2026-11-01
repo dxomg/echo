@@ -21,14 +21,13 @@
         android:orientation="vertical"
         android:paddingHorizontal="16dp">
 
-        <com.google.android.material.button.MaterialButton
+        <dev.brahmkshatriya.echo.utils.ui.legacy.EchoButton
             android:id="@+id/closeButton"
-            style="@style/Widget.Material3Expressive.Button.IconButton.Outlined"
+            style="@style/EchoButtonOutlined"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="-16dp"
-            app:icon="@drawable/ic_close"
-            app:strokeWidth="0dp" />
+            app:icon="@drawable/ic_close" />
 
         <TextView
             android:id="@+id/title"

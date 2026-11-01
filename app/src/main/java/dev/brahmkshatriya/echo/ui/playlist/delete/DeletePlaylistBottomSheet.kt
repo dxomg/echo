@@ -5,8 +5,8 @@ import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.core.os.bundleOf
 import androidx.fragment.app.FragmentActivity
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import dev.brahmkshatriya.echo.utils.ui.legacy.EchoBottomSheetDialogFragment as BottomSheetDialogFragment
+import androidx.appcompat.app.AlertDialog.Builder as MaterialAlertDialogBuilder
 import dev.brahmkshatriya.echo.R
 import dev.brahmkshatriya.echo.common.models.Playlist
 import dev.brahmkshatriya.echo.databinding.ItemLoadingBinding

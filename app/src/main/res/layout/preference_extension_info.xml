@@ -28,7 +28,7 @@
             android:textSize="18sp"
             tools:text="Enabled" />
 
-        <com.google.android.material.materialswitch.MaterialSwitch
+        <androidx.appcompat.widget.SwitchCompat
             android:id="@+id/extensionEnabledSwitch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -42,7 +42,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
+        android:textAppearance="@style/EchoTextBodyLarge"
         tools:text="Tracker Extension [APK]\nid • version • author" />
 
     <TextView

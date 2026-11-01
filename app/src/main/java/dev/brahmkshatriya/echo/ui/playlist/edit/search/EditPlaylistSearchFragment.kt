@@ -9,8 +9,8 @@ import androidx.activity.OnBackPressedCallback
 import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_EXPANDED
+import dev.brahmkshatriya.echo.utils.ui.legacy.EchoBottomSheetBehavior as BottomSheetBehavior
+import dev.brahmkshatriya.echo.utils.ui.legacy.EchoBottomSheetBehavior.STATE_EXPANDED
 import dev.brahmkshatriya.echo.R
 import dev.brahmkshatriya.echo.common.models.Track
 import dev.brahmkshatriya.echo.databinding.FragmentPlaylistSearchBinding

@@ -2,7 +2,7 @@ package dev.brahmkshatriya.echo.playback.listener
 
 import com.google.android.exoplayer2.C
 import com.google.android.exoplayer2.MediaItem
-import com.google.android.exoplayer2.ExoPlaybackException
+import com.google.android.exoplayer2.PlaybackException
 import com.google.android.exoplayer2.Player
 import dev.brahmkshatriya.echo.common.Extension
 import dev.brahmkshatriya.echo.common.clients.TrackerClient
@@ -117,7 +117,7 @@ class TrackingListener(
         onTrackChanged(current)
     }
 
-    override fun onPlayerError(error: ExoPlaybackException) {
+    override fun onPlayerError(error: PlaybackException) {
         onTrackChanged(null)
     }
 

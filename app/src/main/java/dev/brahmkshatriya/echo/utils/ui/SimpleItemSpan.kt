@@ -4,6 +4,7 @@ import android.content.Context
 import android.text.TextPaint
 import android.text.style.ClickableSpan
 import android.view.View
+import androidx.core.content.ContextCompat
 import dev.brahmkshatriya.echo.R
 
 class SimpleItemSpan(
@@ -19,7 +20,7 @@ class SimpleItemSpan(
         super.updateDrawState(ds)
         ds.isUnderlineText = false
         context.run {
-            ds.color = resources.getColor(R.color.button_player, theme)
+            ds.color = ContextCompat.getColor(this, R.color.button_player)
         }
     }
 }

@@ -57,14 +57,14 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="-12dp">
 
-        <com.google.android.material.button.MaterialButton
+        <dev.brahmkshatriya.echo.utils.ui.legacy.EchoButton
             android:id="@+id/play"
             style="@style/IconButton"
             android:contentDescription="@string/play"
             android:visibility="gone"
             app:icon="@drawable/ic_play" />
 
-        <com.google.android.material.button.MaterialButton
+        <dev.brahmkshatriya.echo.utils.ui.legacy.EchoButton
             android:id="@+id/more"
             style="@style/IconButtonTransparent"
             android:contentDescription="@string/more"

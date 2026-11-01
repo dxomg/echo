@@ -13,8 +13,8 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.net.toUri
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import dev.brahmkshatriya.echo.utils.ui.legacy.EchoBottomSheetDialogFragment as BottomSheetDialogFragment
+import androidx.appcompat.app.AlertDialog.Builder as MaterialAlertDialogBuilder
 import dev.brahmkshatriya.echo.R
 import dev.brahmkshatriya.echo.common.models.ImportType
 import dev.brahmkshatriya.echo.databinding.DialogExtensionInstallerBinding

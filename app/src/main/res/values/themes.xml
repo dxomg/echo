@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
-    <style name="Base.Theme.Echo" parent="Theme.Material3Expressive.DynamicColors.DayNight.NoActionBar">
+    <style name="Base.Theme.Echo" parent="Theme.AppCompat.DayNight.NoActionBar">
         <item name="android:windowSplashScreenBackground" tools:targetApi="s">
             @color/amoled_bg
         </item>
@@ -15,33 +15,43 @@
             @drawable/art_brand
         </item>
         <item name="android:colorBackground">?echoBackground</item>
-        <item name="snackbarStyle">@style/EchoSnackBar</item>
         <item name="android:dialogTheme">@style/EchoDialog</item>
-        <item name="materialAlertDialogTheme">@style/EchoAlertDialog</item>
-        <item name="bottomSheetDialogTheme">@style/EchoBottomSheetDialog</item>
-        <item name="appBarLayoutStyle">@style/EchoAppBarLayout</item>
+        <item name="alertDialogTheme">@style/EchoAlertDialog</item>
         <item name="actionButtonStyle">@style/EchoActionButton</item>
-        <item name="collapsingToolbarLayoutStyle">@style/EchoCollapsingBar</item>
-        <item name="cardViewStyle">@style/EchoCardView</item>
-        <item name="tabStyle">@style/EchoTabLayout</item>
-        <item name="circularProgressIndicatorStyle">@style/EchoCircularProgressIndicator</item>
-        <item name="linearProgressIndicatorStyle">@style/EchoLinearProgressIndicator</item>
+        <item name="buttonStyle">@style/EchoButton</item>
 
-        <item name="echoBackground">?colorSurface</item>
-        <item name="navBackground">?colorSurfaceContainer</item>
+        <item name="colorPrimary">@color/app_color</item>
+        <item name="colorPrimaryDark">@color/app_color_shadow</item>
+        <item name="colorAccent">@color/app_color</item>
+        <item name="colorSurface">@color/amoled_bg</item>
+        <item name="colorSurfaceContainer">@color/amoled_bg</item>
+        <item name="colorSurfaceContainerLowest">@color/amoled_bg</item>
+        <item name="colorSurfaceContainerLow">@color/amoled_bg</item>
+        <item name="colorSurfaceContainerHigh">@color/amoled_bg</item>
+        <item name="colorSurfaceContainerHighest">@color/amoled_bg</item>
+        <item name="colorOnSurface">@color/amoled_fg</item>
+        <item name="colorOnSurfaceVariant">@color/amoled_fg</item>
+        <item name="colorOutlineVariant">@color/amoled_fg_semi</item>
+        <item name="colorTertiary">@color/app_color</item>
+        <item name="colorPrimaryContainer">@color/app_color_highlight</item>
+        <item name="colorSecondaryContainer">@color/app_color_highlight</item>
+        <item name="colorOnPrimaryContainer">@color/black</item>
+        <item name="colorOnSecondaryContainer">@color/black</item>
+        <item name="echoBackground">@color/amoled_bg</item>
+        <item name="navBackground">@color/amoled_bg</item>
 
         <item name="itemCoverSize">96dp</item>
         <item name="itemCorner">8dp</item>
     </style>
 
     <style name="Default" parent="Base.Theme.Echo">
-        <item name="navBarForeground">?colorSecondary</item>
-        <item name="navBarBackground">?colorPrimaryInverse</item>
+        <item name="navBarForeground">?colorAccent</item>
+        <item name="navBarBackground">@color/app_color_highlight</item>
     </style>
 
     <style name="Amoled" parent="Default">
         <item name="echoBackground">@color/amoled_bg</item>
-        <item name="navBackground">?colorSurfaceContainerLowest</item>
+        <item name="navBackground">@color/amoled_bg</item>
     </style>
 
     <style name="BigCover" parent="Default">

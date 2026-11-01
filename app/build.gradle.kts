@@ -28,6 +28,7 @@ android {
             isShrinkResources = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro",
             )
         }
         create("nightly") {
@@ -45,6 +46,12 @@ android {
         viewBinding = true
     }
 
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+        isCoreLibraryDesugaringEnabled = true
+    }
+
     androidResources {
         @Suppress("UnstableApiUsage")
         generateLocaleConfig = true
@@ -60,18 +67,44 @@ kotlin {
     jvmToolchain(17)
 }
 
-// Legacy (API 18) floor pins: several transitives drag in newer androidx
-// artifacts whose manifests declare a 21+ minSdk; the 1.1.1 variants work fine.
+// Resolve the JVM distribution of the exact same OkHttp release. Its Android
+// distribution rejects API <21 during Platform initialization. The JVM ABI is
+// still okhttp3.*; Conscrypt is installed before any client is constructed.
+// Keep transitive AndroidX upgrades inside the verified API18 matrix.
 configurations.all {
     resolutionStrategy {
         force("androidx.startup:startup-runtime:1.1.1")
+        dependencySubstitution {
+            substitute(module("com.squareup.okhttp3:okhttp"))
+                .using(module("com.squareup.okhttp3:okhttp-jvm:5.1.0"))
+            substitute(module("com.squareup.okhttp3:okhttp-android"))
+                .using(module("com.squareup.okhttp3:okhttp-jvm:5.1.0"))
+        }
+        eachDependency {
+            val version = when (requested.group) {
+                "androidx.core" -> if (requested.name in listOf("core", "core-ktx")) "1.9.0" else null
+                "androidx.appcompat" -> "1.6.1"
+                "androidx.activity" -> "1.5.1"
+                "androidx.fragment" -> "1.5.7"
+                "androidx.lifecycle" -> "2.5.1"
+                "androidx.navigation" -> "2.5.3"
+                "androidx.work" -> "2.8.1"
+                "androidx.savedstate" -> "1.2.0"
+                "com.squareup.okhttp3" -> "5.1.0"
+                else -> null
+            }
+            if (version != null) useVersion(version)
+        }
     }
 }
 
 dependencies {
+    coreLibraryDesugaring(libs.desugar.jdk.libs)
     implementation(project(":common"))
     implementation(libs.kotlin.reflect)
+    implementation(libs.conscrypt)
     implementation(libs.bundles.androidx)
+    implementation("androidx.transition:transition:1.4.1")
     implementation(libs.bundles.room)
     kapt(libs.room.compiler)
     implementation(libs.bundles.koin)

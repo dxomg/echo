@@ -8,7 +8,7 @@
     android:paddingHorizontal="16dp"
     android:paddingVertical="20dp">
 
-    <com.google.android.material.card.MaterialCardView
+    <dev.brahmkshatriya.echo.utils.ui.legacy.EchoCardView
         android:id="@+id/addColor"
         android:layout_width="48dp"
         android:layout_height="48dp"
@@ -23,7 +23,7 @@
             android:contentDescription="@string/add_color"
             app:srcCompat="@drawable/ic_add_20dp"
             app:tint="?colorOnSurface" />
-    </com.google.android.material.card.MaterialCardView>
+    </dev.brahmkshatriya.echo.utils.ui.legacy.EchoCardView>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recentColors"

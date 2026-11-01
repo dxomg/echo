@@ -24,7 +24,7 @@
             tools:clipToOutline="true"
             tools:src="@tools:sample/backgrounds/scenic" />
 
-        <com.google.android.material.button.MaterialButton
+        <dev.brahmkshatriya.echo.utils.ui.legacy.EchoButton
             android:id="@+id/more"
             style="@style/IconButtonOutlined"
             app:backgroundTint="?colorSurfaceContainerHigh"
@@ -33,7 +33,7 @@
             app:icon="@drawable/ic_more_horiz" />
     </FrameLayout>
 
-    <com.google.android.material.button.MaterialButton
+    <dev.brahmkshatriya.echo.utils.ui.legacy.EchoButton
         android:id="@+id/isPlaying"
         style="@style/SmallNowPlayingButton"
         android:layout_marginHorizontal="24dp"

@@ -1,10 +1,13 @@
 package dev.brahmkshatriya.echo.di
 
 import android.app.Application
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.content.Context.CONNECTIVITY_SERVICE
 import android.content.SharedPreferences
 import android.net.ConnectivityManager
-import android.net.Network
 import com.mayakapps.kache.FileKache
 import com.mayakapps.kache.KacheStrategy
 import dev.brahmkshatriya.echo.common.models.Message
@@ -53,17 +56,22 @@ data class App(
         }
         val connectivityManager =
             context.getSystemService(CONNECTIVITY_SERVICE) as ConnectivityManager
-        val networkCallback = object : ConnectivityManager.NetworkCallback() {
-            override fun onAvailable(network: Network) {
-                val isMetered = connectivityManager.isActiveNetworkMetered
-                _networkFlow.value = if (isMetered) NetworkConnection.Metered
-                else NetworkConnection.Unmetered
-            }
-
-            override fun onLost(network: Network) {
-                _networkFlow.value = NetworkConnection.NotConnected
+        // The process-wide receiver also covers API 18, where NetworkCallback
+        // does not exist. Query the active network rather than treating a lost
+        // secondary network as a complete connectivity loss.
+        fun updateConnection() {
+            @Suppress("DEPRECATION")
+            val connected = connectivityManager.activeNetworkInfo?.isConnected == true
+            _networkFlow.value = when {
+                !connected -> NetworkConnection.NotConnected
+                connectivityManager.isActiveNetworkMetered -> NetworkConnection.Metered
+                else -> NetworkConnection.Unmetered
             }
         }
-        connectivityManager.registerDefaultNetworkCallback(networkCallback)
+        @Suppress("DEPRECATION")
+        context.registerReceiver(object : BroadcastReceiver() {
+            override fun onReceive(context: Context?, intent: Intent?) = updateConnection()
+        }, IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION))
+        updateConnection()
     }
 }

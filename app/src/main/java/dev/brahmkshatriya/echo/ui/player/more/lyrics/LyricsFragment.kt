@@ -19,9 +19,9 @@ import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSmoothScroller
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.behavior.HideViewOnScrollBehavior
-import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.google.android.material.transition.MaterialSharedAxis
+import dev.brahmkshatriya.echo.utils.ui.legacy.EchoHideOnScrollBehavior as HideViewOnScrollBehavior
+import dev.brahmkshatriya.echo.utils.ui.legacy.EchoBottomSheetBehavior as BottomSheetBehavior
+import dev.brahmkshatriya.echo.utils.ui.legacy.EchoSharedAxis as MaterialSharedAxis
 import dev.brahmkshatriya.echo.R
 import dev.brahmkshatriya.echo.common.clients.LyricsSearchClient
 import dev.brahmkshatriya.echo.common.models.ExtensionType

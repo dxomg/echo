@@ -1,12 +1,11 @@
 package dev.brahmkshatriya.echo.utils.ui.prefs
 
-import android.app.AlertDialog
+import androidx.appcompat.app.AlertDialog
 import android.content.Context
 import android.widget.EditText
 import androidx.preference.Preference
 import androidx.preference.PreferenceViewHolder
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.slider.Slider
+import dev.brahmkshatriya.echo.utils.ui.legacy.EchoSlider
 import dev.brahmkshatriya.echo.R
 import kotlin.math.max
 import kotlin.math.min
@@ -33,14 +32,13 @@ class MaterialSliderPreference(
 
     override fun onBindViewHolder(holder: PreferenceViewHolder) {
         super.onBindViewHolder(holder)
-        val slider = holder.itemView.findViewById<Slider>(R.id.preferences_slider)
+        val slider = holder.itemView.findViewById<EchoSlider>(R.id.preferences_slider)
         val current = getPersistedInt(defaultValue ?: from)
         val min = if (allowOverride) min(from, current) else from
-        slider.valueFrom = min.toFloat()
         val max = if (allowOverride) max(to, current) else to
-        slider.valueTo = max.toFloat()
-        slider.value = min(max(current, min), max).toFloat()
-        slider.stepSize = steps?.toFloat() ?: 1f
+        slider.clearOnChangeListeners()
+        slider.configure(min.toFloat(), max.toFloat(), steps?.toFloat() ?: 1f,
+            min(max(current, min), max).toFloat())
 
         slider.addOnChangeListener { _, value, byUser ->
             persistInt(value.toInt())
@@ -59,9 +57,9 @@ class MaterialSliderPreference(
     }
 
     private var dialogOpened = false
-    private fun showOverrideDialog(slider: Slider, value: Float) {
+    private fun showOverrideDialog(slider: EchoSlider, value: Float) {
         dialogOpened = true
-        val dialog = MaterialAlertDialogBuilder(context)
+        val dialog = AlertDialog.Builder(context)
             .setView(R.layout.item_edit_text)
             .setPositiveButton(R.string.okay, null)
             .setNegativeButton(R.string.cancel, null)
@@ -77,8 +75,8 @@ class MaterialSliderPreference(
             dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
                 val newMaxValue = editText?.text?.toString()?.toIntOrNull()
                 if (newMaxValue != null && (allowOverride || newMaxValue in from..to)) {
-                    slider.valueTo = newMaxValue.toFloat()
-                    slider.value = newMaxValue.toFloat()
+                    slider.configure(min(from, newMaxValue).toFloat(), max(to, newMaxValue).toFloat(),
+                        steps?.toFloat() ?: 1f, newMaxValue.toFloat())
                     dialog.dismiss()
                 } else {
                     editText?.error = context.getString(R.string.error_x, if (!allowOverride) "$from - $to" else "")

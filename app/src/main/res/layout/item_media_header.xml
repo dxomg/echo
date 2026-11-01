@@ -20,7 +20,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp">
 
-            <com.google.android.material.button.MaterialButton
+            <dev.brahmkshatriya.echo.utils.ui.legacy.EchoButton
                 android:id="@+id/followButton"
                 style="@style/IconButtonOutlined"
                 android:checkable="true"
@@ -32,7 +32,7 @@
                 android:visibility="gone"
                 app:iconPadding="8dp" />
 
-            <com.google.android.material.button.MaterialButton
+            <dev.brahmkshatriya.echo.utils.ui.legacy.EchoButton
                 android:id="@+id/savedButton"
                 style="@style/IconButtonOutlined"
                 android:checkable="true"
@@ -41,16 +41,16 @@
                 android:visibility="gone"
                 app:icon="@drawable/anim_bookmark" />
 
-            <com.google.android.material.button.MaterialButton
+            <dev.brahmkshatriya.echo.utils.ui.legacy.EchoButton
                 android:id="@+id/playButton"
                 style="@style/IconButton"
                 android:contentDescription="@string/play"
-                android:textAppearance="@style/TextAppearance.Material3.BodyMedium.Emphasized"
+                android:textAppearance="@style/EchoTextBodyMediumEmphasized"
                 android:visibility="gone"
                 app:icon="@drawable/ic_play"
                 app:iconSize="24dp" />
 
-            <com.google.android.material.button.MaterialButton
+            <dev.brahmkshatriya.echo.utils.ui.legacy.EchoButton
                 android:id="@+id/likeButton"
                 style="@style/IconButtonTertiary"
                 android:checkable="true"
@@ -59,7 +59,7 @@
                 android:visibility="gone"
                 app:icon="@drawable/anim_heart_40dp" />
 
-            <com.google.android.material.button.MaterialButton
+            <dev.brahmkshatriya.echo.utils.ui.legacy.EchoButton
                 android:id="@+id/hideButton"
                 style="@style/IconButtonTonal"
                 android:checkable="true"
@@ -67,14 +67,14 @@
                 android:contentDescription="@string/hide"
                 app:icon="@drawable/anim_hide" />
 
-            <com.google.android.material.button.MaterialButton
+            <dev.brahmkshatriya.echo.utils.ui.legacy.EchoButton
                 android:id="@+id/radioButton"
                 android:visibility="gone"
                 style="@style/IconButtonTonal"
                 android:contentDescription="@string/radio"
                 app:icon="@drawable/ic_sensors" />
 
-            <com.google.android.material.button.MaterialButton
+            <dev.brahmkshatriya.echo.utils.ui.legacy.EchoButton
                 android:id="@+id/shareButton"
                 style="@style/IconButtonOutlined"
                 android:contentDescription="@string/share"

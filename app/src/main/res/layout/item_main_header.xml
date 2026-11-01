@@ -11,7 +11,7 @@
     android:gravity="center"
     android:paddingHorizontal="20dp">
 
-    <com.google.android.material.card.MaterialCardView
+    <dev.brahmkshatriya.echo.utils.ui.legacy.EchoCardView
         android:id="@+id/extensionsCont"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -26,7 +26,7 @@
             android:layout_height="32dp"
             android:contentDescription="@string/extensions"
             android:src="@drawable/ic_extension_32dp" />
-    </com.google.android.material.card.MaterialCardView>
+    </dev.brahmkshatriya.echo.utils.ui.legacy.EchoCardView>
 
     <TextView
         android:id="@+id/title"
@@ -40,10 +40,10 @@
         android:gravity="center"
         android:maxLines="2"
         android:text="@string/app_name"
-        android:textAppearance="@style/TextAppearance.Material3.ActionBar.Title"
+        android:textAppearance="@style/EchoTextActionBarTitle"
         tools:targetApi="26" />
 
-    <com.google.android.material.card.MaterialCardView
+    <dev.brahmkshatriya.echo.utils.ui.legacy.EchoCardView
         android:id="@+id/accountsCont"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -58,6 +58,6 @@
             android:layout_height="32dp"
             android:contentDescription="@string/extensions"
             android:src="@drawable/ic_account_circle_32dp" />
-    </com.google.android.material.card.MaterialCardView>
+    </dev.brahmkshatriya.echo.utils.ui.legacy.EchoCardView>
 
 </LinearLayout>

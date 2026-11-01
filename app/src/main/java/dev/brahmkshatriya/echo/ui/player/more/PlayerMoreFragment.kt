@@ -12,8 +12,8 @@ import androidx.core.view.updatePaddingRelative
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.add
 import androidx.fragment.app.commitNow
-import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.google.android.material.button.MaterialButton
+import dev.brahmkshatriya.echo.utils.ui.legacy.EchoBottomSheetBehavior as BottomSheetBehavior
+import dev.brahmkshatriya.echo.utils.ui.legacy.EchoButton
 import dev.brahmkshatriya.echo.R
 import dev.brahmkshatriya.echo.databinding.FragmentPlayerMoreBinding
 import dev.brahmkshatriya.echo.ui.common.UiViewModel
@@ -78,7 +78,7 @@ class PlayerMoreFragment : Fragment() {
         observe(uiViewModel.playerColors) { colorsNullable ->
             val colors = colorsNullable ?: requireContext().defaultPlayerColors()
             binding.buttonToggleGroupBg.children.forEach {
-                it as MaterialButton
+                it as EchoButton
                 it.backgroundTintList = ColorStateList.valueOf(colors.background)
             }
 
@@ -103,7 +103,7 @@ class PlayerMoreFragment : Fragment() {
                 )
             )
             binding.buttonToggleGroup.children.forEach {
-                it as MaterialButton
+                it as EchoButton
                 it.setTextColor(textColorStateList)
                 it.backgroundTintList = foregroundColorStateList
             }

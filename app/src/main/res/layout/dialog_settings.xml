@@ -40,20 +40,19 @@
                     android:orientation="vertical"
                     android:paddingHorizontal="16dp">
 
-                    <com.google.android.material.button.MaterialButton
+                    <dev.brahmkshatriya.echo.utils.ui.legacy.EchoButton
                         android:id="@+id/closeButton"
-                        style="@style/Widget.Material3Expressive.Button.IconButton.Outlined"
+                        style="@style/EchoButtonOutlined"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="-16dp"
-                        app:icon="@drawable/ic_close"
-                        app:strokeWidth="0dp" />
+                        app:icon="@drawable/ic_close" />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/app_name"
-                        android:textAppearance="@style/TextAppearance.Material3.BodySmall"
+                        android:textAppearance="@style/EchoTextBodySmall"
                         android:textSize="28sp" />
 
                     <TextView
@@ -93,41 +92,41 @@
                 android:textAppearance="?attr/textAppearanceTitleSmall"
                 android:textColor="?attr/colorOnSurfaceVariant" />
 
-            <com.google.android.material.button.MaterialButtonGroup
-                style="@style/Widget.Material3.MaterialButtonGroup.Connected"
+            <dev.brahmkshatriya.echo.utils.ui.legacy.EchoButtonGroup
+                style="@style/EchoButtonGroup"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="12dp"
                 android:orientation="vertical"
-                android:spacing="-4dp">
+                app:spacing="-4dp">
 
-                <com.google.android.material.button.MaterialButton
+                <dev.brahmkshatriya.echo.utils.ui.legacy.EchoButton
                     android:id="@+id/player"
                     style="@style/SideBarButton"
                     android:text="@string/player"
                     app:icon="@drawable/ic_play_circle" />
 
-                <com.google.android.material.button.MaterialButton
+                <dev.brahmkshatriya.echo.utils.ui.legacy.EchoButton
                     android:id="@+id/lookAndFeel"
                     style="@style/SideBarButton"
                     android:text="@string/look_and_feel"
                     app:icon="@drawable/ic_palette" />
 
-                <com.google.android.material.button.MaterialButton
+                <dev.brahmkshatriya.echo.utils.ui.legacy.EchoButton
                     android:id="@+id/other"
                     style="@style/SideBarButton"
                     android:text="@string/other"
                     app:icon="@drawable/ic_more_horiz" />
-            </com.google.android.material.button.MaterialButtonGroup>
+            </dev.brahmkshatriya.echo.utils.ui.legacy.EchoButtonGroup>
 
-            <com.google.android.material.button.MaterialButtonGroup
-                style="@style/Widget.Material3.MaterialButtonGroup.Connected"
+            <dev.brahmkshatriya.echo.utils.ui.legacy.EchoButtonGroup
+                style="@style/EchoButtonGroup"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:spacing="-4dp">
+                app:spacing="-4dp">
 
-                <com.google.android.material.button.MaterialButton
+                <dev.brahmkshatriya.echo.utils.ui.legacy.EchoButton
                     android:id="@+id/downloads"
                     style="@style/SideBarButton"
                     android:layout_width="0dp"
@@ -136,7 +135,7 @@
                     app:icon="@drawable/ic_download_for_offline" />
 
 
-                <com.google.android.material.button.MaterialButton
+                <dev.brahmkshatriya.echo.utils.ui.legacy.EchoButton
                     android:id="@+id/downloadSettings"
                     style="@style/IconButtonTonal"
                     android:layout_width="wrap_content"
@@ -148,16 +147,16 @@
                     app:icon="@drawable/ic_settings_outline"
                     app:iconSize="24dp" />
 
-            </com.google.android.material.button.MaterialButtonGroup>
+            </dev.brahmkshatriya.echo.utils.ui.legacy.EchoButtonGroup>
 
-            <com.google.android.material.button.MaterialButtonGroup
-                style="@style/Widget.Material3.MaterialButtonGroup.Connected"
+            <dev.brahmkshatriya.echo.utils.ui.legacy.EchoButtonGroup
+                style="@style/EchoButtonGroup"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:spacing="-4dp">
+                app:spacing="-4dp">
 
-                <com.google.android.material.button.MaterialButton
+                <dev.brahmkshatriya.echo.utils.ui.legacy.EchoButton
                     android:id="@+id/manageExtension"
                     style="@style/SideBarButton"
                     android:layout_width="0dp"
@@ -165,7 +164,7 @@
                     android:text="@string/extensions"
                     app:icon="@drawable/ic_extension" />
 
-                <com.google.android.material.button.MaterialButton
+                <dev.brahmkshatriya.echo.utils.ui.legacy.EchoButton
                     android:id="@+id/addExtension"
                     style="@style/IconButtonTertiary"
                     android:layout_width="wrap_content"
@@ -176,7 +175,7 @@
                     android:paddingEnd="20dp"
                     app:icon="@drawable/ic_add_circle"
                     app:iconSize="24dp" />
-            </com.google.android.material.button.MaterialButtonGroup>
+            </dev.brahmkshatriya.echo.utils.ui.legacy.EchoButtonGroup>
 
             <TextView
                 android:layout_width="match_parent"
@@ -187,32 +186,32 @@
                 android:textAppearance="?attr/textAppearanceTitleSmall"
                 android:textColor="?attr/colorOnSurfaceVariant" />
 
-            <com.google.android.material.button.MaterialButtonGroup
-                style="@style/Widget.Material3.MaterialButtonGroup.Connected"
+            <dev.brahmkshatriya.echo.utils.ui.legacy.EchoButtonGroup
+                style="@style/EchoButtonGroup"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:spacing="-4dp">
+                app:spacing="-4dp">
 
-                <com.google.android.material.button.MaterialButton
+                <dev.brahmkshatriya.echo.utils.ui.legacy.EchoButton
                     android:id="@+id/language"
                     style="@style/SideBarButton"
                     android:text="@string/language_x"
                     app:icon="@drawable/ic_translate" />
 
-                <com.google.android.material.button.MaterialButton
+                <dev.brahmkshatriya.echo.utils.ui.legacy.EchoButton
                     android:id="@+id/wiki"
                     style="@style/SideBarButton"
                     android:text="@string/guide"
                     app:icon="@drawable/ic_info" />
 
-                <com.google.android.material.button.MaterialButton
+                <dev.brahmkshatriya.echo.utils.ui.legacy.EchoButton
                     android:id="@+id/contributors"
                     style="@style/SideBarButton"
                     android:text="@string/contributors"
                     app:icon="@drawable/ic_person" />
 
-                <com.google.android.material.button.MaterialButton
+                <dev.brahmkshatriya.echo.utils.ui.legacy.EchoButton
                     android:id="@+id/donate"
                     style="@style/SideBarButton"
                     android:backgroundTint="?colorSecondary"
@@ -220,40 +219,40 @@
                     android:textColor="?colorOnSecondary"
                     app:icon="@drawable/ic_heart_filled_40dp"
                     app:iconTint="?colorOnSecondary" />
-            </com.google.android.material.button.MaterialButtonGroup>
+            </dev.brahmkshatriya.echo.utils.ui.legacy.EchoButtonGroup>
 
 
-            <com.google.android.material.button.MaterialButtonGroup
+            <dev.brahmkshatriya.echo.utils.ui.legacy.EchoButtonGroup
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:layout_marginTop="12dp"
                 android:gravity="center"
                 android:orientation="horizontal"
-                android:spacing="0dp">
+                app:spacing="0dp">
 
-                <com.google.android.material.button.MaterialButton
+                <dev.brahmkshatriya.echo.utils.ui.legacy.EchoButton
                     android:id="@+id/discord"
                     style="@style/IconButtonTonalBig"
                     android:contentDescription="Discord"
                     app:icon="@drawable/ic_discord"
                     tools:ignore="HardcodedText" />
 
-                <com.google.android.material.button.MaterialButton
+                <dev.brahmkshatriya.echo.utils.ui.legacy.EchoButton
                     android:id="@+id/github"
                     style="@style/IconButtonTonalBig"
                     android:contentDescription="Github"
                     app:icon="@drawable/ic_github"
                     tools:ignore="HardcodedText" />
 
-                <com.google.android.material.button.MaterialButton
+                <dev.brahmkshatriya.echo.utils.ui.legacy.EchoButton
                     android:id="@+id/telegram"
                     style="@style/IconButtonTonalBig"
                     android:contentDescription="Telegram"
                     app:icon="@drawable/ic_telegram"
                     tools:ignore="HardcodedText" />
 
-            </com.google.android.material.button.MaterialButtonGroup>
+            </dev.brahmkshatriya.echo.utils.ui.legacy.EchoButtonGroup>
 
             <TextView
                 android:id="@+id/version"
@@ -291,7 +290,7 @@
         android:padding="8dp"
         tools:layout_gravity="bottom|end">
 
-        <com.google.android.material.card.MaterialCardView
+        <dev.brahmkshatriya.echo.utils.ui.legacy.EchoCardView
             android:id="@+id/accountsCont"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -306,9 +305,9 @@
                 android:layout_height="32dp"
                 android:contentDescription="@string/extensions"
                 android:src="@drawable/ic_account_circle_32dp" />
-        </com.google.android.material.card.MaterialCardView>
+        </dev.brahmkshatriya.echo.utils.ui.legacy.EchoCardView>
 
-        <com.google.android.material.button.MaterialButton
+        <dev.brahmkshatriya.echo.utils.ui.legacy.EchoButton
             android:id="@+id/currentAccountName"
             style="@style/IconButtonOutlined"
             android:layout_width="0dp"
@@ -320,10 +319,9 @@
             android:text="@string/no_account"
             app:icon="@drawable/ic_keyboard_arrow_down"
             app:iconGravity="end"
-            app:iconTint="?colorControlActivated"
-            app:strokeWidth="0dp" />
+            app:iconTint="?colorControlActivated" />
 
-        <com.google.android.material.card.MaterialCardView
+        <dev.brahmkshatriya.echo.utils.ui.legacy.EchoCardView
             android:id="@+id/extensionsCont"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -338,9 +336,9 @@
                 android:layout_height="32dp"
                 android:contentDescription="@string/extensions"
                 android:src="@drawable/ic_extension_32dp" />
-        </com.google.android.material.card.MaterialCardView>
+        </dev.brahmkshatriya.echo.utils.ui.legacy.EchoCardView>
 
-        <com.google.android.material.button.MaterialButton
+        <dev.brahmkshatriya.echo.utils.ui.legacy.EchoButton
             android:id="@+id/currentExtensionSettings"
             style="@style/IconButtonTonal"
             app:icon="@drawable/ic_settings_outline" />

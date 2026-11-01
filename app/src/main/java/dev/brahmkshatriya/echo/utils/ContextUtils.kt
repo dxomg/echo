@@ -3,7 +3,7 @@ package dev.brahmkshatriya.echo.utils
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
-import android.os.Build.SUPPORTED_ABIS
+import android.os.Build
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.flowWithLifecycle
@@ -19,7 +19,11 @@ import java.io.File
 object ContextUtils {
     fun appVersion() = BuildConfig.VERSION_NAME + " " + BuildConfig.BUILD_TYPE
     fun getArch(): String {
-        SUPPORTED_ABIS.firstOrNull()?.let { return it }
+        if (Build.VERSION.SDK_INT >= 21) {
+            Build.SUPPORTED_ABIS.firstOrNull()?.let { return it }
+        }
+        @Suppress("DEPRECATION")
+        Build.CPU_ABI.takeIf { it.isNotBlank() }?.let { return it }
         return System.getProperty("os.arch")
             ?: System.getProperty("os.product.cpu.abi")
             ?: "Unknown"

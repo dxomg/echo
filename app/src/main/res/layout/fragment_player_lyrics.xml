@@ -58,7 +58,7 @@
         android:alpha="0.66"
         android:text="@string/no_lyrics"
         android:textAlignment="center"
-        android:textAppearance="@style/TextAppearance.Material3.HeadlineSmall"
+        android:textAppearance="@style/EchoTextHeadlineSmall"
         android:textColor="@color/amoled_fg"
         android:visibility="gone" />
 

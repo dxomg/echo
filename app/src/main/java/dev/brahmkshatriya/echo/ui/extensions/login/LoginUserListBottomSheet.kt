@@ -5,8 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.google.android.material.button.MaterialButtonToggleGroup.OnButtonCheckedListener
+import dev.brahmkshatriya.echo.utils.ui.legacy.EchoBottomSheetDialogFragment as BottomSheetDialogFragment
+import dev.brahmkshatriya.echo.utils.ui.legacy.EchoButtonToggleGroup.OnButtonCheckedListener
 import dev.brahmkshatriya.echo.R
 import dev.brahmkshatriya.echo.databinding.DialogLoginUserListBinding
 import dev.brahmkshatriya.echo.databinding.ItemExtensionButtonBinding
@@ -40,8 +40,8 @@ class LoginUserListBottomSheet : BottomSheetDialogFragment() {
             binding.accountListLoading.root.isVisible = ext == null
             binding.accountListToggleGroup.isVisible = ext != null
             binding.title.title = getString(R.string.select_x_account, ext?.name ?: "")
-            binding.accountListToggleGroup.removeAllViews()
             listener?.let { binding.accountListToggleGroup.removeOnButtonCheckedListener(it) }
+            binding.accountListToggleGroup.removeAllViews()
 
             ext ?: return@observe
 
@@ -72,6 +72,7 @@ class LoginUserListBottomSheet : BottomSheetDialogFragment() {
                     layoutInflater, binding.accountListToggleGroup, false
                 ).root
                 button.text = user.name
+                button.id = index
                 binding.accountListToggleGroup.addView(button)
                 button.isChecked = selected
                 user.cover.loadAsCircle(button) {
@@ -80,7 +81,6 @@ class LoginUserListBottomSheet : BottomSheetDialogFragment() {
                         button.iconTint = null
                     } else button.setIconResource(R.drawable.ic_account_circle)
                 }
-                button.id = index
             }
 
             val checked = list.indexOfFirst { it.second }.takeIf { it != -1 }

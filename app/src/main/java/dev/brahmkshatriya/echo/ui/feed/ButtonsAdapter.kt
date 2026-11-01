@@ -4,8 +4,8 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
-import com.google.android.material.chip.Chip
-import com.google.android.material.chip.ChipGroup
+import dev.brahmkshatriya.echo.utils.ui.legacy.EchoChip as Chip
+import dev.brahmkshatriya.echo.utils.ui.legacy.EchoChipGroup as ChipGroup
 import dev.brahmkshatriya.echo.R
 import dev.brahmkshatriya.echo.common.models.Feed
 import dev.brahmkshatriya.echo.common.models.Track

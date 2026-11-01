@@ -3,16 +3,16 @@ package dev.brahmkshatriya.echo
 import android.content.Context
 import android.graphics.Color.TRANSPARENT
 import android.os.Bundle
-import androidx.activity.SystemBarStyle
-import androidx.activity.enableEdgeToEdge
+import android.os.Build
+import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.add
 import androidx.fragment.app.commit
-import com.google.android.material.color.DynamicColors
-import com.google.android.material.color.DynamicColorsOptions
-import com.google.android.material.navigation.NavigationBarView
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsControllerCompat
+import dev.brahmkshatriya.echo.utils.ui.legacy.EchoNavigationBarView as NavigationBarView
 import dev.brahmkshatriya.echo.databinding.ActivityMainBinding
 import dev.brahmkshatriya.echo.extensions.ExtensionLoader
 import dev.brahmkshatriya.echo.ui.common.ExceptionUtils.setupExceptionHandler
@@ -42,17 +42,21 @@ open class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setTheme(getAppTheme())
-        DynamicColors.applyToActivityIfAvailable(
-            this, applyUiChanges(this, uiViewModel)
-        )
+        applyUiChanges(this, uiViewModel)
 
         setContentView(binding.root)
 
-        enableEdgeToEdge(
-            SystemBarStyle.auto(TRANSPARENT, TRANSPARENT),
-            if (isNightMode()) SystemBarStyle.dark(TRANSPARENT)
-            else SystemBarStyle.light(TRANSPARENT, TRANSPARENT)
-        )
+        // Transparent system bars are unavailable on Android 4.3.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+            window.statusBarColor = TRANSPARENT
+            window.navigationBarColor = TRANSPARENT
+            WindowCompat.setDecorFitsSystemWindows(window, false)
+            WindowInsetsControllerCompat(window, binding.root).apply {
+                isAppearanceLightStatusBars = !isNightMode()
+                isAppearanceLightNavigationBars = !isNightMode()
+            }
+        }
 
         setupNavBarAndInsets(uiViewModel, binding.root, binding.navView as NavigationBarView)
         setupPlayerBehavior(uiViewModel, binding.playerFragmentContainer)
@@ -91,7 +95,7 @@ open class MainActivity : AppCompatActivity() {
 
         fun Context.isAmoled() = getSettings().getBoolean(AMOLED_KEY, false)
 
-        fun applyUiChanges(context: Context, uiViewModel: UiViewModel): DynamicColorsOptions {
+        fun applyUiChanges(context: Context, uiViewModel: UiViewModel) {
             val settings = context.getSettings()
             val mode = when (settings.getString(THEME_KEY, "system")) {
                 "light" -> AppCompatDelegate.MODE_NIGHT_NO
@@ -105,9 +109,9 @@ open class MainActivity : AppCompatActivity() {
             val playerColor = settings.getBoolean(PLAYER_COLOR, false)
             val customColor = uiViewModel.playerColors.value?.accent?.takeIf { playerColor }
 
-            val builder = DynamicColorsOptions.Builder()
-            (customColor ?: color)?.let { builder.setContentBasedSource(it) }
-            return builder.build()
+            dev.brahmkshatriya.echo.utils.ui.legacy.EchoColors.setAccent(
+                context, customColor ?: color
+            )
         }
 
         const val BACK_ANIM = "back_anim"

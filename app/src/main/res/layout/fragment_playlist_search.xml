@@ -46,9 +46,9 @@
                 android:textAppearance="?attr/textAppearanceTitleLarge"
                 android:textSize="18sp" />
 
-            <com.google.android.material.button.MaterialButton
+            <dev.brahmkshatriya.echo.utils.ui.legacy.EchoButton
                 android:id="@+id/addTracks"
-                style="@style/Widget.Material3Expressive.Button"
+                style="@style/EchoButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:contentDescription="@string/add"

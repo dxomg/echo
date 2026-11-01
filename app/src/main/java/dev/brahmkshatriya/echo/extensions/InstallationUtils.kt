@@ -30,7 +30,7 @@ object InstallationUtils {
             addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
             putExtra(Intent.EXTRA_NOT_UNKNOWN_SOURCE, true)
             putExtra(Intent.EXTRA_RETURN_RESULT, true)
-            data = contentUri
+            setDataAndType(contentUri, "application/vnd.android.package-archive")
         }
         val it = activity.waitForResult(installIntent)
         if (it.resultCode == Activity.RESULT_OK) return
@@ -48,7 +48,7 @@ object InstallationUtils {
         if (newFile.exists())
             if (!newFile.delete())
                 throw IllegalStateException("Failed to delete existing file: $newFile")
-        tempFile.renameTo(newFile)
+        check(tempFile.renameTo(newFile)) { "Failed to install extension: $newFile" }
         newFile.setWritable(false)
         dir.setReadOnly()
         fileIgnoreFlow.emit(null)
@@ -67,10 +67,9 @@ object InstallationUtils {
     }
 
     fun Context.getTempFile(uri: Uri): File {
-        val stream = contentResolver.openInputStream(uri)!!
         val tempFile = getTempFile("dat")
-        tempFile.outputStream().use { outputStream ->
-            stream.copyTo(outputStream)
+        contentResolver.openInputStream(uri)!!.use { stream ->
+            tempFile.outputStream().use { outputStream -> stream.copyTo(outputStream) }
         }
         return tempFile
     }

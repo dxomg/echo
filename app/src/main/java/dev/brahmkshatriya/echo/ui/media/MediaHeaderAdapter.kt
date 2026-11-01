@@ -15,7 +15,7 @@ import androidx.core.view.updateLayoutParams
 import androidx.core.view.updatePaddingRelative
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import androidx.appcompat.app.AlertDialog.Builder as MaterialAlertDialogBuilder
 import dev.brahmkshatriya.echo.R
 import dev.brahmkshatriya.echo.common.models.Album
 import dev.brahmkshatriya.echo.common.models.Album.Type.Book

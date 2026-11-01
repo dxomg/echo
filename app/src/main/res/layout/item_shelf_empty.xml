@@ -30,7 +30,7 @@
             android:maxLines="1"
             android:text="@string/crying_af"
             android:textSize="36sp"
-            android:textAppearance="@style/TextAppearance.Material3.DisplayMedium"
+            android:textAppearance="@style/EchoTextDisplayMedium"
             android:textColor="?navBarForeground"
             android:typeface="monospace" />
     </FrameLayout>

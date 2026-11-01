@@ -3,7 +3,7 @@ package dev.brahmkshatriya.echo.ui.player.more.info
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
-import com.google.android.material.transition.MaterialSharedAxis
+import dev.brahmkshatriya.echo.utils.ui.legacy.EchoSharedAxis as MaterialSharedAxis
 import dev.brahmkshatriya.echo.R
 import dev.brahmkshatriya.echo.ui.media.MediaDetailsFragment
 import dev.brahmkshatriya.echo.utils.ui.AnimationUtils.setupTransition

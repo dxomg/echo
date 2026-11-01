@@ -21,10 +21,9 @@ import androidx.core.view.forEachIndexed
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator
-import com.google.android.material.color.MaterialColors
-import com.google.android.material.motion.MotionUtils
-import com.google.android.material.navigation.NavigationBarView
-import com.google.android.material.transition.MaterialSharedAxis
+import dev.brahmkshatriya.echo.utils.ui.legacy.EchoColors as MaterialColors
+import dev.brahmkshatriya.echo.utils.ui.legacy.EchoNavigationBarView as NavigationBarView
+import dev.brahmkshatriya.echo.utils.ui.legacy.EchoSharedAxis as MaterialSharedAxis
 import dev.brahmkshatriya.echo.R
 import dev.brahmkshatriya.echo.utils.ContextUtils.SETTINGS_NAME
 import kotlin.math.absoluteValue
@@ -41,10 +40,7 @@ object AnimationUtils {
         animation.setInterpolator(interpolator).setDuration(duration.toLong()).start()
     }
 
-    private fun getInterpolator(context: Context) = MotionUtils.resolveThemeInterpolator(
-        context, com.google.android.material.R.attr.motionEasingStandardInterpolator,
-        FastOutSlowInInterpolator()
-    )
+    private fun getInterpolator(context: Context) = FastOutSlowInInterpolator()
 
     fun View.animateMarginTop(hide: Boolean, onEnd: (() -> Unit)? = null) {
         if (!animations) {
@@ -138,18 +134,10 @@ object AnimationUtils {
     }
 
     private val View.animationDuration: Long
-        get() = context.applicationContext.run {
-            MotionUtils.resolveThemeDuration(
-                this, com.google.android.material.R.attr.motionDurationMedium1, 350
-            ).toLong()
-        }
+        get() = 350L
 
     private val View.animationDurationSmall: Long
-        get() = context.applicationContext.run {
-            MotionUtils.resolveThemeDuration(
-                this, com.google.android.material.R.attr.motionDurationShort1, 100
-            ).toLong()
-        }
+        get() = 100L
 
     const val ANIMATIONS_KEY = "animations"
     const val SCROLL_ANIMATIONS_KEY = "shared_element"
@@ -184,7 +172,7 @@ object AnimationUtils {
 //            }
 //            sharedElementEnterTransition = transition
 //        }
-            (view as? ViewGroup)?.isTransitionGroup = true
+            (view as? ViewGroup)?.let { androidx.core.view.ViewGroupCompat.setTransitionGroup(it, true) }
             exitTransition = MaterialSharedAxis(axis, true)
             reenterTransition = MaterialSharedAxis(axis, false)
             enterTransition = MaterialSharedAxis(axis, true)

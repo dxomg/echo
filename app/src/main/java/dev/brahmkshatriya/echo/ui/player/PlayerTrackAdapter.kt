@@ -13,7 +13,7 @@ import com.google.android.exoplayer2.MediaItem
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_EXPANDED
+import dev.brahmkshatriya.echo.utils.ui.legacy.EchoBottomSheetBehavior.STATE_EXPANDED
 import dev.brahmkshatriya.echo.R
 import dev.brahmkshatriya.echo.databinding.ItemClickPanelsBinding
 import dev.brahmkshatriya.echo.databinding.ItemPlayerTrackBinding

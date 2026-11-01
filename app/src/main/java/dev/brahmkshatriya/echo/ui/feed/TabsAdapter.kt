@@ -3,11 +3,10 @@ package dev.brahmkshatriya.echo.ui.feed
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.children
 import androidx.core.view.doOnLayout
 import androidx.core.view.isVisible
-import com.google.android.material.button.MaterialButton
-import com.google.android.material.button.MaterialButtonGroup
+import dev.brahmkshatriya.echo.utils.ui.legacy.EchoButton
+import dev.brahmkshatriya.echo.utils.ui.legacy.EchoButtonGroup
 import dev.brahmkshatriya.echo.databinding.ItemTabBinding
 import dev.brahmkshatriya.echo.databinding.ItemTabContainerBinding
 import dev.brahmkshatriya.echo.ui.common.GridAdapter
@@ -35,7 +34,7 @@ class TabsAdapter<T>(
             parent?.let { apply(it) }
         }
 
-    var parent: MaterialButtonGroup? = null
+    var parent: EchoButtonGroup? = null
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         super.onBindViewHolder(holder, position)
         val parent = holder.binding.buttonGroup
@@ -43,13 +42,12 @@ class TabsAdapter<T>(
         apply(parent)
         parent.doOnLayout {
             if (selected < 0) return@doOnLayout
-            val scrollX = parent.children.filter { it.isVisible }
-                .take(selected).sumOf { it.width }
+            val scrollX = parent.getChildAt(selected)?.left ?: 0
             holder.binding.root.scrollTo(scrollX, 0)
         }
     }
 
-    fun apply(parent: MaterialButtonGroup) {
+    fun apply(parent: EchoButtonGroup) {
         val tabs = data
         parent.isVisible = tabs.isNotEmpty()
         if (tabs.isEmpty()) return
@@ -62,7 +60,7 @@ class TabsAdapter<T>(
         }
         tabs.indices.forEach { i ->
             val tab = tabs[i]
-            val button = parent.getChildAt(i) as MaterialButton
+            val button = parent.getChildAt(i) as EchoButton
             button.apply {
                 isVisible = true
                 val title = getTitle(tab)

@@ -84,7 +84,7 @@
 
             </LinearLayout>
 
-            <com.google.android.material.materialswitch.MaterialSwitch
+            <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/pitchSwitch"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -111,16 +111,16 @@
             android:textColor="?attr/colorOnSurfaceVariant"
             android:text="@string/bass_boost_desc" />
 
-        <com.google.android.material.slider.Slider
+        <dev.brahmkshatriya.echo.utils.ui.legacy.EchoSlider
             android:id="@+id/bassBoostSlider"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="8dp"
             android:layout_marginVertical="8dp"
-            android:stepSize="1"
-            android:value="0"
-            android:valueFrom="0"
-            android:valueTo="10" />
+            app:stepSize="1"
+            app:value="0"
+            app:valueFrom="0"
+            app:valueTo="10" />
 
         <LinearLayout
             android:id="@+id/equalizer"

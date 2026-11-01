@@ -32,6 +32,9 @@ import dev.brahmkshatriya.echo.playback.MediaItemUtils.subtitleIndex
 import dev.brahmkshatriya.echo.playback.PlayerService.Companion.select
 import dev.brahmkshatriya.echo.playback.PlayerState
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -49,6 +52,8 @@ class StreamableMediaSource(
 ) : CompositeMediaSource<Nothing>() {
 
     private var error: Throwable? = null
+    private var prepareJob: Job? = null
+    private var generation = 0
     override fun maybeThrowSourceInfoRefreshError() {
         error?.let { throw IOException(it) }
         super.maybeThrowSourceInfoRefreshError()
@@ -60,11 +65,12 @@ class StreamableMediaSource(
     override fun prepareSourceInternal(mediaTransferListener: TransferListener?) {
         super.prepareSourceInternal(mediaTransferListener)
         val handler = Util.createHandlerForCurrentLooper()
-        scope.launch {
-            var (new, serv) = runCatching { loader.load(mediaItem) }.getOrElse {
-                error = it
-                return@launch
-            }
+        error = null
+        val currentGeneration = ++generation
+        prepareJob = scope.launch {
+          try {
+            var (new, serv) = loader.load(mediaItem)
+            ensureActive()
             val server = serv.getOrNull()
             state.servers[new.mediaId] = serv
             state.serverChanged.emit(Unit)
@@ -96,13 +102,28 @@ class StreamableMediaSource(
             mediaItem = new
 
             handler.post {
+                if (generation != currentGeneration) return@post
                 runCatching {
                     prepareChildSource(null, actualSource)
                 }.getOrElse {
-                    it.printStackTrace()
+                    error = it
                 }
             }
+          } catch (cancelled: CancellationException) {
+            throw cancelled
+          } catch (failure: Throwable) {
+            handler.post {
+                if (generation == currentGeneration) error = failure
+            }
+          }
         }
+    }
+
+    override fun releaseSourceInternal() {
+        generation++
+        prepareJob?.cancel()
+        prepareJob = null
+        super.releaseSourceInternal()
     }
 
     override fun onChildSourceInfoRefreshed(
@@ -117,23 +138,6 @@ class StreamableMediaSource(
 
     override fun releasePeriod(mediaPeriod: MediaPeriod) =
         actualSource.releasePeriod(mediaPeriod)
-
-    override fun canUpdateMediaItem(mediaItem: MediaItem) = run {
-        this.mediaItem.apply {
-            if (retries != mediaItem.retries) return@run false
-            if (serverIndex != mediaItem.serverIndex) return@run false
-            if (this.sourceIndex != mediaItem.sourceIndex) return@run false
-            if (backgroundIndex != mediaItem.backgroundIndex) return@run false
-            if (subtitleIndex != mediaItem.subtitleIndex) return@run false
-        }
-        if (::actualSource.isInitialized) actualSource.canUpdateMediaItem(mediaItem)
-        else false
-    }
-
-    override fun updateMediaItem(mediaItem: MediaItem) {
-        this.mediaItem = mediaItem
-        actualSource.updateMediaItem(mediaItem)
-    }
 
     data class Factories(
         val dash: Lazy<MediaSource.Factory>,

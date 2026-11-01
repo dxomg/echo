@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.transition.MaterialSharedAxis
+import dev.brahmkshatriya.echo.utils.ui.legacy.EchoSharedAxis as MaterialSharedAxis
 import dev.brahmkshatriya.echo.databinding.FragmentPlayerQueueBinding
 import dev.brahmkshatriya.echo.ui.player.PlayerViewModel
 import dev.brahmkshatriya.echo.utils.ContextUtils.observe

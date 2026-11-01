@@ -116,7 +116,7 @@ class PlayerService : MediaBrowserServiceCompat() {
             this, player, session, notifications, extensions, scope
         )
 
-        player.addListener(AudioFocusListener(this, player))
+        player.addListener(AudioFocusListener(this, exoPlayer))
         player.addListener(
             PlayerEventListener(this, scope, player, state.current, extensions, app.throwFlow)
         )

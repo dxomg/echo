@@ -7,11 +7,10 @@
     android:orientation="vertical"
     android:paddingVertical="24dp">
 
-    <com.google.android.material.loadingindicator.LoadingIndicator
+    <dev.brahmkshatriya.echo.utils.ui.legacy.EchoCircularProgressBar
         android:id="@+id/progress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:indeterminate="true"
-        app:containerColor="?colorPrimaryInverse" />
+        android:indeterminate="true" />
 
 </LinearLayout>
