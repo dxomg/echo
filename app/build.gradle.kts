@@ -67,24 +67,20 @@ kotlin {
     jvmToolchain(17)
 }
 
-// Room 2.6.1 bundles kotlinx-metadata 0.7.0, which refuses Kotlin 2.2 stubs.
-// kapt copies the compiler's @Metadata annotation verbatim into the Java stubs,
-// so lower the declared metadata version there before Room processes them.
+// Room 2.6.1 bundles kotlinx-metadata 0.7.0, which only understands metadata
+// up to 2.0.0. Compile the app (including kapt stubs) with the matching
+// language level so kapt does not hand Room Kotlin 2.2 metadata.
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
+    compilerOptions {
+        languageVersion.set(org.jetbrains.kotlin.gradle.dsl.KotlinVersion.KOTLIN_2_0)
+        apiVersion.set(org.jetbrains.kotlin.gradle.dsl.KotlinVersion.KOTLIN_2_0)
+    }
+}
+
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KaptGenerateStubs>().configureEach {
-    doLast {
-        val metadataVersion = Regex("""mv\s*=\s*\{\s*2\s*,\s*2\s*,\s*0\s*}""")
-        var patched = 0
-        stubsDir.get().asFile.walkTopDown()
-            .filter { it.isFile && it.extension == "java" }
-            .forEach { stub ->
-                val original = stub.readText()
-                val updated = original.replace(metadataVersion, "mv = {2, 0, 0}")
-                if (updated != original) {
-                    stub.writeText(updated)
-                    patched++
-                }
-            }
-        if (patched > 0) logger.lifecycle("Lowered Kotlin metadata version in $patched kapt stubs")
+    compilerOptions {
+        languageVersion.set(org.jetbrains.kotlin.gradle.dsl.KotlinVersion.KOTLIN_2_0)
+        apiVersion.set(org.jetbrains.kotlin.gradle.dsl.KotlinVersion.KOTLIN_2_0)
     }
 }
 

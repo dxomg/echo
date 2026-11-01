@@ -16,6 +16,12 @@ java {
 kotlin {
     jvmToolchain(17)
 
+    // Keep the common classes readable by Room 2.6.1 in the app's kapt run.
+    compilerOptions {
+        languageVersion.set(org.jetbrains.kotlin.gradle.dsl.KotlinVersion.KOTLIN_2_0)
+        apiVersion.set(org.jetbrains.kotlin.gradle.dsl.KotlinVersion.KOTLIN_2_0)
+    }
+
     @Suppress("UnstableApiUsage")
     androidLibrary {
         namespace = "echo.common"
