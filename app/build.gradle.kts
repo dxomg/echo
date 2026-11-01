@@ -67,13 +67,9 @@ kotlin {
     jvmToolchain(17)
     compilerOptions {
         // Room 2.6.1's bundled kotlinx-metadata can only read metadata up to 2.0.0
-        freeCompilerArgs.add("-Xmetadata-version=2.0.0")
+        languageVersion.set(KotlinVersion.KOTLIN_2_0)
+        apiVersion.set(KotlinVersion.KOTLIN_2_0)
     }
-}
-
-// Kapt writes its own stubs; make sure they also carry metadata Room 2.6.1 can read.
-tasks.withType<org.jetbrains.kotlin.gradle.tasks.KaptGenerateStubs>().configureEach {
-    compilerOptions.freeCompilerArgs.add("-Xmetadata-version=2.0.0")
 }
 
 // Resolve the JVM distribution of the exact same OkHttp release. Its Android
