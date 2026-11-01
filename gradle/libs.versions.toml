@@ -29,7 +29,6 @@ desugar-jdk-libs = { module = "com.android.tools:desugar_jdk_libs", version = "2
 androidx-lifecycle-runtime = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version = "2.5.1" }
 androidx-lifecycle-viewmodel = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version = "2.5.1" }
 androidx-navigation-fragment = { module = "androidx.navigation:navigation-fragment-ktx", version = "2.5.3" }
-androidx-navigation-ui = { module = "androidx.navigation:navigation-ui-ktx", version = "2.5.3" }
 androidx-work-runtime = { module = "androidx.work:work-runtime-ktx", version = "2.8.1" }
 
 protobuf-java = { module = "com.google.protobuf:protobuf-java", version = "4.32.0" }
@@ -68,7 +67,7 @@ androidx = [
     "recyclerview", "swiperefresh", "palette", "legacy-preference",
     "legacy-constraintlayout", "androidx-multidex", "legacy-support-media",
     "androidx-core-google-shortcuts", "androidx-lifecycle-runtime", "androidx-lifecycle-viewmodel",
-    "androidx-navigation-fragment", "androidx-navigation-ui", "androidx-work-runtime", "androidx-viewpager2"
+    "androidx-navigation-fragment", "androidx-work-runtime", "androidx-viewpager2"
 ]
 room = ["room-runtime", "room-ktx"]
 koin = ["koin-android", "koin-androidx-workmanager"]
