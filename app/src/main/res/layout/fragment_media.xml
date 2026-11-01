@@ -17,8 +17,7 @@
             android:id="@+id/collapsingToolbar"
             style="@style/EchoCollapsingBar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:maxLines="3">
+            android:layout_height="wrap_content">
 
             <ImageView
                 android:id="@+id/endIcon"
@@ -88,7 +87,7 @@
 
         <dev.brahmkshatriya.echo.utils.ui.legacy.EchoButton
             android:id="@+id/fabEditPlaylist"
-            style="?floatingActionButtonPrimaryStyle"
+            style="@style/EchoFloatingActionButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="24dp"

@@ -8,6 +8,7 @@ kotlin = "2.2.10"
 # `okhttp3` from the app classloader — common/okhttp/protobuf versions are pinned.
 room = "2.5.0"
 koinAndroid = "3.5.6"
+paging = "3.2.1"
 exooplayer2 = "2.19.1"
 glide = "4.16.0"
 
@@ -21,15 +22,18 @@ androidx-core-google-shortcuts = { module = "androidx.core:core-google-shortcuts
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version = "1.9.0" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version = "1.6.1" }
 androidx-cardview = { module = "androidx.cardview:cardview", version = "1.0.0" }
-androidx-activity = { group = "androidx.activity", name = "activity-ktx", version = "1.5.1" }
+androidx-coordinatorlayout = { module = "androidx.coordinatorlayout:coordinatorlayout", version = "1.2.0" }
+androidx-activity = { group = "androidx.activity", name = "activity-ktx", version = "1.8.2" }
 androidx-viewpager2 = { module = "androidx.viewpager2:viewpager2", version = "1.0.0" }
 conscrypt = { module = "org.conscrypt:conscrypt-android", version = "2.5.2" }
 androidx-multidex = { module = "androidx.multidex:multidex", version = "2.0.1" }
 desugar-jdk-libs = { module = "com.android.tools:desugar_jdk_libs", version = "2.1.5" }
-androidx-lifecycle-runtime = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version = "2.5.1" }
-androidx-lifecycle-viewmodel = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version = "2.5.1" }
+androidx-lifecycle-runtime = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version = "2.6.1" }
+androidx-lifecycle-viewmodel = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version = "2.6.1" }
 androidx-navigation-fragment = { module = "androidx.navigation:navigation-fragment-ktx", version = "2.5.3" }
 androidx-work-runtime = { module = "androidx.work:work-runtime-ktx", version = "2.8.1" }
+androidx-paging-common = { module = "androidx.paging:paging-common-ktx", version.ref = "paging" }
+androidx-paging-runtime = { module = "androidx.paging:paging-runtime-ktx", version.ref = "paging" }
 
 protobuf-java = { module = "com.google.protobuf:protobuf-java", version = "4.32.0" }
 recyclerview = { module = "androidx.recyclerview:recyclerview", version = "1.2.1" }
@@ -63,11 +67,13 @@ kenburnsview = { module = "com.flaviofaria:kenburnsview", version = "1.0.7" }
 
 [bundles]
 androidx = [
-    "androidx-core-ktx", "androidx-appcompat", "androidx-cardview", "androidx-activity", "fragment",
+    "androidx-core-ktx", "androidx-appcompat", "androidx-cardview", "androidx-coordinatorlayout",
+    "androidx-activity", "fragment",
     "recyclerview", "swiperefresh", "palette", "legacy-preference",
     "legacy-constraintlayout", "androidx-multidex", "legacy-support-media",
     "androidx-core-google-shortcuts", "androidx-lifecycle-runtime", "androidx-lifecycle-viewmodel",
-    "androidx-navigation-fragment", "androidx-work-runtime", "androidx-viewpager2"
+    "androidx-navigation-fragment", "androidx-work-runtime", "androidx-viewpager2",
+    "androidx-paging-common", "androidx-paging-runtime"
 ]
 room = ["room-runtime", "room-ktx"]
 koin = ["koin-android", "koin-androidx-workmanager"]

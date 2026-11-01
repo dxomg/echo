@@ -117,7 +117,7 @@
 
     <style name="Selectable">
         <item name="android:focusable">true</item>
-        <item name="android:foreground">@drawable/ripple_item_container</item>
+        <item name="android:foreground">@drawable/legacy_item_background</item>
     </style>
 
     <style name="DialogHorizontalButton" parent="EchoButtonTonal">

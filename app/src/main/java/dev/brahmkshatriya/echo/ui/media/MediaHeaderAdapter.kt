@@ -2,6 +2,7 @@ package dev.brahmkshatriya.echo.ui.media
 
 import android.content.Context
 import android.icu.text.CompactDecimalFormat
+import android.os.Build
 import android.text.SpannableString
 import android.text.Spanned
 import android.text.method.LinkMovementMethod
@@ -45,6 +46,14 @@ import dev.brahmkshatriya.echo.utils.ui.UiUtils.dpToPx
 import dev.brahmkshatriya.echo.utils.ui.UiUtils.toTimeString
 import dev.brahmkshatriya.echo.utils.ui.scrolling.ScrollAnimRecyclerAdapter
 import dev.brahmkshatriya.echo.utils.ui.scrolling.ScrollAnimViewHolder
+import java.text.NumberFormat
+
+private fun formatCompact(value: Number): String =
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+        CompactDecimalFormat.getInstance().format(value)
+    } else {
+        NumberFormat.getNumberInstance().format(value)
+    }
 
 class MediaHeaderAdapter(
     private val listener: Listener,
@@ -216,8 +225,7 @@ class MediaHeaderAdapter(
             explicit.isVisible = state.item.isExplicit
             followers.isVisible = state.followers != null
             followers.text = state.followers?.let {
-                val formatter = CompactDecimalFormat.getInstance()
-                root.context.getString(R.string.x_followers, formatter.format(it))
+                root.context.getString(R.string.x_followers, formatCompact(it))
             }
             val span =
                 root.context.getSpan(true, state.extensionId, state.item) { id, item ->
@@ -357,8 +365,7 @@ class MediaHeaderAdapter(
                     val secondRow = listOfNotNull(
                         item.duration?.toTimeString(),
                         if (item.plays != null) {
-                            val formatter = CompactDecimalFormat.getInstance()
-                            getString(R.string.x_plays, formatter.format(item.plays))
+                            getString(R.string.x_plays, formatCompact(item.plays))
                         } else null
                     ).joinToString(DIVIDER)
                     if (firstRow.isNotEmpty()) appendLine(firstRow)

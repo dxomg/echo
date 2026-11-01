@@ -36,7 +36,11 @@
         <item name="colorOutlineVariant">@color/amoled_fg_semi</item>
         <item name="colorTertiary">@color/app_color</item>
         <item name="colorPrimaryContainer">@color/app_color_highlight</item>
+        <item name="colorSecondary">@color/app_color</item>
         <item name="colorSecondaryContainer">@color/app_color_highlight</item>
+        <item name="textAppearanceHeadlineSmall">@style/EchoTextHeadlineSmall</item>
+        <item name="textAppearanceTitleSmall">@style/EchoTextTitleSmall</item>
+        <item name="textAppearanceTitleLarge">@style/EchoTextTitleLarge</item>
         <item name="colorOnPrimaryContainer">@color/black</item>
         <item name="colorOnSecondaryContainer">@color/black</item>
         <item name="echoBackground">@color/amoled_bg</item>

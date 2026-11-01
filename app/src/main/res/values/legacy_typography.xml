@@ -19,6 +19,9 @@
     <style name="EchoTextTitleLarge" parent="TextAppearance.AppCompat.Title">
         <item name="android:textSize">22sp</item>
     </style>
+    <style name="EchoTextTitleSmall" parent="TextAppearance.AppCompat.Subhead">
+        <item name="android:textSize">14sp</item>
+    </style>
     <style name="EchoTextActionBarTitle" parent="TextAppearance.AppCompat.Widget.ActionBar.Title" />
     <style name="EchoTextHeadlineSmall" parent="TextAppearance.AppCompat.Headline">
         <item name="android:textSize">24sp</item>

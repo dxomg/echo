@@ -32,7 +32,7 @@
                 android:id="@+id/collapsedTrackPlayPause"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
-                android:background="@drawable/ripple_44dp"
+                android:background="@drawable/legacy_ripple_circle"
                 android:button="@null"
                 app:buttonCompat="@drawable/anim_play_pause"
                 android:paddingLeft="12dp"

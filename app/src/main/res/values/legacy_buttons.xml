@@ -49,4 +49,17 @@
     <style name="EchoButtonGroup" parent="">
         <item name="android:orientation">horizontal</item>
     </style>
+    <style name="EchoFloatingActionButton" parent="EchoButton">
+        <item name="android:layout_width">56dp</item>
+        <item name="android:layout_height">56dp</item>
+        <item name="android:minWidth">0dp</item>
+        <item name="android:minHeight">0dp</item>
+        <item name="android:padding">16dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@android:color/transparent</item>
+        <item name="android:background">@drawable/legacy_fab_background</item>
+        <item name="iconGravity">top</item>
+        <item name="iconTint">@color/amoled_fg</item>
+        <item name="iconSize">24dp</item>
+    </style>
 </resources>

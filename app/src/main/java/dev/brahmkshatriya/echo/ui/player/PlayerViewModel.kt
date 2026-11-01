@@ -38,7 +38,6 @@ import dev.brahmkshatriya.echo.playback.PlayerCommands.resumeCommand
 import dev.brahmkshatriya.echo.playback.PlayerCommands.sleepTimer
 import dev.brahmkshatriya.echo.playback.PlayerService.Companion.getController
 import dev.brahmkshatriya.echo.playback.PlayerState
-import dev.brahmkshatriya.echo.utils.ContextUtils.listenFuture
 import dev.brahmkshatriya.echo.utils.Serializer.putSerialized
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow

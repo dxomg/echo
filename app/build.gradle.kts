@@ -84,12 +84,12 @@ configurations.all {
             val version = when (requested.group) {
                 "androidx.core" -> if (requested.name in listOf("core", "core-ktx")) "1.9.0" else null
                 "androidx.appcompat" -> "1.6.1"
-                "androidx.activity" -> "1.5.1"
+                "androidx.activity" -> "1.8.2"
                 "androidx.fragment" -> "1.5.7"
-                "androidx.lifecycle" -> "2.5.1"
+                "androidx.lifecycle" -> "2.6.1"
                 "androidx.navigation" -> "2.5.3"
                 "androidx.work" -> "2.8.1"
-                "androidx.savedstate" -> "1.2.0"
+                "androidx.savedstate" -> "1.2.1"
                 "com.squareup.okhttp3" -> "5.1.0"
                 else -> null
             }
