@@ -67,6 +67,27 @@ kotlin {
     jvmToolchain(17)
 }
 
+// Room 2.6.1 bundles kotlinx-metadata 0.7.0, which refuses Kotlin 2.2 stubs.
+// kapt copies the compiler's @Metadata annotation verbatim into the Java stubs,
+// so lower the declared metadata version there before Room processes them.
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KaptGenerateStubs>().configureEach {
+    doLast {
+        val metadataVersion = Regex("""mv\s*=\s*\{\s*2\s*,\s*2\s*,\s*0\s*}""")
+        var patched = 0
+        stubsDir.get().asFile.walkTopDown()
+            .filter { it.isFile && it.extension == "java" }
+            .forEach { stub ->
+                val original = stub.readText()
+                val updated = original.replace(metadataVersion, "mv = {2, 0, 0}")
+                if (updated != original) {
+                    stub.writeText(updated)
+                    patched++
+                }
+            }
+        if (patched > 0) logger.lifecycle("Lowered Kotlin metadata version in $patched kapt stubs")
+    }
+}
+
 // Resolve the JVM distribution of the exact same OkHttp release. Its Android
 // distribution rejects API <21 during Platform initialization. The JVM ABI is
 // still okhttp3.*; Conscrypt is installed before any client is constructed.

@@ -7,7 +7,6 @@ kotlin = "2.2.10"
 # Extension runtime surface: ALL current extensions load `echo.common` classes +
 # `okhttp3` from the app classloader — common/okhttp/protobuf versions are pinned.
 room = "2.6.1"
-room-compiler = "2.7.2"
 koinAndroid = "3.5.6"
 paging = "3.2.1"
 exooplayer2 = "2.19.1"
@@ -52,7 +51,7 @@ filekache = { module = "com.mayakapps.kache:file-kache", version = "2.1.1" }
 
 room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
 room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
-room-compiler = { module = "androidx.room:room-compiler", version.ref = "room-compiler" }
+room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
 
 koin-android = { module = "io.insert-koin:koin-android", version.ref = "koinAndroid" }
 koin-androidx-workmanager = { module = "io.insert-koin:koin-androidx-workmanager", version.ref = "koinAndroid" }
