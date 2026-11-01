@@ -67,8 +67,8 @@ kotlin {
     jvmToolchain(17)
     compilerOptions {
         // Room 2.6.1's bundled kotlinx-metadata can only read metadata up to 2.0.0
-        languageVersion.set(KotlinVersion.KOTLIN_2_0)
-        apiVersion.set(KotlinVersion.KOTLIN_2_0)
+        languageVersion.set(org.jetbrains.kotlin.gradle.dsl.KotlinVersion.KOTLIN_2_0)
+        apiVersion.set(org.jetbrains.kotlin.gradle.dsl.KotlinVersion.KOTLIN_2_0)
     }
 }
 
