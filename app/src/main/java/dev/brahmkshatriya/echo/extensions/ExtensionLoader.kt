@@ -1,9 +1,7 @@
 package dev.brahmkshatriya.echo.extensions
 
-import androidx.annotation.OptIn
 import androidx.core.content.edit
-import androidx.media3.common.util.UnstableApi
-import androidx.media3.datasource.cache.SimpleCache
+import com.google.android.exoplayer2.upstream.cache.SimpleCache
 import dev.brahmkshatriya.echo.common.Extension
 import dev.brahmkshatriya.echo.common.LyricsExtension
 import dev.brahmkshatriya.echo.common.MiscExtension
@@ -49,7 +47,6 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import java.io.File
 
-@OptIn(UnstableApi::class)
 class ExtensionLoader(
     val app: App,
     val cache: SimpleCache,

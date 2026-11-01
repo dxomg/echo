@@ -1,25 +1,23 @@
 package dev.brahmkshatriya.echo.utils.image
 
 import android.content.Context
+import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.view.View
 import android.widget.ImageView
-import androidx.core.graphics.drawable.toDrawable
 import androidx.core.graphics.toColorInt
-import coil3.Image
-import coil3.asDrawable
-import coil3.imageLoader
-import coil3.load
-import coil3.network.NetworkHeaders
-import coil3.network.httpHeaders
-import coil3.request.ImageRequest
-import coil3.request.error
-import coil3.request.placeholder
-import coil3.request.target
-import coil3.request.transformations
-import coil3.transform.CircleCropTransformation
-import coil3.transform.Transformation
+import com.bumptech.glide.Glide
+import com.bumptech.glide.RequestBuilder
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.load.model.GlideUrl
+import com.bumptech.glide.load.resource.bitmap.CircleCrop
+import com.bumptech.glide.load.resource.bitmap.Transformation
+import com.bumptech.glide.request.transition.Transition
+import com.bumptech.glide.signature.ObjectKey
 import dev.brahmkshatriya.echo.common.models.ImageHolder
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 object ImageUtils {
 
@@ -41,22 +39,16 @@ object ImageUtils {
         }
     }
 
-    private fun View.enqueue(builder: ImageRequest.Builder) =
-        context.imageLoader.enqueue(builder.build())
+    private val circleCrop = CircleCrop()
 
     fun ImageHolder?.loadInto(
         imageView: ImageView, placeholder: Int? = null, errorDrawable: Int? = null
     ) = tryWith {
-        val request = createRequest(imageView.context, placeholder, errorDrawable)
-        request.target(imageView)
-        imageView.enqueue(request)
+        createRequest(imageView.context, placeholder, errorDrawable)?.into(imageView)
     }
 
     fun ImageHolder.getCachedDrawable(context: Context): Drawable? {
-        val key = diskId ?: return null
-        return context.imageLoader.diskCache?.openSnapshot(key)?.use {
-            Drawable.createFromPath(it.data.toFile().absolutePath)
-        }
+        return null
     }
 
     fun <T : View> ImageHolder?.loadWithThumb(
@@ -64,50 +56,70 @@ object ImageUtils {
         error: Int? = null, onDrawable: T.(Drawable?) -> Unit
     ) = tryWith(true) {
         tryWith(false) { onDrawable(view, thumbnail) }
-        val request = createRequest(view.context, null, error)
-        fun setDrawable(image: Image?) {
-            val drawable = image?.asDrawable(view.resources)
-            tryWith(false) { onDrawable(view, drawable) }
-        }
-        request.target({}, ::setDrawable, ::setDrawable)
-        view.enqueue(request)
+        createRequest(view.context, null, error)?.into(
+            object : GlideDrawableTarget() {
+                override fun onResolved(drawable: Drawable?) =
+                    tryWith { view.onDrawable(drawable) }
+            }
+        )
     }
 
-    private val circleCrop = CircleCropTransformation()
-    private val squareCrop = SquareCropTransformation()
     fun <T : View> ImageHolder?.loadAsCircle(
         view: T,
         placeholder: Int? = null,
         error: Int? = null,
         onDrawable: (Drawable?) -> Unit
     ) = tryWith {
-        val request = createRequest(view.context, placeholder, error, circleCrop)
-        fun setDrawable(image: Image?) {
-            val drawable = image?.asDrawable(view.resources)
-            tryWith(false) { onDrawable(drawable) }
-        }
-        request.target(::setDrawable, ::setDrawable, ::setDrawable)
-        view.enqueue(request)
+        createRequest(view.context, placeholder, error, circleCrop)?.into(
+            object : GlideDrawableTarget() {
+                override fun onResolved(drawable: Drawable?) = tryWith { onDrawable(drawable) }
+            }
+        )
+    }
+
+    private abstract class GlideDrawableTarget :
+        com.bumptech.glide.request.target.CustomTarget<Drawable>(600, 600) {
+        abstract fun onResolved(drawable: Drawable?)
+
+        override fun onResourceReady(
+            resource: Drawable, transition: Transition<in Drawable>?,
+        ) = onResolved(resource)
+
+        override fun onLoadCleared(placeholder: Drawable?) = onResolved(placeholder)
+
+        override fun onLoadFailed(errorDrawable: Drawable?) = onResolved(null)
     }
 
     suspend fun ImageHolder?.loadDrawable(
         context: Context
     ) = tryWithSuspend {
-        val request = createRequest(context, null, null)
-        context.imageLoader.execute(request.build()).image?.asDrawable(context.resources)
+        createRequest(context, null, null)?.await()
     }
 
     suspend fun ImageHolder?.loadAsCircleDrawable(
         context: Context
     ) = tryWithSuspend {
-        val request = createRequest(context, null, null, circleCrop)
-        context.imageLoader.execute(request.build()).image?.asDrawable(context.resources)
+        createRequest(context, null, null, circleCrop)?.await()
     }
 
+    /** Loads the drawable by attaching a custom target from the main thread. */
+    private suspend fun RequestBuilder<Drawable>.await(): Drawable? =
+        withContext(Dispatchers.Main) {
+            kotlinx.coroutines.suspendCancellableCoroutine { cont ->
+                into(object : GlideDrawableTarget() {
+                    override fun onResolved(drawable: Drawable?) {
+                        if (cont.isActive) cont.resume(drawable, null)
+                    }
+                })
+            }
+        }
+
     fun ImageView.loadBlurred(drawable: Drawable?, radius: Float) = tryWith {
-        if (drawable == null) setImageDrawable(null)
-        load(drawable) {
-            transformations(BlurTransformation(context, radius))
+        when (drawable) {
+            null -> setImageDrawable(null)
+            else -> Glide.with(this).load(drawable)
+                .transform(BlurTransformation(context, radius))
+                .into(this)
         }
     }
 
@@ -117,46 +129,33 @@ object ImageUtils {
             else -> null
         }
 
-    private fun createRequest(
-        imageHolder: ImageHolder,
-        builder: ImageRequest.Builder,
-    ) = imageHolder.run {
-        builder.diskCacheKey(diskId)
-        when (this) {
-            is ImageHolder.ResourceUriImageHolder -> builder.data(uri)
-            is ImageHolder.NetworkRequestImageHolder -> {
-                val headerBuilder = NetworkHeaders.Builder()
-                request.headers.forEach { (key, value) ->
-                    headerBuilder[key] = value
-                }
-                builder.httpHeaders(headerBuilder.build())
-                builder.data(request.url)
-            }
-
-            is ImageHolder.ResourceIdImageHolder -> builder.data(resId)
-            is ImageHolder.HexColorImageHolder -> builder.data(hex.toColorInt().toDrawable())
-        }
-    }
-
     private fun ImageHolder?.createRequest(
         context: Context,
         placeholder: Int?,
         errorDrawable: Int?,
-        vararg transformations: Transformation
-    ): ImageRequest.Builder {
-        val builder = ImageRequest.Builder(context)
-        var error = errorDrawable
-        if (error == null) error = placeholder
-
+        transformation: Transformation<android.graphics.Bitmap>? = null,
+    ): RequestBuilder<Drawable>? {
+        val error = errorDrawable ?: placeholder
         if (this == null) {
-            if (error != null) builder.data(error)
-            return builder
+            if (error == null) return null
+            return Glide.with(context).asDrawable().load(error)
         }
-        createRequest(this, builder)
+        val builder = Glide.with(context).asDrawable()
+            .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
+        when (this) {
+            is ImageHolder.ResourceUriImageHolder -> builder.load(uri)
+            is ImageHolder.NetworkRequestImageHolder ->
+                builder.load(GlideUrl(request.url, request.headers))
+            is ImageHolder.ResourceIdImageHolder -> builder.load(resId)
+            is ImageHolder.HexColorImageHolder -> builder.load(ColorDrawable(hex.toColorInt()))
+        }
+        diskId?.let { builder.signature(ObjectKey(it)) }
         placeholder?.let { builder.placeholder(it) }
         error?.let { builder.error(it) }
-        val list = if (crop) listOf(squareCrop, *transformations) else transformations.toList()
-        if (list.isNotEmpty()) builder.transformations(list)
+        when {
+            crop -> builder.transform(circleCrop)
+            transformation != null -> builder.transform(transformation)
+        }
         return builder
     }
 }

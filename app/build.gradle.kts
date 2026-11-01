@@ -16,6 +16,7 @@ android {
     defaultConfig {
         applicationId = "dev.brahmkshatriya.echo"
         minSdk = 18
+        multiDexEnabled = true
         targetSdk = 36
         versionCode = gitCount
         versionName = "v${version}_$gitHash($gitCount)"
@@ -57,6 +58,14 @@ java {
 
 kotlin {
     jvmToolchain(17)
+}
+
+// Legacy (API 18) floor pins: several transitives drag in newer androidx
+// artifacts whose manifests declare a 21+ minSdk; the 1.1.1 variants work fine.
+configurations.all {
+    resolutionStrategy {
+        force("androidx.startup:startup-runtime:1.1.1")
+    }
 }
 
 dependencies {

@@ -7,12 +7,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.annotation.OptIn
 import androidx.core.view.isVisible
-import androidx.media3.common.C
-import androidx.media3.common.Format
-import androidx.media3.common.Tracks
-import androidx.media3.common.util.UnstableApi
+import com.google.android.exoplayer2.C
+import com.google.android.exoplayer2.Format
+import com.google.android.exoplayer2.Tracks
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup

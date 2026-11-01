@@ -3,12 +3,12 @@ package dev.brahmkshatriya.echo.ui.player
 import android.os.Handler
 import android.os.Looper
 import androidx.lifecycle.viewModelScope
-import androidx.media3.common.C.TIME_UNSET
-import androidx.media3.common.PlaybackException
-import androidx.media3.common.Player
-import androidx.media3.common.Timeline
-import androidx.media3.common.Tracks
-import androidx.media3.exoplayer.ExoPlayer
+import com.google.android.exoplayer2.C.TIME_UNSET
+import com.google.android.exoplayer2.ExoPlaybackException
+import com.google.android.exoplayer2.Player
+import com.google.android.exoplayer2.Timeline
+import com.google.android.exoplayer2.Tracks
+import com.google.android.exoplayer2.ExoPlayer
 import kotlinx.coroutines.launch
 
 class PlayerUiListener(
@@ -107,7 +107,7 @@ class PlayerUiListener(
         updateList()
     }
 
-    override fun onPlayerError(error: PlaybackException) {
+    override fun onPlayerError(error: ExoPlaybackException) {
         viewModel.isPlaying.value = false
         viewModel.buffering.value = false
     }

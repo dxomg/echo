@@ -1,10 +1,9 @@
 package dev.brahmkshatriya.echo.playback.listener
 
-import androidx.media3.common.C
-import androidx.media3.common.MediaItem
-import androidx.media3.common.PlaybackException
-import androidx.media3.common.Player
-import androidx.media3.common.util.UnstableApi
+import com.google.android.exoplayer2.C
+import com.google.android.exoplayer2.MediaItem
+import com.google.android.exoplayer2.ExoPlaybackException
+import com.google.android.exoplayer2.Player
 import dev.brahmkshatriya.echo.common.Extension
 import dev.brahmkshatriya.echo.common.clients.TrackerClient
 import dev.brahmkshatriya.echo.common.clients.TrackerMarkClient
@@ -31,7 +30,6 @@ import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
 
-@UnstableApi
 class TrackingListener(
     private val player: Player,
     private val scope: CoroutineScope,
@@ -119,7 +117,7 @@ class TrackingListener(
         onTrackChanged(current)
     }
 
-    override fun onPlayerError(error: PlaybackException) {
+    override fun onPlayerError(error: ExoPlaybackException) {
         onTrackChanged(null)
     }
 

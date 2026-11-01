@@ -5,14 +5,14 @@ import android.graphics.Bitmap
 import android.os.Build
 import android.util.SizeF
 import android.widget.RemoteViews
-import androidx.media3.session.MediaController
+import com.google.android.exoplayer2.Player
 import dev.brahmkshatriya.echo.R
 
 class WidgetVertical : BaseWidget() {
 
     override val clazz: Class<*> = this::class.java
     override fun updatedViews(
-        controller: MediaController?, image: Bitmap?, context: Context, appWidgetId: Int
+        controller: Player?, image: Bitmap?, context: Context, appWidgetId: Int
     ): RemoteViews {
         val packageName = context.packageName
         val large = RemoteViews(packageName, R.layout.widget_vertical_large)

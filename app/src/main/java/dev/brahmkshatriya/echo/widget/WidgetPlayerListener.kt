@@ -1,40 +1,36 @@
 package dev.brahmkshatriya.echo.widget
 
 import android.graphics.Bitmap
-import android.os.Bundle
-import androidx.media3.common.MediaItem
-import androidx.media3.common.MediaMetadata
-import androidx.media3.common.Player
-import androidx.media3.common.Timeline
-import androidx.media3.session.MediaController
-import androidx.media3.session.SessionResult
-import com.google.common.util.concurrent.ListenableFuture
-import com.google.common.util.concurrent.MoreExecutors
-import dev.brahmkshatriya.echo.playback.PlayerCommands.imageCommand
-import dev.brahmkshatriya.echo.utils.Serializer.getParcel
+import com.google.android.exoplayer2.MediaItem
+import com.google.android.exoplayer2.MediaMetadata
+import com.google.android.exoplayer2.Player
+import com.google.android.exoplayer2.Timeline
+import dev.brahmkshatriya.echo.playback.PlayerBridge.loadImage
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.launch
 
 class WidgetPlayerListener(
     private val update: (Bitmap?) -> Unit
 ) : Player.Listener {
 
-    var controller: MediaController? = null
-    private var result: ListenableFuture<SessionResult>? = null
+    var controller: Player? = null
+    private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
+    private var result: Job? = null
     private var image: Bitmap? = null
     private fun getImage() {
-        result?.cancel(true)
-        val future = controller?.sendCustomCommand(imageCommand, Bundle.EMPTY)
-        future?.addListener({
-            val result = future.get()
-            if (result?.resultCode == SessionResult.RESULT_SUCCESS) {
-                image = result.extras.getParcel<Bitmap>("image")
-                update(image)
-            }
-        }, MoreExecutors.directExecutor())
-        result = future
+        result?.cancel()
+        result = scope.launch {
+            image = controller?.loadImage()
+            update(image)
+        }
     }
 
     fun removed() {
-        result?.cancel(true)
+        scope.cancel()
         result = null
         controller?.removeListener(this)
         controller = null

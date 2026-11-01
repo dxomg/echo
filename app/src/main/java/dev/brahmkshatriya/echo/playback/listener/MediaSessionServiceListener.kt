@@ -9,17 +9,14 @@ import android.content.pm.PackageManager
 import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
-import androidx.media3.common.util.UnstableApi
-import androidx.media3.session.MediaSessionService.Listener
 import dev.brahmkshatriya.echo.R
 
-@UnstableApi
 class MediaSessionServiceListener(
     private val context: Context,
     private val intent: PendingIntent
-) : Listener {
+) {
 
-    override fun onForegroundServiceStartNotAllowedException() {
+    fun onForegroundServiceStartNotAllowedException() {
         if (
             Build.VERSION.SDK_INT >= 33 &&
             context.checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) !=

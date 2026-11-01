@@ -2,8 +2,6 @@ package dev.brahmkshatriya.echo.extensions.builtin.offline
 
 import android.content.Context
 import android.net.Uri
-import androidx.annotation.OptIn
-import androidx.media3.common.util.UnstableApi
 import dev.brahmkshatriya.echo.BuildConfig
 import dev.brahmkshatriya.echo.R
 import dev.brahmkshatriya.echo.common.clients.AlbumClient
@@ -59,7 +57,6 @@ import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import java.io.File
 
-@OptIn(UnstableApi::class)
 class OfflineExtension(
     private val context: Context,
 ) : ExtensionClient, HomeFeedClient, TrackClient, AlbumClient, ArtistClient, PlaylistClient,

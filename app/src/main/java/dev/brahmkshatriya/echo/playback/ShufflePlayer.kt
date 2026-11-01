@@ -1,14 +1,11 @@
 package dev.brahmkshatriya.echo.playback
 
-import androidx.annotation.OptIn
-import androidx.media3.common.ForwardingPlayer
-import androidx.media3.common.MediaItem
-import androidx.media3.common.util.UnstableApi
-import androidx.media3.exoplayer.ExoPlayer
-import androidx.media3.exoplayer.source.ShuffleOrder
+import com.google.android.exoplayer2.ForwardingPlayer
+import com.google.android.exoplayer2.MediaItem
+import com.google.android.exoplayer2.ExoPlayer
+import com.google.android.exoplayer2.source.ShuffleOrder
 
 @Suppress("unused")
-@OptIn(UnstableApi::class)
 class ShufflePlayer(
     private val player: ExoPlayer,
 ) : ForwardingPlayer(player) {

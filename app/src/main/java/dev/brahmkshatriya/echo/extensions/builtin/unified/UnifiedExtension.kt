@@ -1,9 +1,7 @@
 package dev.brahmkshatriya.echo.extensions.builtin.unified
 
 import android.content.Context
-import androidx.annotation.OptIn
-import androidx.media3.common.util.UnstableApi
-import androidx.media3.datasource.cache.SimpleCache
+import com.google.android.exoplayer2.upstream.cache.SimpleCache
 import androidx.room.Room
 import dev.brahmkshatriya.echo.BuildConfig
 import dev.brahmkshatriya.echo.R
@@ -60,7 +58,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.first
 import java.io.File
 
-@OptIn(UnstableApi::class)
 class UnifiedExtension(
     private val app: App,
     private val cache: SimpleCache,

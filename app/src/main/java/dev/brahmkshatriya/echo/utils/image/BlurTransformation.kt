@@ -11,18 +11,22 @@ import android.renderscript.RenderScript
 import android.renderscript.ScriptIntrinsicBlur
 import androidx.core.graphics.applyCanvas
 import androidx.core.graphics.createBitmap
-import coil3.size.Size
-import coil3.transform.Transformation
+import com.bumptech.glide.load.engine.bitmap_recycle.BitmapPool
+import com.bumptech.glide.load.resource.bitmap.BitmapTransformation
+import java.security.MessageDigest
 
 class BlurTransformation(
     private val context: Context,
     private val radius: Float = DEFAULT_RADIUS
-) : Transformation() {
+) : BitmapTransformation() {
 
-    override val cacheKey = "${BlurTransformation::class.simpleName}-$radius"
+    override fun transform(
+        pool: BitmapPool, toTransform: Bitmap, outWidth: Int, outHeight: Int,
+    ): Bitmap = toTransform.blurred(context, radius)
 
-    override suspend fun transform(input: Bitmap, size: Size) =
-        input.blurred(context, radius)
+    override fun updateDiskCacheKey(messageDigest: MessageDigest) {
+        messageDigest.update(("$javaClass-$radius").toByteArray())
+    }
 
     companion object {
         private const val DEFAULT_RADIUS = 20f
@@ -67,7 +71,6 @@ class BlurTransformation(
                 tmpOut?.destroy()
                 blur?.destroy()
             }
-
             return output
         }
     }

@@ -1,6 +1,6 @@
 package dev.brahmkshatriya.echo.playback
 
-import androidx.media3.common.MediaItem
+import com.google.android.exoplayer2.MediaItem
 import dev.brahmkshatriya.echo.common.helpers.Page
 import dev.brahmkshatriya.echo.common.models.EchoMediaItem
 import dev.brahmkshatriya.echo.common.models.Streamable

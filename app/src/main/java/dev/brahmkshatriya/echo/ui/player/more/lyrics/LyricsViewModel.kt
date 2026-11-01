@@ -2,7 +2,7 @@ package dev.brahmkshatriya.echo.ui.player.more.lyrics
 
 import androidx.core.content.edit
 import androidx.lifecycle.viewModelScope
-import androidx.media3.common.MediaItem
+import com.google.android.exoplayer2.MediaItem
 import androidx.paging.cachedIn
 import dev.brahmkshatriya.echo.common.Extension
 import dev.brahmkshatriya.echo.common.clients.LyricsClient

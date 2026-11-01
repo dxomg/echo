@@ -4,21 +4,11 @@ import android.content.ContentResolver
 import android.content.Context
 import android.content.res.Resources
 import android.net.Uri
-import androidx.annotation.CallSuper
-import androidx.annotation.OptIn
+import android.os.Bundle
+import android.support.v4.media.MediaBrowserCompat
+import android.support.v4.media.MediaDescriptionCompat
 import androidx.core.net.toUri
-import androidx.core.os.bundleOf
-import androidx.media3.common.MediaItem
-import androidx.media3.common.MediaMetadata
-import androidx.media3.common.util.UnstableApi
-import androidx.media3.session.LibraryResult
-import androidx.media3.session.MediaLibraryService
-import androidx.media3.session.MediaLibraryService.MediaLibrarySession
-import androidx.media3.session.MediaSession
-import androidx.media3.session.SessionError
-import com.google.common.collect.ImmutableList
-import com.google.common.util.concurrent.Futures
-import com.google.common.util.concurrent.ListenableFuture
+import androidx.media.MediaBrowserServiceCompat
 import dev.brahmkshatriya.echo.R
 import dev.brahmkshatriya.echo.common.Extension
 import dev.brahmkshatriya.echo.common.MusicExtension
@@ -43,61 +33,70 @@ import dev.brahmkshatriya.echo.common.models.Track
 import dev.brahmkshatriya.echo.di.App
 import dev.brahmkshatriya.echo.download.Downloader
 import dev.brahmkshatriya.echo.extensions.ExtensionUtils.isClient
-import dev.brahmkshatriya.echo.extensions.MediaState
-import dev.brahmkshatriya.echo.extensions.builtin.offline.OfflineExtension
-import dev.brahmkshatriya.echo.utils.CacheUtils.getFromCache
-import dev.brahmkshatriya.echo.utils.CacheUtils.saveToCache
-import dev.brahmkshatriya.echo.utils.CoroutineUtils.await
-import dev.brahmkshatriya.echo.utils.CoroutineUtils.future
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
 import java.util.WeakHashMap
 
-@UnstableApi
+/**
+ * MediaBrowserServiceCompat browse tree, mirroring the original media3
+ * MediaLibraryService tree: root / extension nodes, then album / playlist /
+ * radio / artist / lists / shelf branches per extension.
+ */
 abstract class AndroidAutoCallback(
-    open val app: App,
-    open val scope: CoroutineScope,
-    open val extensionList: StateFlow<List<MusicExtension>>,
-    open val downloadFlow: StateFlow<List<Downloader.Info>>
-) : MediaLibrarySession.Callback {
+    val app: App,
+    val scope: CoroutineScope,
+    val extensionList: StateFlow<List<MusicExtension>>,
+    val downloadFlow: StateFlow<List<Downloader.Info>>
+) {
 
     val context get() = app.context
 
-    @CallSuper
-    override fun onGetLibraryRoot(
-        session: MediaLibrarySession,
-        browser: MediaSession.ControllerInfo,
-        params: MediaLibraryService.LibraryParams?
-    ): ListenableFuture<LibraryResult<MediaItem>> {
-        return Futures.immediateFuture(
-            LibraryResult.ofItem(browsableItem(ROOT, "", browsable = false), null)
-        )
+    fun root() = MediaBrowserServiceCompat.BrowserRoot(ROOT, null)
+
+    /** Async children of a browse node; the caller detaches the result first. */
+    fun loadChildren(
+        parentId: String, options: Bundle?,
+        result: MediaBrowserServiceCompat.Result<List<MediaBrowserCompat.MediaItem>>,
+    ) {
+        result.detach()
+        scope.launch {
+            val page = options.page()
+            runCatching { getChildren(parentId, page) }
+                .onSuccess(result::sendResult)
+                .onFailure { it.printStackTrace(); result.sendBrowseError() }
+        }
     }
 
-    @OptIn(UnstableApi::class)
-    @CallSuper
-    override fun onGetChildren(
-        session: MediaLibrarySession,
-        browser: MediaSession.ControllerInfo,
-        parentId: String,
-        page: Int,
-        pageSize: Int,
-        params: MediaLibraryService.LibraryParams?
-    ): ListenableFuture<LibraryResult<ImmutableList<MediaItem>>> = scope.future {
+    fun search(
+        query: String,
+        result: MediaBrowserServiceCompat.Result<List<MediaBrowserCompat.MediaItem>>,
+    ) {
+        result.detach()
+        scope.launch {
+            val extensions = extensionList.value
+            extensions.forEach { searchNodes["$ROOT/${it.id}/$SEARCH"] = query }
+            result.sendResult(extensions.map { ext ->
+                browsableItem("$ROOT/${ext.id}/$SEARCH", ext.name, query)
+            })
+        }
+    }
+
+    private fun Bundle?.page() = this?.getInt(MediaBrowserCompat.EXTRA_PAGE, 1)?.takeIf { it > 0 } ?: 1
+
+    private suspend fun getChildren(
+        parentId: String, page: Int,
+    ): List<MediaBrowserCompat.MediaItem> {
         val extensions = extensionList.value
-        if (parentId == ROOT) return@future LibraryResult.ofItemList(
-            extensions.map { it.toMediaItem(context) },
-            null
-        )
+        if (parentId == ROOT) return extensions.map { extensionNode(it, context) }
         val extId = parentId.substringAfter("$ROOT/").substringBefore("/")
         val extension = extensions.first { it.id == extId }
-        val searchQuery = params?.extras?.getString("search_query") ?: ""
         val type = parentId.substringAfter("$extId/").substringBefore("/")
-        when (type) {
+        return when (type) {
             ALBUM -> extension.getList<AlbumClient> {
                 val id = parentId.substringAfter("$ALBUM/").substringBefore("/")
-                val unloaded = itemMap[id] as Album
-                getTracks(context, id, page) {
+                val unloaded = itemMap.get(id) as Album
+                getTracks(context, extId, id, page) {
                     val album = loadAlbum(unloaded)
                     album to loadTracks(album)
                 }
@@ -105,8 +104,8 @@ abstract class AndroidAutoCallback(
 
             PLAYLIST -> extension.getList<PlaylistClient> {
                 val id = parentId.substringAfter("$PLAYLIST/").substringBefore("/")
-                val unloaded = itemMap[id] as Playlist
-                getTracks(context, id, page) {
+                val unloaded = itemMap.get(id) as Playlist
+                getTracks(context, extId, id, page) {
                     val playlist = loadPlaylist(unloaded)
                     playlist to loadTracks(playlist)
                 }
@@ -114,8 +113,8 @@ abstract class AndroidAutoCallback(
 
             RADIO -> extension.getList<RadioClient> {
                 val id = parentId.substringAfter("$RADIO/").substringBefore("/")
-                val radio = itemMap[id] as Radio
-                getTracks(context, id, page) {
+                val radio = itemMap.get(id) as Radio
+                getTracks(context, extId, id, page) {
                     radio to loadTracks(radio)
                 }
             }
@@ -136,87 +135,12 @@ abstract class AndroidAutoCallback(
                 getShelfItems(context, id, extId, page)
             }
 
-            HOME -> extension.getFeed<HomeFeedClient>(
-                context, parentId, HOME, page
-            ) { loadHomeFeed() }
-
-            LIBRARY -> extension.getFeed<LibraryFeedClient>(
-                context, parentId, LIBRARY, page
-            ) { loadLibraryFeed() }
-
-            SEARCH -> extension.getFeed<SearchFeedClient>(
-                context, parentId, SEARCH, page
-            ) { loadSearchFeed(searchQuery) }
-
-            else -> LibraryResult.ofItemList(
-                listOfNotNull(
-                    if (extension.isClient<HomeFeedClient>())
-                        browsableItem("$ROOT/$extId/$HOME", context.getString(R.string.home))
-                    else null,
-                    if (extension.isClient<SearchFeedClient>())
-                        browsableItem("$ROOT/$extId/$SEARCH", context.getString(R.string.search))
-                    else null,
-                    if (extension.isClient<LibraryFeedClient>())
-                        browsableItem("$ROOT/$extId/$LIBRARY", context.getString(R.string.library))
-                    else null,
-                ),
-                null
-            )
+            else -> companion.extensionShellNodes(extension, context, extId)
         }
-    }
-
-    @OptIn(UnstableApi::class)
-    @CallSuper
-    override fun onGetSearchResult(
-        session: MediaLibrarySession,
-        browser: MediaSession.ControllerInfo,
-        query: String,
-        page: Int,
-        pageSize: Int,
-        params: MediaLibraryService.LibraryParams?
-    ): ListenableFuture<LibraryResult<ImmutableList<MediaItem>>> {
-        return scope.future {
-            val extensions = extensionList.value
-            LibraryResult.ofItemList(
-                extensions.map { ext ->
-                    browsableItem("$ROOT/${ext.id}/$SEARCH", ext.name, query)
-                },
-                MediaLibraryService.LibraryParams.Builder()
-                    .setExtras(bundleOf("search_query" to query))
-                    .build()
-            )
-        }
-    }
-
-    @CallSuper
-    override fun onSetMediaItems(
-        mediaSession: MediaSession,
-        controller: MediaSession.ControllerInfo,
-        mediaItems: MutableList<MediaItem>,
-        startIndex: Int,
-        startPositionMs: Long
-    ) = scope.future {
-        val new = mediaItems.mapNotNull {
-            if (it.mediaId.startsWith("auto/")) {
-                val id = it.mediaId.substringAfter("auto/")
-                val (track, extId, con) =
-                    context.getFromCache<Triple<Track, String, EchoMediaItem?>>(id, "auto")
-                        ?: return@mapNotNull null
-                MediaItemUtils.build(
-                    app,
-                    downloadFlow.value,
-                    MediaState.Unloaded(extId, track),
-                    con
-                )
-            } else it
-        }
-        val future = super.onSetMediaItems(
-            mediaSession, controller, new, startIndex, startPositionMs
-        )
-        future.await(context)
     }
 
     companion object {
+
         private const val ROOT = "root"
         private const val LIBRARY = "library"
         private const val HOME = "home"
@@ -231,13 +155,36 @@ abstract class AndroidAutoCallback(
         private const val PLAYLIST = "playlist"
         private const val RADIO = "radio"
 
+        private val searchNodes = WeakHashMap<String, String>()
+
+        private class BrowseException(cause: Throwable) : Exception(cause)
+
+        private fun MediaBrowserServiceCompat.Result<List<MediaBrowserCompat.MediaItem>>.sendBrowseError() =
+            sendError(Bundle())
+
+        fun browsableItem(
+            id: String,
+            title: String,
+            subtitle: String? = null,
+            browsable: Boolean = true,
+            artWorkUri: Uri? = null,
+        ) = MediaBrowserCompat.MediaItem(
+            MediaDescriptionCompat.Builder()
+                .setMediaId(id)
+                .setTitle(title)
+                .setSubtitle(subtitle)
+                .setIconUri(artWorkUri)
+                .build(),
+            if (browsable) MediaBrowserCompat.MediaItem.FLAG_BROWSABLE
+            else MediaBrowserCompat.MediaItem.FLAG_PLAYABLE
+        )
+
         private fun Resources.getUri(int: Int): Uri {
             val scheme = ContentResolver.SCHEME_ANDROID_RESOURCE
             val pkg = getResourcePackageName(int)
             val type = getResourceTypeName(int)
             val name = getResourceEntryName(int)
-            val uri = "$scheme://$pkg/$type/$name"
-            return uri.toUri()
+            return "$scheme://$pkg/$type/$name".toUri()
         }
 
         private fun ImageHolder.toUri(context: Context) = when (this) {
@@ -247,87 +194,51 @@ abstract class AndroidAutoCallback(
             is ImageHolder.HexColorImageHolder -> "".toUri()
         }
 
-        private fun browsableItem(
-            id: String,
-            title: String,
-            subtitle: String? = null,
-            browsable: Boolean = true,
-            artWorkUri: Uri? = null,
-            type: Int = MediaMetadata.MEDIA_TYPE_FOLDER_MIXED
-        ) = MediaItem.Builder()
-            .setMediaId(id)
-            .setMediaMetadata(
-                MediaMetadata.Builder()
-                    .setIsPlayable(false)
-                    .setIsBrowsable(browsable)
-                    .setMediaType(type)
-                    .setTitle(title)
-                    .setSubtitle(subtitle)
-                    .setArtworkUri(artWorkUri)
-                    .build()
-            )
-            .build()
-
-        private fun Track.toItem(
-            context: Context, extensionId: String, con: EchoMediaItem? = null
-        ): MediaItem {
-            context.saveToCache(id, Triple(this, extensionId, con), "auto")
-            return MediaItem.Builder()
-                .setMediaId("auto/$id")
-                .setMediaMetadata(
-                    MediaMetadata.Builder()
-                        .setIsPlayable(true)
-                        .setIsBrowsable(false)
-                        .setMediaType(MediaMetadata.MEDIA_TYPE_MUSIC)
-                        .setTitle(title)
-                        .setArtist(subtitleWithE)
-                        .setAlbumTitle(album?.title)
-                        .setArtworkUri(cover?.toUri(context))
-                        .build()
-                ).build()
-        }
-
-        private suspend fun Extension<*>.toMediaItem(context: Context) = browsableItem(
-            "$ROOT/$id", name, context.getString(R.string.extension),
-            instance.value().isSuccess,
-            metadata.icon?.toUri(context)
+        fun extensionNode(
+            extension: MusicExtension, context: Context
+        ): MediaBrowserCompat.MediaItem = browsableItem(
+            "$ROOT/${extension.id}", extension.name,
+            context.getString(R.string.extension),
+            extension.instance.value().isSuccess,
+            extension.metadata.icon?.toUri(context)
         )
 
-        @OptIn(UnstableApi::class)
-        val notSupported =
-            LibraryResult.ofError<ImmutableList<MediaItem>>(SessionError.ERROR_NOT_SUPPORTED)
-
-        @OptIn(UnstableApi::class)
-        val errorIo = LibraryResult.ofError<ImmutableList<MediaItem>>(SessionError.ERROR_IO)
+        private fun extensionShellNodes(
+            extension: MusicExtension, context: Context, extId: String,
+        ): List<MediaBrowserCompat.MediaItem> = listOfNotNull(
+            if (extension.isClient<HomeFeedClient>())
+                browsableItem("$ROOT/$extId/$HOME", context.getString(R.string.home))
+            else null,
+            if (extension.isClient<SearchFeedClient>())
+                browsableItem("$ROOT/$extId/$SEARCH", context.getString(R.string.search))
+            else null,
+            if (extension.isClient<LibraryFeedClient>())
+                browsableItem("$ROOT/$extId/$LIBRARY", context.getString(R.string.library))
+            else null,
+        )
 
         suspend inline fun <reified C> Extension<*>.getList(
-            block: C.() -> List<MediaItem>
-        ): LibraryResult<ImmutableList<MediaItem>> = runCatching {
-            val client = instance.value().getOrThrow() as? C ?: return@runCatching notSupported
-            LibraryResult.ofItemList(
-                client.block(),
-                MediaLibraryService.LibraryParams.Builder()
-                    .setOffline(client is OfflineExtension)
-                    .build()
-            )
+            block: C.() -> List<MediaBrowserCompat.MediaItem>
+        ): List<MediaBrowserCompat.MediaItem> = runCatching {
+            val client = instance.value().getOrThrow() as? C ?: error("not supported")
+            client.block()
         }.getOrElse {
             it.printStackTrace()
-            errorIo
+            throw BrowseException(it)
         }
-
 
         private val itemMap = WeakHashMap<String, EchoMediaItem>()
         private fun EchoMediaItem.toMediaItem(
             context: Context, extId: String
-        ): MediaItem = when (this) {
+        ): MediaBrowserCompat.MediaItem = when (this) {
             is Track -> toItem(context, extId)
             else -> {
                 val id = hashCode().toString()
                 itemMap[id] = this
-                val (page, type) = when (this) {
-                    is Artist, is Radio -> USER to MediaMetadata.MEDIA_TYPE_MIXED
-                    is Album -> ALBUM to MediaMetadata.MEDIA_TYPE_ALBUM
-                    is Playlist -> PLAYLIST to MediaMetadata.MEDIA_TYPE_PLAYLIST
+                val page = when (this) {
+                    is Artist, is Radio -> USER
+                    is Album -> ALBUM
+                    is Playlist -> PLAYLIST
                     else -> throw IllegalStateException("Invalid type")
                 }
                 browsableItem(
@@ -335,8 +246,7 @@ abstract class AndroidAutoCallback(
                     title,
                     subtitleWithE,
                     true,
-                    cover?.toUri(context),
-                    type
+                    cover?.toUri(context)
                 )
             }
         }
@@ -364,7 +274,7 @@ abstract class AndroidAutoCallback(
 
         private fun Shelf.toMediaItem(
             context: Context, extId: String
-        ): MediaItem = when (this) {
+        ): MediaBrowserCompat.MediaItem = when (this) {
             is Shelf.Category -> {
                 val items = feed
                 if (items != null) feedMap[id] = items
@@ -379,13 +289,11 @@ abstract class AndroidAutoCallback(
             }
         }
 
-
-        // THIS PROBABLY BREAKS GOING BACK TBH, NEED TO TEST
         private val shelvesMap = WeakHashMap<String, PagedData<Shelf>>()
         private val continuations = WeakHashMap<Pair<String, Int>, String?>()
         private suspend fun getShelfItems(
             context: Context, id: String, extId: String, page: Int
-        ): List<MediaItem> {
+        ): List<MediaBrowserCompat.MediaItem> {
             val shelf = shelvesMap[id]!!
             val (list, next) = shelf.loadPage(continuations[id to page])
             continuations[id to page + 1] = next
@@ -397,30 +305,21 @@ abstract class AndroidAutoCallback(
         private val feedMap = WeakHashMap<String, Feed<Shelf>>()
         private suspend fun Feed<Shelf>.toMediaItems(
             id: String, context: Context, extId: String, page: Int
-        ): List<MediaItem> {
+        ): List<MediaBrowserCompat.MediaItem> {
             val id = "${id.hashCode()}"
             feedMap[id] = this
             //TODO
             return listOf()
         }
 
-        private suspend inline fun <reified T> Extension<*>.getFeed(
-            context: Context,
-            parentId: String,
-            page: String,
-            pageNumber: Int,
-            getFeed: T.() -> Feed<Shelf>
-        ) = getList<T> {
-            TODO()
-        }
-
         private val tracksMap = WeakHashMap<String, Pair<EchoMediaItem, PagedData<Track>>>()
         private suspend fun getTracks(
             context: Context,
+            extId: String,
             id: String,
             page: Int,
             getTracks: suspend () -> Pair<EchoMediaItem, Feed<Track>?>
-        ): List<MediaItem> {
+        ): List<MediaBrowserCompat.MediaItem> {
             val (item, tracks) = tracksMap.getOrPut(id) {
                 val tracks = getTracks().run {
                     first to (second?.run { getPagedData(tabs.firstOrNull()) }?.pagedData
@@ -431,8 +330,22 @@ abstract class AndroidAutoCallback(
             }
             val (list, next) = tracks.loadPage(continuations[id to page])
             continuations[id to page + 1] = next
-            return list.map { it.toItem(context, id, item) }
+            return list.map { it.toItem(context, extId, item) }
+        }
+
+        private fun Track.toItem(
+            context: Context, extensionId: String, con: EchoMediaItem? = null
+        ): MediaBrowserCompat.MediaItem {
+            context.saveToCache(id, Triple(this, extensionId, con), "auto")
+            return MediaBrowserCompat.MediaItem(
+                MediaDescriptionCompat.Builder()
+                    .setMediaId("auto/$id")
+                    .setTitle(title)
+                    .setSubtitle(subtitleWithE)
+                    .setIconUri(cover?.toUri(context))
+                    .build(),
+                MediaBrowserCompat.MediaItem.FLAG_PLAYABLE
+            )
         }
     }
-
 }

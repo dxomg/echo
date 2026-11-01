@@ -7,19 +7,16 @@ import android.content.SharedPreferences.OnSharedPreferenceChangeListener
 import android.media.audiofx.AudioEffect
 import android.media.audiofx.Equalizer
 import android.media.audiofx.LoudnessEnhancer
-import androidx.annotation.OptIn
 import androidx.core.content.edit
-import androidx.media3.common.MediaItem
-import androidx.media3.common.PlaybackParameters
-import androidx.media3.common.Player
-import androidx.media3.common.util.UnstableApi
-import androidx.media3.exoplayer.ExoPlayer
+import com.google.android.exoplayer2.MediaItem
+import com.google.android.exoplayer2.PlaybackParameters
+import com.google.android.exoplayer2.Player
+import com.google.android.exoplayer2.ExoPlayer
 import dev.brahmkshatriya.echo.extensions.ExtensionUtils.copyTo
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlin.math.pow
 import kotlin.math.roundToInt
 
-@OptIn(UnstableApi::class)
 class EffectsListener(
     private val exoPlayer: ExoPlayer,
     private val context: Context,

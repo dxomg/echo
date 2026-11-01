@@ -19,7 +19,7 @@
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <androidx.media3.ui.PlayerView
+        <com.google.android.exoplayer2.ui.PlayerView
             android:id="@+id/player_view"
             android:background="@color/black"
             android:layout_width="match_parent"

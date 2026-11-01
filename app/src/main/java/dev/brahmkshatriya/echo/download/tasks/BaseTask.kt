@@ -4,14 +4,12 @@ import android.Manifest.permission.POST_NOTIFICATIONS
 import android.content.Context
 import android.content.pm.PackageManager.PERMISSION_GRANTED
 import android.graphics.drawable.Drawable
-import androidx.annotation.OptIn
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat.checkSelfPermission
 import androidx.core.graphics.drawable.toBitmap
-import androidx.media3.common.util.NotificationUtil
-import androidx.media3.common.util.NotificationUtil.createNotificationChannel
-import androidx.media3.common.util.UnstableApi
+import com.google.android.exoplayer2.util.NotificationUtil
+import com.google.android.exoplayer2.util.NotificationUtil.createNotificationChannel
 import dev.brahmkshatriya.echo.R
 import dev.brahmkshatriya.echo.common.clients.DownloadClient
 import dev.brahmkshatriya.echo.common.models.DownloadContext

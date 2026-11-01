@@ -7,16 +7,9 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Looper
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.multidex.MultiDexApplication
 import androidx.core.content.edit
 import androidx.core.os.LocaleListCompat
-import coil3.ImageLoader
-import coil3.PlatformContext
-import coil3.SingletonImageLoader
-import coil3.disk.DiskCache
-import coil3.disk.directory
-import coil3.memory.MemoryCache
-import coil3.request.allowHardware
-import coil3.request.crossfade
 import dev.brahmkshatriya.echo.di.DI
 import dev.brahmkshatriya.echo.extensions.ExtensionLoader
 import dev.brahmkshatriya.echo.utils.AppShortcuts.configureAppShortcuts
@@ -24,46 +17,25 @@ import dev.brahmkshatriya.echo.utils.CoroutineUtils
 import org.koin.android.ext.android.inject
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.workmanager.koin.workManagerFactory
-import org.koin.androix.startup.KoinStartup
-import org.koin.core.annotation.KoinExperimentalAPI
-import org.koin.dsl.koinConfiguration
+import org.koin.core.context.startKoin
+import org.koin.dsl.KoinAppDeclaration
 
-@OptIn(KoinExperimentalAPI::class)
-class MainApplication : Application(), KoinStartup, SingletonImageLoader.Factory {
-
-    override fun onKoinStartup() = koinConfiguration {
-        androidContext(this@MainApplication)
-        modules(DI.appModule)
-        workManagerFactory()
-    }
-
-    private val settings by inject<SharedPreferences>()
-    private val extensionLoader by inject<ExtensionLoader>()
+class MainApplication : MultiDexApplication() {
 
     override fun onCreate() {
         super.onCreate()
+        startKoin {
+            androidContext(this@MainApplication)
+            workManagerFactory()
+            modules(DI.appModule)
+        }
         CoroutineUtils.setDebug()
         applyLocale(settings)
         configureAppShortcuts(extensionLoader)
     }
 
-    override fun newImageLoader(context: PlatformContext): ImageLoader {
-        return ImageLoader.Builder(context)
-            .memoryCache {
-                MemoryCache.Builder()
-                    .maxSizePercent(context, 0.25)
-                    .build()
-            }
-            .diskCache {
-                DiskCache.Builder()
-                    .directory(cacheDir.resolve("image-cache"))
-                    .maxSizeBytes(1024 * 1024 * 100) // 100MB
-                    .build()
-            }
-            .allowHardware(false)
-            .crossfade(true)
-            .build()
-    }
+    private val settings by inject<SharedPreferences>()
+    private val extensionLoader by inject<ExtensionLoader>()
 
     override fun getPackageName(): String {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) runCatching {

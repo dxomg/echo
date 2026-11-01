@@ -1,11 +1,9 @@
 package dev.brahmkshatriya.echo.ui.player.quality
 
 import android.content.Context
-import androidx.annotation.OptIn
-import androidx.media3.common.C
-import androidx.media3.common.Format
-import androidx.media3.common.Tracks
-import androidx.media3.common.util.UnstableApi
+import com.google.android.exoplayer2.C
+import com.google.android.exoplayer2.Format
+import com.google.android.exoplayer2.Tracks
 import dev.brahmkshatriya.echo.R
 import dev.brahmkshatriya.echo.common.models.Streamable
 

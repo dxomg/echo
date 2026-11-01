@@ -1,13 +1,13 @@
 package dev.brahmkshatriya.echo.widget
 
 import android.graphics.Bitmap
-import androidx.media3.session.MediaController
+import com.google.android.exoplayer2.Player
 import dev.brahmkshatriya.echo.di.App
 import dev.brahmkshatriya.echo.playback.PlayerService.Companion.getController
 
 object ControllerHelper {
 
-    var controller: MediaController? = null
+    var controller: Player? = null
     var callback: (() -> Unit)? = null
     var image: Bitmap? = null
     var listener: WidgetPlayerListener? = null
@@ -33,6 +33,7 @@ object ControllerHelper {
         map.remove(key)
         if (map.isNotEmpty()) return
         callback?.invoke()
+        callback = null
         controller = null
         listener?.removed()
         listener = null

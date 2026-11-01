@@ -1,11 +1,11 @@
 package dev.brahmkshatriya.echo.playback.renderer
 
 import android.content.Context
-import androidx.media3.common.audio.SonicAudioProcessor
-import androidx.media3.common.util.UnstableApi
-import androidx.media3.exoplayer.DefaultRenderersFactory
-import androidx.media3.exoplayer.audio.DefaultAudioSink
-import androidx.media3.exoplayer.audio.SilenceSkippingAudioProcessor
+import com.google.android.exoplayer2.audio.SonicAudioProcessor
+import com.google.android.exoplayer2.DefaultRenderersFactory
+import com.google.android.exoplayer2.audio.DefaultAudioSink
+import com.google.android.exoplayer2.audio.SilenceSkippingAudioProcessor
+import com.google.android.exoplayer2.util.UnstableApi
 
 @androidx.annotation.OptIn(UnstableApi::class)
 class RenderersFactory(

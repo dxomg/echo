@@ -2,18 +2,18 @@ package dev.brahmkshatriya.echo.ui.player
 
 import android.content.SharedPreferences
 import android.os.Bundle
-import androidx.annotation.OptIn
 import androidx.core.os.bundleOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.media3.common.MediaItem
-import androidx.media3.common.ThumbRating
-import androidx.media3.common.TrackGroup
-import androidx.media3.common.TrackSelectionOverride
-import androidx.media3.common.Tracks
-import androidx.media3.common.util.UnstableApi
-import androidx.media3.datasource.cache.SimpleCache
-import androidx.media3.session.MediaController
+import com.google.android.exoplayer2.MediaItem
+import com.google.android.exoplayer2.ThumbRating
+import com.google.android.exoplayer2.source.TrackGroup
+import com.google.android.exoplayer2.trackselection.TrackSelectionOverride
+import com.google.android.exoplayer2.Tracks
+import com.google.android.exoplayer2.upstream.cache.SimpleCache
+import com.google.android.exoplayer2.Player
+import dev.brahmkshatriya.echo.playback.PlayerBridge.sendCustomCommand
+import dev.brahmkshatriya.echo.playback.PlayerBridge.setRating
 import dev.brahmkshatriya.echo.R
 import dev.brahmkshatriya.echo.common.clients.LikeClient
 import dev.brahmkshatriya.echo.common.models.EchoMediaItem
@@ -51,7 +51,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlin.math.max
 
-@OptIn(UnstableApi::class)
 class PlayerViewModel(
     val app: App,
     val playerState: PlayerState,
@@ -62,8 +61,8 @@ class PlayerViewModel(
 ) : ViewModel() {
     private val downloadFlow = downloader.flow
 
-    val browser = MutableStateFlow<MediaController?>(null)
-    private fun withBrowser(block: suspend (MediaController) -> Unit) {
+    val browser = MutableStateFlow<Player?>(null)
+    private fun withBrowser(block: suspend (Player) -> Unit) {
         viewModelScope.launch {
             val browser = browser.first { it != null }!!
             block(browser)
@@ -154,10 +153,7 @@ class PlayerViewModel(
     }
 
     fun likeCurrent(isLiked: Boolean) = withBrowser { controller ->
-        val future = controller.setRating(ThumbRating(isLiked))
-        app.context.listenFuture(future) { sessionResult ->
-            sessionResult.getOrElse { createException(it) }
-        }
+        controller.setRating(ThumbRating(isLiked))
     }
 
     fun setSleepTimer(timer: Long) {

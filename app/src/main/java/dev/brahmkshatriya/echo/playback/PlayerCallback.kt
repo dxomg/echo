@@ -1,27 +1,22 @@
 package dev.brahmkshatriya.echo.playback
 
+import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
+import android.os.Build
 import android.os.Bundle
+import android.support.v4.media.session.MediaSessionCompat
+import android.support.v4.media.session.PlaybackStateCompat
 import android.widget.Toast
-import androidx.annotation.OptIn
 import androidx.core.graphics.drawable.toBitmap
 import androidx.core.graphics.scale
 import androidx.core.os.bundleOf
-import androidx.media3.common.Player
-import androidx.media3.common.Rating
-import androidx.media3.common.ThumbRating
-import androidx.media3.common.util.UnstableApi
-import androidx.media3.session.MediaButtonReceiver
-import androidx.media3.session.MediaSession
-import androidx.media3.session.MediaSession.MediaItemsWithStartPosition
-import androidx.media3.session.SessionCommand
-import androidx.media3.session.SessionError
-import androidx.media3.session.SessionResult
-import androidx.media3.session.SessionResult.RESULT_SUCCESS
-import com.google.common.util.concurrent.Futures
-import com.google.common.util.concurrent.ListenableFuture
+import com.google.android.exoplayer2.MediaItem
+import com.google.android.exoplayer2.Player
+import com.google.android.exoplayer2.Rating
+import com.google.android.exoplayer2.ThumbRating
 import dev.brahmkshatriya.echo.R
 import dev.brahmkshatriya.echo.common.Extension
 import dev.brahmkshatriya.echo.common.clients.AlbumClient
@@ -49,14 +44,27 @@ import dev.brahmkshatriya.echo.extensions.ExtensionUtils.getExtensionOrThrow
 import dev.brahmkshatriya.echo.extensions.MediaState
 import dev.brahmkshatriya.echo.playback.MediaItemUtils.extensionId
 import dev.brahmkshatriya.echo.playback.MediaItemUtils.track
+import dev.brahmkshatriya.echo.playback.PlayerCommands.addToNextCommand
+import dev.brahmkshatriya.echo.playback.PlayerCommands.addToQueueCommand
+import dev.brahmkshatriya.echo.playback.PlayerCommands.imageCommand
+import dev.brahmkshatriya.echo.playback.PlayerCommands.likeCommand
+import dev.brahmkshatriya.echo.playback.PlayerCommands.playCommand
+import dev.brahmkshatriya.echo.playback.PlayerCommands.radioCommand
+import dev.brahmkshatriya.echo.playback.PlayerCommands.repeatCommand
+import dev.brahmkshatriya.echo.playback.PlayerCommands.repeatOffCommand
+import dev.brahmkshatriya.echo.playback.PlayerCommands.repeatOneCommand
+import dev.brahmkshatriya.echo.playback.PlayerCommands.resumeCommand
+import dev.brahmkshatriya.echo.playback.PlayerCommands.sleepTimer
+import dev.brahmkshatriya.echo.playback.PlayerCommands.unlikeCommand
 import dev.brahmkshatriya.echo.playback.ResumptionUtils.recoverPlaylist
 import dev.brahmkshatriya.echo.playback.ResumptionUtils.recoverRepeat
 import dev.brahmkshatriya.echo.playback.ResumptionUtils.recoverShuffle
 import dev.brahmkshatriya.echo.playback.ResumptionUtils.recoverTracks
 import dev.brahmkshatriya.echo.playback.exceptions.PlayerException
 import dev.brahmkshatriya.echo.playback.listener.PlayerRadio
-import dev.brahmkshatriya.echo.utils.CoroutineUtils.future
+import dev.brahmkshatriya.echo.utils.CacheUtils.getFromCache
 import dev.brahmkshatriya.echo.utils.Serializer.getSerialized
+import dev.brahmkshatriya.echo.utils.Serializer.putSerialized
 import dev.brahmkshatriya.echo.utils.image.ImageUtils.loadDrawable
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -69,41 +77,29 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 
-@OptIn(UnstableApi::class)
+/**
+ * Session callback + shared queue logic, wired onto MediaSessionCompat.
+ *
+ * Exposes [sessionCallback] for the compat session and implements
+ * [PlayerBridge.Handler] so UI in the same process can send the same
+ * commands that used to go over the media3 controller surface.
+ */
 class PlayerCallback(
+    private val player: Player,
     override val app: App,
     override val scope: CoroutineScope,
     private val throwableFlow: MutableSharedFlow<Throwable>,
     private val extensions: ExtensionLoader,
     private val radioFlow: MutableStateFlow<PlayerState.Radio>,
     override val downloadFlow: StateFlow<List<Downloader.Info>>,
-) : AndroidAutoCallback(app, scope, extensions.music, downloadFlow) {
+) : AndroidAutoCallback(app, scope, extensions.music, downloadFlow), PlayerBridge.Handler {
 
-    override fun onConnect(
-        session: MediaSession, controller: MediaSession.ControllerInfo,
-    ): MediaSession.ConnectionResult {
-        val sessionCommands = with(PlayerCommands) {
-            MediaSession.ConnectionResult.DEFAULT_SESSION_AND_LIBRARY_COMMANDS.buildUpon()
-                .add(likeCommand).add(unlikeCommand).add(repeatCommand).add(repeatOffCommand)
-                .add(repeatOneCommand).add(radioCommand).add(sleepTimer)
-                .add(playCommand).add(addToQueueCommand).add(addToNextCommand)
-                .add(resumeCommand).add(imageCommand)
-                .build()
-        }
-        return MediaSession.ConnectionResult.AcceptedResultBuilder(session)
-            .setAvailableSessionCommands(sessionCommands).build()
-    }
+    // ==================== in-process command bridge ====================
 
-    override fun onCustomCommand(
-        session: MediaSession,
-        controller: MediaSession.ControllerInfo,
-        customCommand: SessionCommand,
-        args: Bundle,
-    ): ListenableFuture<SessionResult> = with(PlayerCommands) {
-        val player = session.player
-        when (customCommand) {
-            likeCommand -> onSetRating(session, controller, ThumbRating(true))
-            unlikeCommand -> onSetRating(session, controller, ThumbRating())
+    override fun handleCustomCommand(player: Player, command: String, args: Bundle) {
+        when (command) {
+            likeCommand -> handleRating(player, ThumbRating(true))
+            unlikeCommand -> handleRating(player, ThumbRating())
             repeatOffCommand -> setRepeat(player, Player.REPEAT_MODE_OFF)
             repeatOneCommand -> setRepeat(player, Player.REPEAT_MODE_ONE)
             repeatCommand -> setRepeat(player, Player.REPEAT_MODE_ALL)
@@ -113,17 +109,42 @@ class PlayerCallback(
             radioCommand -> radio(player, args)
             sleepTimer -> onSleepTimer(player, args.getLong("ms"))
             resumeCommand -> resume(player, args.getBoolean("cleared", true))
-            imageCommand -> getImage(player)
-            else -> super.onCustomCommand(session, controller, customCommand, args)
+            imageCommand -> scope.launch { loadImage(player) }
         }
     }
 
-    private fun getImage(player: Player) = scope.future {
+    override fun handleRating(player: Player, rating: Rating) = scope.launch {
+        if (rating !is ThumbRating) return@launch
         val item = player.with { currentMediaItem }
-            ?: context.recoverPlaylist(app, downloadFlow.value, false).run { first.getOrNull(second) }
-            ?: return@future SessionResult(SessionError.ERROR_UNKNOWN)
-        val image = item.track.cover.loadDrawable(context)?.toScaledBitmap(720)
-        SessionResult(RESULT_SUCCESS, Bundle().apply { putParcelable("image", image) })
+            ?: return@launch
+        val track = item.track
+        runCatching {
+            val extension = extensions.music.getExtensionOrThrow(item.extensionId)
+            extension.getAs<LikeClient, Unit> {
+                likeItem(track, rating.isThumbsUp)
+            }
+        }.getOrElse {
+            throwableFlow.emit(PlayerException(item, it))
+            return@launch
+        }
+        val liked = rating.isThumbsUp
+        val newItem = item.run {
+            buildUpon().setMediaMetadata(
+                mediaMetadata.buildUpon().setUserRating(ThumbRating(liked)).build()
+            )
+        }.build()
+        player.with {
+            replaceMediaItem(currentMediaItemIndex, newItem)
+        }
+    }
+
+    override suspend fun loadImage(player: Player): Bitmap? {
+        val item = player.with { currentMediaItem }
+            ?: context.recoverPlaylist(app, downloadFlow.value, false).run {
+                first.getOrNull(second)
+            }
+            ?: return null
+        return item.track.cover.loadDrawable(context)?.toScaledBitmap(720)
     }
 
     private fun Drawable.toScaledBitmap(width: Int) = toBitmap().let { bmp ->
@@ -132,61 +153,128 @@ class PlayerCallback(
         bmp.scale(width, height)
     }
 
-    private fun resume(player: Player, withClear: Boolean) = scope.future {
+    // ==================== standard transport ====================
+
+    val sessionCallback = object : MediaSessionCompat.Callback() {
+        override fun onPlay() {
+            player.prepare()
+            player.playWhenReady = true
+        }
+
+        override fun onPause() {
+            player.playWhenReady = false
+        }
+
+        override fun onStop() {
+            player.stop()
+        }
+
+        override fun onSkipToNext() {
+            player.seekToNextMediaItem()
+        }
+
+        override fun onSkipToPrevious() {
+            player.seekToPreviousMediaItem()
+        }
+
+        override fun onSeekTo(pos: Long) {
+            player.seekTo(pos)
+        }
+
+        override fun onSetShuffleMode(mode: Int) {
+            player.shuffleModeEnabled =
+                mode != PlaybackStateCompat.SHUFFLE_MODE_NONE
+        }
+
+        override fun onSetRepeatMode(mode: Int) {
+            player.repeatMode = when (mode) {
+                PlaybackStateCompat.REPEAT_MODE_ONE -> Player.REPEAT_MODE_ONE
+                PlaybackStateCompat.REPEAT_MODE_ALL, PlaybackStateCompat.REPEAT_MODE_GROUP ->
+                    Player.REPEAT_MODE_ALL
+                else -> Player.REPEAT_MODE_OFF
+            }
+        }
+
+        override fun onSetPlaybackSpeed(speed: Float) {
+            player.setPlaybackSpeed(speed)
+        }
+
+        override fun onCustomAction(action: String?, extras: Bundle?) {
+            handleCustomCommand(player, action ?: return, extras ?: Bundle.EMPTY)
+        }
+
+        override fun onSetRating(rating: android.media.Rating?) {
+            if (rating?.ratingStyle == android.media.Rating.RATING_THUMB_UP && rating.isThumbUp)
+                handleRating(player, ThumbRating(true))
+        }
+
+        override fun onPlayFromMediaId(mediaId: String?, extras: Bundle?) {
+            val id = mediaId ?: return
+            scope.launch {
+                if (!id.startsWith("auto/")) return@launch
+                val (track, extId, _) =
+                    context.getFromCache<Triple<Track, String, EchoMediaItem?>>(
+                        id.substringAfter("auto/"), "auto"
+                    ) ?: return@launch
+                handleCustomCommand(player, playCommand, Bundle().apply {
+                    putString("extId", extId)
+                    putSerialized("item", track)
+                    putBoolean("loaded", false)
+                    putBoolean("shuffle", false)
+                })
+            }
+        }
+    }
+
+    // ==================== shared command implementations ====================
+
+    private fun resume(player: Player, withClear: Boolean) = scope.launch {
         withContext(Dispatchers.Main) {
             player.shuffleModeEnabled = context.recoverShuffle() == true
             player.repeatMode = context.recoverRepeat() ?: Player.REPEAT_MODE_OFF
         }
-        val (items, index, pos) = context.recoverPlaylist(app,downloadFlow.value, withClear)
+        val (items, index, pos) = context.recoverPlaylist(app, downloadFlow.value, withClear)
         withContext(Dispatchers.Main) {
             player.setMediaItems(items, index, pos)
             player.prepare()
         }
-        SessionResult(RESULT_SUCCESS)
     }
 
     private var timerJob: Job? = null
-    private fun onSleepTimer(player: Player, ms: Long): ListenableFuture<SessionResult> {
+    private fun onSleepTimer(player: Player, ms: Long) {
         timerJob?.cancel()
-        val time = when (ms) {
-            0L -> return Futures.immediateFuture(SessionResult(RESULT_SUCCESS))
-            Long.MAX_VALUE -> player.run { duration - currentPosition }
-            else -> ms
-        }
+        if (ms == 0L) return
+        val time = if (ms == Long.MAX_VALUE) player.run {
+            duration - currentPosition
+        } else ms
 
         timerJob = scope.launch {
             delay(time)
             player.with { pause() }
         }
-        return Futures.immediateFuture(SessionResult(RESULT_SUCCESS))
     }
 
-    private fun setRepeat(player: Player, repeat: Int) = run {
+    private fun setRepeat(player: Player, repeat: Int) {
         player.repeatMode = repeat
-        Futures.immediateFuture(SessionResult(RESULT_SUCCESS))
     }
 
-
-    @OptIn(UnstableApi::class)
-    private fun radio(player: Player, args: Bundle) = scope.future {
-        val error = SessionResult(SessionError.ERROR_UNKNOWN)
-        val extId = args.getString("extId") ?: return@future error
-        val item = args.getSerialized<EchoMediaItem>("item")?.getOrNull() ?: return@future error
+    private fun radio(player: Player, args: Bundle) = scope.launch {
+        val extId = args.getString("extId") ?: return@launch
+        val item = args.getSerialized<EchoMediaItem>("item")?.getOrNull() ?: return@launch
         val itemLoaded = args.getBoolean("loaded", false)
-        val extension = extensions.music.getExtension(extId) ?: return@future error
+        val extension = extensions.music.getExtension(extId) ?: return@launch
         val newItem = if (itemLoaded) item else loadItem(extension, item)
         radioFlow.value = PlayerState.Radio.Loading
         val loaded = PlayerRadio.start(
             throwableFlow, extension, newItem, null
         )
-        if (loaded == null) return@future error
+        if (loaded == null) return@launch
         player.with {
             clearMediaItems()
             shuffleModeEnabled = false
         }
         PlayerRadio.play(player, downloadFlow, app, radioFlow, loaded)
         player.with { play() }
-        SessionResult(RESULT_SUCCESS)
     }
 
     private suspend fun loadItem(
@@ -226,14 +314,12 @@ class PlayerCallback(
         is Track -> Result.success(PagedData.Single { listOf(item) })
     }
 
-
-    private fun playItem(player: Player, args: Bundle) = scope.future {
-        val error = SessionResult(SessionError.ERROR_UNKNOWN)
-        val extId = args.getString("extId") ?: return@future error
-        val item = args.getSerialized<EchoMediaItem>("item")?.getOrNull() ?: return@future error
+    private fun playItem(player: Player, args: Bundle) = scope.launch {
+        val extId = args.getString("extId") ?: return@launch
+        val item = args.getSerialized<EchoMediaItem>("item")?.getOrNull() ?: return@launch
         val loaded = args.getBoolean("loaded", false)
         val shuffle = args.getBoolean("shuffle", false)
-        val extension = extensions.music.getExtension(extId) ?: return@future error
+        val extension = extensions.music.getExtension(extId) ?: return@launch
         when (item) {
             is Track -> {
                 val mediaItem = MediaItemUtils.build(
@@ -250,7 +336,7 @@ class PlayerCallback(
             else -> {
                 val tracks = listTracks(extension, item, loaded).getOrElse {
                     throwableFlow.emit(it)
-                    return@future error
+                    return@launch
                 }
 
                 val result = if (shuffle) extension.get { tracks.loadAll() }
@@ -271,7 +357,7 @@ class PlayerCallback(
                 }
                 val list = result.getOrElse {
                     throwableFlow.emit(it)
-                    return@future error
+                    return@launch
                 }
                 player.with {
                     setMediaItems(list.map {
@@ -285,7 +371,6 @@ class PlayerCallback(
                 }
             }
         }
-        SessionResult(RESULT_SUCCESS)
     }
 
     private suspend fun <T> Player.with(block: suspend Player.() -> T): T =
@@ -306,20 +391,19 @@ class PlayerCallback(
         list
     }
 
-    private fun addToQueue(player: Player, args: Bundle) = scope.future {
-        val error = SessionResult(SessionError.ERROR_UNKNOWN)
-        val extId = args.getString("extId") ?: return@future error
-        val item = args.getSerialized<EchoMediaItem>("item")?.getOrNull() ?: return@future error
+    private fun addToQueue(player: Player, args: Bundle) = scope.launch {
+        val extId = args.getString("extId") ?: return@launch
+        val item = args.getSerialized<EchoMediaItem>("item")?.getOrNull() ?: return@launch
         val loaded = args.getBoolean("loaded", false)
-        val extension = extensions.music.getExtension(extId) ?: return@future error
+        val extension = extensions.music.getExtension(extId) ?: return@launch
         val tracks = listTracks(extension, item, loaded).getOrElse {
             throwableFlow.emit(it)
-            return@future error
+            return@launch
         }.load().getOrElse {
             throwableFlow.emit(it)
-            return@future error
+            return@launch
         }
-        if (tracks.isEmpty()) return@future error
+        if (tracks.isEmpty()) return@launch
         val mediaItems = tracks.map { track ->
             MediaItemUtils.build(
                 app,
@@ -332,26 +416,24 @@ class PlayerCallback(
             addMediaItems(mediaItems)
             prepare()
         }
-        SessionResult(RESULT_SUCCESS)
     }
 
     private var next = 0
     private var nextJob: Job? = null
-    private fun addToNext(player: Player, args: Bundle) = scope.future {
-        val error = SessionResult(SessionError.ERROR_UNKNOWN)
-        val extId = args.getString("extId") ?: return@future error
-        val item = args.getSerialized<EchoMediaItem>("item")?.getOrNull() ?: return@future error
+    private fun addToNext(player: Player, args: Bundle) = scope.launch {
+        val extId = args.getString("extId") ?: return@launch
+        val item = args.getSerialized<EchoMediaItem>("item")?.getOrNull() ?: return@launch
         val loaded = args.getBoolean("loaded", false)
-        val extension = extensions.music.getExtension(extId) ?: return@future error
+        val extension = extensions.music.getExtension(extId) ?: return@launch
         nextJob?.cancel()
         val tracks = listTracks(extension, item, loaded).getOrElse {
             throwableFlow.emit(it)
-            return@future error
+            return@launch
         }.load().getOrElse {
             throwableFlow.emit(it)
-            return@future error
+            return@launch
         }
-        if (tracks.isEmpty()) return@future error
+        if (tracks.isEmpty()) return@launch
         val mediaItems = tracks.map { track ->
             MediaItemUtils.build(
                 app,
@@ -370,60 +452,30 @@ class PlayerCallback(
             delay(5000)
             next = 0
         }
-        SessionResult(RESULT_SUCCESS)
     }
 
-    override fun onSetRating(
-        session: MediaSession, controller: MediaSession.ControllerInfo, rating: Rating,
-    ): ListenableFuture<SessionResult> {
-        return if (rating !is ThumbRating) super.onSetRating(session, controller, rating)
-        else scope.future {
-            val item = session.player.with { currentMediaItem }
-                ?: return@future SessionResult(SessionError.ERROR_UNKNOWN)
-            val track = item.track
-            runCatching {
-                val extension = extensions.music.getExtensionOrThrow(item.extensionId)
-                extension.getAs<LikeClient, Unit> {
-                    likeItem(track, rating.isThumbsUp)
-                }
-            }.getOrElse {
-                throwableFlow.emit(PlayerException(item, it))
-                return@future SessionResult(SessionError.ERROR_UNKNOWN)
+    @Suppress("DEPRECATION")
+    class ButtonReceiver : BroadcastReceiver() {
+        override fun onReceive(context: Context, intent: Intent) {
+            val empty = context.recoverTracks().isNullOrEmpty()
+            if (empty) {
+                Toast.makeText(
+                    context,
+                    context.getString(R.string.no_last_played_track_found),
+                    Toast.LENGTH_SHORT
+                ).show()
+                return
             }
-            val liked = rating.isThumbsUp
-            val newItem = item.run {
-                buildUpon().setMediaMetadata(
-                    mediaMetadata.buildUpon().setUserRating(ThumbRating(liked)).build()
+            val service = Intent(context, PlayerService::class.java).apply {
+                action = Intent.ACTION_MEDIA_BUTTON
+                putExtra(
+                    Intent.EXTRA_KEY_EVENT,
+                    intent.getParcelableExtra<android.view.KeyEvent?>(Intent.EXTRA_KEY_EVENT)
                 )
-            }.build()
-            session.player.with {
-                replaceMediaItem(currentMediaItemIndex, newItem)
             }
-            SessionResult(RESULT_SUCCESS, bundleOf("liked" to liked))
-        }
-    }
-
-    override fun onPlaybackResumption(
-        mediaSession: MediaSession,
-        controller: MediaSession.ControllerInfo,
-    ) = scope.future {
-        withContext(Dispatchers.Main) {
-            mediaSession.player.shuffleModeEnabled = context.recoverShuffle() ?: false
-            mediaSession.player.repeatMode = context.recoverRepeat() ?: Player.REPEAT_MODE_OFF
-        }
-        val (items, index, pos) = context.recoverPlaylist(app, downloadFlow.value)
-        MediaItemsWithStartPosition(items, index, pos)
-    }
-
-    class ButtonReceiver : MediaButtonReceiver() {
-        override fun shouldStartForegroundService(context: Context, intent: Intent): Boolean {
-            val isEmpty = context.recoverTracks().isNullOrEmpty()
-            if (isEmpty) Toast.makeText(
-                context,
-                context.getString(R.string.no_last_played_track_found),
-                Toast.LENGTH_SHORT
-            ).show()
-            return !isEmpty
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+                context.startForegroundService(service)
+            else context.startService(service)
         }
     }
 
@@ -432,8 +484,8 @@ class PlayerCallback(
             it.getOrThrow().mapNotNull { shelf ->
                 when (shelf) {
                     is Shelf.Category -> null
-                    is Shelf.Item -> listOfNotNull(shelf.media as? Track)
                     is Shelf.Lists.Categories -> null
+                    is Shelf.Item -> listOfNotNull(shelf.media as? Track)
                     is Shelf.Lists.Items -> shelf.list.filterIsInstance<Track>()
                     is Shelf.Lists.Tracks -> shelf.list
                 }

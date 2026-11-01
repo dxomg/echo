@@ -10,8 +10,9 @@ import android.graphics.Bitmap
 import android.os.Bundle
 import android.widget.RemoteViews
 import androidx.core.os.bundleOf
-import androidx.media3.common.Player
-import androidx.media3.session.MediaController
+import com.google.android.exoplayer2.Player
+import com.google.android.exoplayer2.Player
+import dev.brahmkshatriya.echo.playback.PlayerBridge.sendCustomCommand
 import dev.brahmkshatriya.echo.R
 import dev.brahmkshatriya.echo.di.App
 import dev.brahmkshatriya.echo.extensions.MediaState
@@ -111,7 +112,7 @@ abstract class BaseWidget : AppWidgetProvider(), KoinComponent {
     }
 
     abstract fun updatedViews(
-        controller: MediaController?, image: Bitmap?, context: Context, appWidgetId: Int,
+        controller: Player?, image: Bitmap?, context: Context, appWidgetId: Int,
     ): RemoteViews
 
     companion object {
@@ -133,7 +134,7 @@ abstract class BaseWidget : AppWidgetProvider(), KoinComponent {
 
         fun updateView(
             clazz: Class<*>,
-            controller: MediaController?,
+            controller: Player?,
             image: Bitmap?,
             context: Context,
             views: RemoteViews,

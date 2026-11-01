@@ -5,12 +5,10 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.ServiceInfo.FOREGROUND_SERVICE_TYPE_DATA_SYNC
 import android.os.Build
-import androidx.annotation.OptIn
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
-import androidx.media3.common.util.NotificationUtil
-import androidx.media3.common.util.NotificationUtil.createNotificationChannel
-import androidx.media3.common.util.UnstableApi
+import com.google.android.exoplayer2.util.NotificationUtil
+import com.google.android.exoplayer2.util.NotificationUtil.createNotificationChannel
 import androidx.work.CoroutineWorker
 import androidx.work.ForegroundInfo
 import androidx.work.WorkerParameters

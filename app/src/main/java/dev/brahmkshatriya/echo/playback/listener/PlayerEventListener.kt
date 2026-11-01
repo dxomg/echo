@@ -1,22 +1,15 @@
 package dev.brahmkshatriya.echo.playback.listener
 
 import android.content.Context
-import androidx.media3.common.MediaItem
-import androidx.media3.common.MediaMetadata
-import androidx.media3.common.PlaybackException
-import androidx.media3.common.Player
-import androidx.media3.common.Timeline
-import androidx.media3.session.MediaSession
-import dev.brahmkshatriya.echo.common.clients.LikeClient
+import com.google.android.exoplayer2.MediaItem
+import com.google.android.exoplayer2.MediaMetadata
+import com.google.android.exoplayer2.PlaybackException
+import com.google.android.exoplayer2.Player
+import com.google.android.exoplayer2.Timeline
 import dev.brahmkshatriya.echo.extensions.ExtensionLoader
-import dev.brahmkshatriya.echo.extensions.ExtensionUtils.getExtension
-import dev.brahmkshatriya.echo.extensions.ExtensionUtils.isClient
 import dev.brahmkshatriya.echo.playback.MediaItemUtils
-import dev.brahmkshatriya.echo.playback.MediaItemUtils.extensionId
 import dev.brahmkshatriya.echo.playback.MediaItemUtils.isLoaded
 import dev.brahmkshatriya.echo.playback.MediaItemUtils.retries
-import dev.brahmkshatriya.echo.playback.PlayerCommands.getLikeButton
-import dev.brahmkshatriya.echo.playback.PlayerCommands.getRepeatButton
 import dev.brahmkshatriya.echo.playback.PlayerState
 import dev.brahmkshatriya.echo.playback.ResumptionUtils
 import dev.brahmkshatriya.echo.playback.exceptions.PlayerException
@@ -26,31 +19,16 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import kotlin.reflect.KClass
 
 class PlayerEventListener(
     private val context: Context,
     private val scope: CoroutineScope,
-    private val session: MediaSession,
+    private val player: Player,
     private val currentFlow: MutableStateFlow<PlayerState.Current?>,
     private val extensions: ExtensionLoader,
     private val throwableFlow: MutableSharedFlow<Throwable>
 ) : Player.Listener {
-
-    private val player get() = session.player
-
-    private fun updateCustomLayout() = scope.launch(Dispatchers.Main) {
-        val item = player.currentMediaItem ?: return@launch
-        val supportsLike = withContext(Dispatchers.IO) {
-            extensions.music.getExtension(item.extensionId)?.isClient<LikeClient>() ?: false
-        }
-        val commandButtons = listOfNotNull(
-            getRepeatButton(context, player.repeatMode),
-            getLikeButton(context, item).takeIf { supportsLike }
-        )
-        session.setCustomLayout(commandButtons)
-    }
 
     private fun updateCurrentFlow() {
         if (player.currentMediaItem == null && player.mediaItemCount > 0)
@@ -63,13 +41,11 @@ class PlayerEventListener(
 
     override fun onMediaItemTransition(mediaItem: MediaItem?, reason: Int) {
         updateCurrentFlow()
-        updateCustomLayout()
         ResumptionUtils.saveIndex(context, player.currentMediaItemIndex)
     }
 
     override fun onMediaMetadataChanged(mediaMetadata: MediaMetadata) {
         updateCurrentFlow()
-        updateCustomLayout()
     }
 
     override fun onTimelineChanged(timeline: Timeline, reason: Int) {
@@ -78,7 +54,6 @@ class PlayerEventListener(
     }
 
     override fun onRepeatModeChanged(repeatMode: Int) {
-        updateCustomLayout()
         ResumptionUtils.saveRepeat(context, repeatMode)
     }
 

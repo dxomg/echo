@@ -1,6 +1,6 @@
 package dev.brahmkshatriya.echo.playback.exceptions
 
-import androidx.media3.common.MediaItem
+import com.google.android.exoplayer2.MediaItem
 
 class PlayerException(
     val mediaItem: MediaItem?,

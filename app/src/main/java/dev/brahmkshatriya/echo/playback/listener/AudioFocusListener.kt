@@ -6,8 +6,8 @@ import android.media.AudioFocusRequest
 import android.media.AudioManager
 import android.os.Build
 import android.os.Handler
-import androidx.media3.common.Player
-import androidx.media3.common.Player.PlaybackSuppressionReason
+import com.google.android.exoplayer2.Player
+import com.google.android.exoplayer2.Player.PlaybackSuppressionReason
 
 @Suppress("DEPRECATION")
 class AudioFocusListener(
