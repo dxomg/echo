@@ -69,7 +69,7 @@
 
         <!--        <include layout="@layout/item_player_track"/>-->
 
-        <com.google.android.material.appbar.MaterialToolbar
+        <androidx.appcompat.widget.Toolbar
             android:id="@+id/expanded_toolbar"
             style="@style/PlayerToolbarStyle" />
 
@@ -107,7 +107,7 @@
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/player_more_container"
         android:name="dev.brahmkshatriya.echo.ui.player.more.PlayerMoreFragment"
-        style="@style/Widget.Material3.BottomSheet"
+        style="@style/EchoBottomSheetStyle"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clipToPadding="false"
@@ -115,7 +115,7 @@
         app:backgroundTint="@android:color/transparent"
         app:behavior_hideable="false"
         app:behavior_peekHeight="@dimen/player_info_peek_height"
-        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
+        app:layout_behavior="dev.brahmkshatriya.echo.utils.ui.legacy.EchoBottomSheetBehavior"
         tools:layout="@layout/fragment_player_more"
         tools:layout_marginTop="-72dp" />
 

@@ -25,4 +25,22 @@
     <attr name="colorSecondaryContainer" format="color|reference" />
     <attr name="colorOnPrimaryContainer" format="color|reference" />
     <attr name="colorOnSecondaryContainer" format="color|reference" />
+    <attr name="colorOnSecondary" format="color|reference" />
+    <attr name="colorOutline" format="color|reference" />
+    <declare-styleable name="EchoBottomSheetBehavior">
+        <attr name="behavior_peekHeight" format="dimension" />
+        <attr name="behavior_hideable" format="boolean" />
+        <attr name="behavior_draggable" format="boolean" />
+        <attr name="behavior_state" format="integer" />
+    </declare-styleable>
+    <declare-styleable name="EchoNavigationBarView">
+        <attr name="menu" />
+        <attr name="itemIconTint" format="color|reference" />
+    </declare-styleable>
+    <declare-styleable name="EchoChipGroup">
+        <attr name="chipSpacingHorizontal" format="dimension" />
+        <attr name="chipSpacingVertical" format="dimension" />
+        <attr name="singleSelection" format="boolean" />
+        <attr name="selectionRequired" />
+    </declare-styleable>
 </resources>

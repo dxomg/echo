@@ -5,26 +5,23 @@
     android:fitsSystemWindows="false"
     android:layout_height="wrap_content">
 
-    <com.google.android.material.appbar.AppBarLayout
+    <dev.brahmkshatriya.echo.utils.ui.legacy.EchoAppBarLayout
         android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:liftOnScroll="false"
         android:background="@android:color/transparent"
         android:paddingHorizontal="4dp">
 
-        <com.google.android.material.appbar.MaterialToolbar
+        <androidx.appcompat.widget.Toolbar
             android:id="@+id/topAppBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@null"
             android:paddingStart="0dp"
             android:paddingEnd="4dp"
-            app:layout_scrollFlags="scroll|snap"
             app:menu="@menu/refresh_menu"
             app:navigationIcon="@drawable/ic_close"
-            app:title="@string/audio_fx"
-            app:titleCentered="true" />
+            app:title="@string/audio_fx" />
 
         <TextView
             android:id="@+id/audioFxDescription"
@@ -34,16 +31,15 @@
             android:alpha="0.66"
             android:gravity="center"
             android:text="@string/audio_fx_desc"
-            android:textColor="?attr/colorOnSurface"
-            app:layout_scrollFlags="scroll|snap" />
+            android:textColor="?attr/colorOnSurface" />
 
-    </com.google.android.material.appbar.AppBarLayout>
+    </dev.brahmkshatriya.echo.utils.ui.legacy.EchoAppBarLayout>
 
     <include
         android:id="@+id/audioFxFragment"
         layout="@layout/fragment_audio_fx"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+        app:layout_behavior="dev.brahmkshatriya.echo.utils.ui.legacy.EchoAppBarLayout$ScrollingViewBehavior" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

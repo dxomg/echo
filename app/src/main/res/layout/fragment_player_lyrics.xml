@@ -12,7 +12,7 @@
         app:fel_edge="bottom|top"
         app:fel_size_bottom="80dp"
         app:fel_size_top="80dp"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        app:layout_behavior="dev.brahmkshatriya.echo.utils.ui.legacy.EchoAppBarLayout$ScrollingViewBehavior">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/lyricsRecyclerView"
@@ -25,16 +25,14 @@
 
     </com.bosphere.fadingedgelayout.FadingEdgeLayout>
 
-    <com.google.android.material.appbar.AppBarLayout
+    <dev.brahmkshatriya.echo.utils.ui.legacy.EchoAppBarLayout
         android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:backgroundTint="@android:color/transparent"
-        android:clipToPadding="false"
-        app:liftOnScroll="false"
-        app:liftOnScrollColor="@android:color/transparent">
+        android:clipToPadding="false">
 
-        <com.google.android.material.search.SearchBar
+        <dev.brahmkshatriya.echo.utils.ui.legacy.EchoSearchBar
             android:id="@+id/searchBarText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -43,12 +41,11 @@
             android:hint="@string/search"
             android:paddingEnd="4dp"
             app:backgroundTint="@color/amoled_bg"
-            app:layout_scrollFlags="scroll|enterAlways"
             app:menu="@menu/lyrics_menu"
             app:navigationIcon="@drawable/ic_search_outline"
             tools:ignore="RtlSymmetry" />
 
-    </com.google.android.material.appbar.AppBarLayout>
+    </dev.brahmkshatriya.echo.utils.ui.legacy.EchoAppBarLayout>
 
     <TextView
         android:id="@+id/noLyrics"
@@ -68,9 +65,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        app:layout_behavior="com.google.android.material.behavior.HideViewOnScrollBehavior" />
+        app:layout_behavior="dev.brahmkshatriya.echo.utils.ui.legacy.EchoHideOnScrollBehavior" />
 
-    <com.google.android.material.search.SearchView
+    <dev.brahmkshatriya.echo.utils.ui.legacy.EchoSearchView
         android:id="@+id/searchView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -88,5 +85,5 @@
             android:padding="4dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
-    </com.google.android.material.search.SearchView>
+    </dev.brahmkshatriya.echo.utils.ui.legacy.EchoSearchView>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

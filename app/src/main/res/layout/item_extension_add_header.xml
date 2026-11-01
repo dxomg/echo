@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <com.google.android.material.appbar.MaterialToolbar
+    <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolBar"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -12,8 +12,7 @@
         android:layout_weight="1"
         android:background="@null"
         app:navigationIcon="@drawable/ic_close"
-        app:title="@string/add_extensions"
-        app:titleCentered="true" />
+        app:title="@string/add_extensions" />
 
     <androidx.appcompat.widget.AppCompatCheckBox
         android:id="@+id/selectAll"

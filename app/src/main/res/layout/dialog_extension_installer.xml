@@ -14,7 +14,7 @@
         android:orientation="vertical"
         android:padding="24dp">
 
-        <com.google.android.material.appbar.MaterialToolbar
+        <androidx.appcompat.widget.Toolbar
             android:id="@+id/topAppBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -25,8 +25,7 @@
             android:paddingStart="0dp"
             android:paddingEnd="4dp"
             app:navigationIcon="@drawable/ic_close"
-            app:title="@string/extension_installer"
-            app:titleCentered="true" />
+            app:title="@string/extension_installer" />
 
         <ImageView
             android:id="@+id/extensionIcon"
@@ -104,7 +103,7 @@
 
             <dev.brahmkshatriya.echo.utils.ui.legacy.EchoButton
                 android:id="@+id/appInstall"
-                style="?attr/materialButtonOutlinedStyle"
+                style="@style/EchoButtonOutlined"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -113,7 +112,7 @@
 
             <dev.brahmkshatriya.echo.utils.ui.legacy.EchoButton
                 android:id="@+id/fileInstall"
-                style="?attr/materialButtonOutlinedStyle"
+                style="@style/EchoButtonOutlined"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"

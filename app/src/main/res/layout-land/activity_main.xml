@@ -19,16 +19,14 @@
         tools:layout="@layout/fragment_home"
         tools:layout_marginStart="64dp" />
 
-    <com.google.android.material.navigationrail.NavigationRailView
+    <dev.brahmkshatriya.echo.utils.ui.legacy.EchoNavigationRailView
         android:id="@+id/navView"
         style="@style/NavView"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:minWidth="@dimen/nav_width"
         app:elevation="0dp"
-        app:itemMinHeight="64dp"
-        app:menu="@menu/nav_menu"
-        app:menuGravity="center" />
+        app:menu="@menu/nav_menu" />
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/playerFragmentContainer"
@@ -37,7 +35,7 @@
         android:outlineProvider="none"
         app:behavior_hideable="true"
         app:behavior_peekHeight="@dimen/bottom_player_peek_height"
-        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
+        app:layout_behavior="dev.brahmkshatriya.echo.utils.ui.legacy.EchoBottomSheetBehavior"
         tools:layout="@layout/fragment_player" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -6,17 +6,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.google.android.material.appbar.AppBarLayout
+    <dev.brahmkshatriya.echo.utils.ui.legacy.EchoAppBarLayout
         android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fitsSystemWindows="true">
 
-        <com.google.android.material.appbar.CollapsingToolbarLayout
+        <dev.brahmkshatriya.echo.utils.ui.legacy.EchoCollapsingToolbarLayout
             style="@style/EchoCollapsingBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:expandedSubtitleTextAppearance="@style/EchoTextBodyLarge"
             app:maxLines="2">
 
             <FrameLayout
@@ -35,14 +34,14 @@
 
             </FrameLayout>
 
-            <com.google.android.material.appbar.MaterialToolbar
+            <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolBar"
                 style="@style/Toolbar"
                 app:title="@string/downloads" />
 
-        </com.google.android.material.appbar.CollapsingToolbarLayout>
+        </dev.brahmkshatriya.echo.utils.ui.legacy.EchoCollapsingToolbarLayout>
 
-    </com.google.android.material.appbar.AppBarLayout>
+    </dev.brahmkshatriya.echo.utils.ui.legacy.EchoAppBarLayout>
 
     <View
         android:id="@+id/toolbarOutline"
@@ -58,7 +57,7 @@
         android:paddingHorizontal="20dp"
         android:paddingTop="12dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        app:layout_behavior="dev.brahmkshatriya.echo.utils.ui.legacy.EchoAppBarLayout$ScrollingViewBehavior"
         tools:listitem="@layout/item_download" />
 
     <FrameLayout
@@ -67,7 +66,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="end|bottom">
 
-        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        <dev.brahmkshatriya.echo.utils.ui.legacy.EchoButton
             android:id="@+id/fabCancel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

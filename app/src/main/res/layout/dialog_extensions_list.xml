@@ -11,7 +11,7 @@
         android:orientation="vertical"
         android:paddingBottom="16dp">
 
-        <com.google.android.material.appbar.MaterialToolbar
+        <androidx.appcompat.widget.Toolbar
             android:id="@+id/topAppBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -21,8 +21,7 @@
             android:paddingEnd="4dp"
             app:menu="@menu/settings_menu"
             app:navigationIcon="@drawable/ic_close"
-            app:title="@string/extensions"
-            app:titleCentered="true" />
+            app:title="@string/extensions" />
 
         <dev.brahmkshatriya.echo.utils.ui.legacy.EchoCircularProgressBar
             android:id="@+id/progressIndicator"

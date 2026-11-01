@@ -14,26 +14,19 @@
         <item name="alertDialogStyle">@style/EchoDialogStyle</item>
     </style>
 
-    <style name="EchoDialogStyle" parent="Widget.AppCompat.Light.AlertDialog">
+    <style name="EchoDialogStyle" parent="AlertDialog.AppCompat.Light">
     </style>
 
-    <style name="EchoBottomSheetDialog" parent="ThemeOverlay.Material3.BottomSheetDialog">
-        <item name="bottomSheetStyle">@style/EchoBottomSheetStyle</item>
+    <style name="EchoBottomSheetDialog" parent="Theme.AppCompat.DayNight.Dialog">
         <item name="android:navigationBarColor">@android:color/transparent</item>
     </style>
 
-    <style name="EchoBottomSheetStyle" parent="Widget.Material3.BottomSheet">
-        <item name="backgroundTint">?navBackground</item>
+    <style name="EchoBottomSheetStyle" parent="">
+        <item name="android:background">?navBackground</item>
         <item name="behavior_peekHeight">512dp</item>
     </style>
 
-    <style name="TopCollapsingBar" parent="Widget.Material3.CollapsingToolbar.Large">
-        <!--        <item name="contentScrim">?navBackground</item>-->
-        <item name="expandedTitleMarginBottom">20dp</item>
-        <item name="expandedTitleMarginEnd">24dp</item>
-        <item name="expandedTitleMarginStart">24dp</item>
-        <item name="titleCollapseMode">scale</item>
-        <item name="layout_scrollFlags">scroll|exitUntilCollapsed|snap</item>
+    <style name="TopCollapsingBar" parent="">
     </style>
 
     <style name="EchoCollapsingBar" parent="TopCollapsingBar" />
@@ -43,45 +36,35 @@
         <item name="cardBackgroundColor">?echoBackground</item>
     </style>
 
-    <style name="EchoAppBarLayout" parent="Widget.Material3.AppBarLayout">
+    <style name="EchoAppBarLayout" parent="">
         <item name="android:background">?navBackground</item>
-        <item name="liftOnScrollColor">@android:color/transparent</item>
     </style>
 
-    <style name="Toolbar" parent="Widget.Material3.Toolbar">
+    <style name="Toolbar" parent="Widget.AppCompat.Toolbar">
         <item name="android:layout_marginStart">8dp</item>
         <item name="android:layout_marginEnd">8dp</item>
         <item name="android:paddingEnd">4dp</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">?actionBarSize</item>
         <item name="android:background">@android:color/transparent</item>
-        <item name="layout_collapseMode">pin</item>
         <item name="navigationContentDescription">@string/back</item>
         <item name="navigationIcon">@drawable/ic_back</item>
     </style>
 
-    <style name="EchoSnackBar" parent="Widget.Material3.Snackbar">
-        <item name="shapeAppearance">@style/ShapeAppearance.Material3.Corner.Small</item>
+    <style name="EchoSnackBar" parent="">
+        <item name="android:background">?colorSurfaceContainerHigh</item>
     </style>
 
-    <style name="BottomNavbarActiveIndicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
+    <style name="BottomNavbarActiveIndicator" parent="">
         <item name="android:width">56dp</item>
         <item name="android:height">32dp</item>
         <item name="android:color">?navBarBackground</item>
     </style>
 
-    <style name="NavView" parent="Widget.Material3.BottomNavigationView">
-        <item name="backgroundTint">?attr/navBackground</item>
-        <item name="itemActiveIndicatorStyle">@style/BottomNavbarActiveIndicator</item>
-        <item name="itemTextAppearanceActiveBoldEnabled">false</item>
-        <item name="itemTextAppearanceActive">@style/EchoTextBodySmall</item>
-        <item name="itemTextAppearanceInactive">@style/EchoTextBodySmall</item>
+    <style name="NavView" parent="">
+        <item name="android:background">?attr/navBackground</item>
         <item name="itemIconTint">@color/nav_bar_icon</item>
-        <item name="labelVisibilityMode">labeled</item>
-        <item name="itemPaddingBottom">6dp</item>
-        <item name="itemPaddingTop">8dp</item>
-        <item name="activeIndicatorLabelPadding">2dp</item>
-        <item name="itemMinHeight">@dimen/nav_height</item>
+        <item name="android:minHeight">@dimen/nav_height</item>
         <item name="android:paddingTop">0dp</item>
         <item name="android:paddingBottom">0dp</item>
     </style>
@@ -96,19 +79,11 @@
         <item name="android:background">@color/amoled_fg_semi</item>
     </style>
 
-    <style name="EchoTabLayout" parent="Widget.Material3.TabLayout">
+    <style name="EchoTabLayout" parent="">
         <item name="android:background">@android:color/transparent</item>
         <item name="android:clipToPadding">false</item>
         <item name="android:paddingStart">16dp</item>
         <item name="android:paddingEnd">16dp</item>
-        <item name="tabIndicator">@drawable/tab_indicator</item>
-        <item name="tabGravity">start</item>
-        <item name="tabIndicatorFullWidth">true</item>
-        <item name="tabMinWidth">0dp</item>
-        <item name="tabMode">scrollable</item>
-        <item name="tabPaddingEnd">16dp</item>
-        <item name="tabPaddingStart">16dp</item>
-        <item name="tabUnboundedRipple">true</item>
     </style>
 
     <style name="EchoCircularProgressIndicator" parent="">
@@ -122,14 +97,9 @@
         <item name="trackThickness">4dp</item>
     </style>
 
-    <style name="TextInput" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+    <style name="TextInput" parent="">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="errorEnabled">true</item>
-        <item name="boxCornerRadiusBottomEnd">8dp</item>
-        <item name="boxCornerRadiusBottomStart">8dp</item>
-        <item name="boxCornerRadiusTopEnd">8dp</item>
-        <item name="boxCornerRadiusTopStart">8dp</item>
     </style>
 
     <style name="OutlinedButton" parent="EchoButtonOutlined">
@@ -197,14 +167,11 @@
         <item name="android:layout_marginEnd">12dp</item>
         <item name="menu">@menu/more_menu</item>
         <item name="navigationIcon">@drawable/ic_expand_more</item>
-        <item name="navigationIconTint">@color/amoled_fg</item>
         <item name="navigationContentDescription">@string/close</item>
         <item name="subtitle">@string/extensions</item>
-        <item name="subtitleCentered">true</item>
         <item name="subtitleTextAppearance">@style/EchoTextTitleMedium</item>
         <item name="subtitleTextColor">@color/button_player</item>
         <item name="title">@string/playing_from</item>
-        <item name="titleCentered">true</item>
         <item name="titleTextAppearance">@style/TextAppearance.AppCompat.Small</item>
         <item name="titleTextColor">?colorOnSurface</item>
     </style>

@@ -45,7 +45,7 @@
         android:layout_gravity="bottom|end"
         android:clipToPadding="false">
 
-        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        <dev.brahmkshatriya.echo.utils.ui.legacy.EchoButton
             android:id="@+id/createPlaylist"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

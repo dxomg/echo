@@ -18,7 +18,7 @@
             android:orientation="vertical"
             android:padding="24dp">
 
-            <com.google.android.material.appbar.MaterialToolbar
+            <androidx.appcompat.widget.Toolbar
                 android:id="@+id/topAppBar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -29,8 +29,7 @@
                 android:paddingStart="0dp"
                 android:paddingEnd="4dp"
                 app:navigationIcon="@drawable/ic_close"
-                app:title="@string/add_extensions"
-                app:titleCentered="true" />
+                app:title="@string/add_extensions" />
 
             <dev.brahmkshatriya.echo.utils.ui.legacy.EchoButtonToggleGroup
                 android:id="@+id/installationTypeGroup"
@@ -42,7 +41,7 @@
 
                 <dev.brahmkshatriya.echo.utils.ui.legacy.EchoButton
                     android:id="@+id/linkAdd"
-                    style="?attr/materialButtonOutlinedStyle"
+                    style="@style/EchoButtonOutlined"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -51,7 +50,7 @@
 
                 <dev.brahmkshatriya.echo.utils.ui.legacy.EchoButton
                     android:id="@+id/fileAdd"
-                    style="?attr/materialButtonOutlinedStyle"
+                    style="@style/EchoButtonOutlined"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -60,11 +59,11 @@
             </dev.brahmkshatriya.echo.utils.ui.legacy.EchoButtonToggleGroup>
 
 
-            <com.google.android.material.textfield.TextInputLayout
+            <dev.brahmkshatriya.echo.utils.ui.legacy.EchoTextInputLayout
                 android:id="@+id/textInputLayout"
                 style="@style/TextInput">
 
-                <com.google.android.material.textfield.TextInputEditText
+                <androidx.appcompat.widget.AppCompatEditText
                     android:id="@+id/editText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -72,7 +71,7 @@
                     android:inputType="text"
                     android:singleLine="true" />
 
-            </com.google.android.material.textfield.TextInputLayout>
+            </dev.brahmkshatriya.echo.utils.ui.legacy.EchoTextInputLayout>
 
             <dev.brahmkshatriya.echo.utils.ui.legacy.EchoButton
                 android:id="@+id/installButton"

@@ -78,25 +78,17 @@
             android:layout_marginEnd="-48dp"
             android:layout_weight="1">
 
-            <com.google.android.material.textfield.TextInputLayout
+            <dev.brahmkshatriya.echo.utils.ui.legacy.EchoTextInputLayout
                 android:id="@+id/searchLayout"
-                style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
+                style="@style/Widget.AppCompat.EditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/search"
                 android:paddingVertical="0dp"
                 android:paddingStart="0dp"
-                android:paddingEnd="0dp"
-                app:boxBackgroundColor="@color/amoled_fg_semi"
-                app:boxCornerRadiusBottomEnd="24dp"
-                app:boxCornerRadiusBottomStart="24dp"
-                app:boxCornerRadiusTopEnd="24dp"
-                app:boxCornerRadiusTopStart="24dp"
-                app:boxStrokeWidth="0dp"
-                app:boxStrokeWidthFocused="1dp"
-                app:startIconDrawable="@drawable/ic_search_outline">
+                android:paddingEnd="0dp">
 
-                <com.google.android.material.textfield.TextInputEditText
+                <androidx.appcompat.widget.AppCompatEditText
                     android:id="@+id/searchBarText"
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
@@ -104,7 +96,7 @@
                     android:padding="0dp"
                     android:singleLine="true" />
 
-            </com.google.android.material.textfield.TextInputLayout>
+            </dev.brahmkshatriya.echo.utils.ui.legacy.EchoTextInputLayout>
         </FrameLayout>
 
         <dev.brahmkshatriya.echo.utils.ui.legacy.EchoButton
@@ -116,7 +108,7 @@
 
     </LinearLayout>
 
-    <com.google.android.material.chip.ChipGroup
+    <dev.brahmkshatriya.echo.utils.ui.legacy.EchoChipGroup
         android:id="@+id/chipGroup"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

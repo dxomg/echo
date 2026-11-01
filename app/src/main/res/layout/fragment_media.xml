@@ -7,19 +7,17 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
 
-    <com.google.android.material.appbar.AppBarLayout
+    <dev.brahmkshatriya.echo.utils.ui.legacy.EchoAppBarLayout
         android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fitsSystemWindows="true">
 
-        <com.google.android.material.appbar.CollapsingToolbarLayout
+        <dev.brahmkshatriya.echo.utils.ui.legacy.EchoCollapsingToolbarLayout
             android:id="@+id/collapsingToolbar"
             style="@style/EchoCollapsingBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:expandedTitleMarginEnd="24dp"
-            app:expandedTitleMarginStart="64dp"
             app:maxLines="3">
 
             <ImageView
@@ -57,16 +55,16 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-            <com.google.android.material.appbar.MaterialToolbar
+            <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolBar"
                 style="@style/Toolbar"
                 android:background="@android:color/transparent"
                 app:menu="@menu/more_menu"
                 tools:title="@tools:sample/full_names" />
 
-        </com.google.android.material.appbar.CollapsingToolbarLayout>
+        </dev.brahmkshatriya.echo.utils.ui.legacy.EchoCollapsingToolbarLayout>
 
-    </com.google.android.material.appbar.AppBarLayout>
+    </dev.brahmkshatriya.echo.utils.ui.legacy.EchoAppBarLayout>
 
     <View
         android:id="@+id/appbarOutline"
@@ -79,7 +77,7 @@
         android:name="dev.brahmkshatriya.echo.ui.media.MediaDetailsFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        app:layout_behavior="dev.brahmkshatriya.echo.utils.ui.legacy.EchoAppBarLayout$ScrollingViewBehavior"
         tools:layout="@layout/fragment_media_details" />
 
     <FrameLayout
@@ -88,14 +86,14 @@
         android:layout_height="wrap_content"
         android:layout_gravity="end|bottom">
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
+        <dev.brahmkshatriya.echo.utils.ui.legacy.EchoButton
             android:id="@+id/fabEditPlaylist"
             style="?floatingActionButtonPrimaryStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="24dp"
             android:contentDescription="@string/edit_playlist"
-            app:srcCompat="@drawable/ic_edit_note" />
+            app:icon="@drawable/ic_edit_note" />
 
     </FrameLayout>
 

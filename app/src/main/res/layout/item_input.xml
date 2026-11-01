@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.textfield.TextInputLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<dev.brahmkshatriya.echo.utils.ui.legacy.EchoTextInputLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    style="@style/TextInput"
-    app:startIconTint="?colorControlNormal">
+    style="@style/TextInput">
 
-    <com.google.android.material.textfield.TextInputEditText
+    <androidx.appcompat.widget.AppCompatEditText
         android:id="@+id/editText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="text"
         android:singleLine="true" />
 
-</com.google.android.material.textfield.TextInputLayout>
+</dev.brahmkshatriya.echo.utils.ui.legacy.EchoTextInputLayout>

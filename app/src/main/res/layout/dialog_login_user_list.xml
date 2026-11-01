@@ -11,7 +11,7 @@
         android:orientation="vertical"
         android:padding="24dp">
 
-        <com.google.android.material.appbar.MaterialToolbar
+        <androidx.appcompat.widget.Toolbar
             android:id="@+id/title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -23,8 +23,7 @@
             android:paddingEnd="4dp"
             app:menu="@menu/incognito_menu"
             app:navigationIcon="@drawable/ic_close"
-            app:title="@string/select_x_account"
-            app:titleCentered="true" />
+            app:title="@string/select_x_account" />
 
         <include
             android:id="@+id/accountListLoading"

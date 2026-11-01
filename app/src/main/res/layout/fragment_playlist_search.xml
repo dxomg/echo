@@ -22,9 +22,9 @@
         android:outlineProvider="none"
         app:behavior_hideable="false"
         app:behavior_peekHeight="72dp"
-        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+        app:layout_behavior="dev.brahmkshatriya.echo.utils.ui.legacy.EchoBottomSheetBehavior">
 
-        <com.google.android.material.bottomsheet.BottomSheetDragHandleView
+        <android.view.View
             android:id="@+id/bottomSheetDragHandle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />

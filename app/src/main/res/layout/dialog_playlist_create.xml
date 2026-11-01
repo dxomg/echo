@@ -19,7 +19,7 @@
             android:orientation="vertical"
             android:padding="24dp">
 
-            <com.google.android.material.appbar.MaterialToolbar
+            <androidx.appcompat.widget.Toolbar
                 android:id="@+id/topAppBar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -30,36 +30,33 @@
                 android:paddingStart="0dp"
                 android:paddingEnd="4dp"
                 app:navigationIcon="@drawable/ic_close"
-                app:title="@string/create_playlist"
-                app:titleCentered="true" />
+                app:title="@string/create_playlist" />
 
-            <com.google.android.material.textfield.TextInputLayout
+            <dev.brahmkshatriya.echo.utils.ui.legacy.EchoTextInputLayout
                 style="@style/TextInput"
-                android:hint="@string/playlist_name"
-                app:startIconDrawable="@drawable/ic_queue_music">
+                android:hint="@string/playlist_name">
 
-                <com.google.android.material.textfield.TextInputEditText
+                <androidx.appcompat.widget.AppCompatEditText
                     android:id="@+id/playlistName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="text"
                     android:singleLine="true" />
 
-            </com.google.android.material.textfield.TextInputLayout>
+            </dev.brahmkshatriya.echo.utils.ui.legacy.EchoTextInputLayout>
 
-            <com.google.android.material.textfield.TextInputLayout
+            <dev.brahmkshatriya.echo.utils.ui.legacy.EchoTextInputLayout
                 style="@style/TextInput"
-                android:hint="@string/playlist_description"
-                app:startIconDrawable="@drawable/ic_article">
+                android:hint="@string/playlist_description">
 
-                <com.google.android.material.textfield.TextInputEditText
+                <androidx.appcompat.widget.AppCompatEditText
                     android:id="@+id/playlistDesc"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="text"
                     android:singleLine="true" />
 
-            </com.google.android.material.textfield.TextInputLayout>
+            </dev.brahmkshatriya.echo.utils.ui.legacy.EchoTextInputLayout>
 
             <dev.brahmkshatriya.echo.utils.ui.legacy.EchoButton
                 android:id="@+id/playlistCreateButton"

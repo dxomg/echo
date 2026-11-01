@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.search.SearchBar xmlns:android="http://schemas.android.com/apk/res/android"
+<dev.brahmkshatriya.echo.utils.ui.legacy.EchoSearchBar xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/searchBar"
     android:layout_width="match_parent"
@@ -9,7 +9,4 @@
     android:paddingStart="0dp"
     android:paddingEnd="12dp"
     app:backgroundTint="@color/amoled_bg_semi"
-    app:defaultMarginsEnabled="false"
-    app:navigationIcon="@drawable/ic_search_outline"
-    app:strokeColor="?colorSurfaceContainerHighest"
-    app:strokeWidth="1dp" />
+    app:navigationIcon="@drawable/ic_search_outline" />

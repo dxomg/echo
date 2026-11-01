@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Stable widget palette on devices without system dynamic colors. -->
+    <color name="material_dynamic_primary40">#6750A4</color>
+    <color name="material_dynamic_primary50">#8069BF</color>
+    <color name="material_dynamic_primary60">#9A83DB</color>
+    <color name="material_dynamic_primary90">#EADDFF</color>
+    <color name="material_dynamic_tertiary50">#A06A7D</color>
+    <color name="material_dynamic_tertiary90">#FFD8E4</color>
+</resources>
