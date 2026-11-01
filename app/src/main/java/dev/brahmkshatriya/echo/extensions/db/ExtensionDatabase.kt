@@ -4,11 +4,13 @@ import android.app.Application
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 import dev.brahmkshatriya.echo.common.models.User
 import dev.brahmkshatriya.echo.extensions.db.models.CurrentUser
 import dev.brahmkshatriya.echo.extensions.db.models.ExtensionEntity
 import dev.brahmkshatriya.echo.extensions.db.models.UserEntity
 
+@TypeConverters(ExtensionTypeConverter::class)
 @Database(
     entities = [
         UserEntity::class,
